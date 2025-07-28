@@ -8,6 +8,6 @@ package adt;
  *
  * @author Bernard
  */
-public class adt {
+public class MyLinkedQueue {
     
 }
