@@ -1,14 +1,7 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package control;
 import adt.*;
 import entity.*;
-/**
- *
- * @author User
- */
+
 public class ConsultationManager {
     private LinkedList<Consultation> consultationList = new LinkedList<>();
 
@@ -24,19 +17,16 @@ public class ConsultationManager {
 
     public boolean updateConsultation(int index, Consultation updated) {
         if (index >= 0 && index < consultationList.size()) {
-            consultationList.remove(consultationList.get(index));
-            consultationList.add(updated); // adds to end — not ideal
+            consultationList.remove(index);
+            consultationList.add(updated);
             return true;
         }
         return false;
     }
 
     public boolean deleteConsultation(int index) {
-        if (index >= 0 && index < consultationList.size()) {
-            consultationList.remove(consultationList.get(index));
-            return true;
-        }
-        return false;
+        return consultationList.remove(index);
     }
 }
+
 

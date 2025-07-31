@@ -1,31 +1,35 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package dao;
+
 import control.*;
 import entity.*;
-/**
- *
- * @author User
- */
+import java.time.LocalDate;
+
 public class Main {
     public static void main(String[] args) {
-        // Consultation Module
-        ConsultationManager cm = new ConsultationManager();
-        cm.addConsultation(new Consultation("Fever", "Take rest", "2025-08-05"));
-        cm.addConsultation(new Consultation("Cough", "Prescribed antibiotics", "2025-08-10"));
+        // Create MaintainPatient object
+        MaintainPatient mp = new MaintainPatient();
 
-        System.out.println("All Consultations:");
-        cm.displayAllConsultations();
+        // Sample Patients
+        Patient p1 = new Patient();
+        p1.setName("Alice Tan");
+        p1.setIcNumber("990101-14-5678");
+        p1.setDateOfBirth(LocalDate.of(1999, 1, 1));
+        p1.setSex("Female");
+        p1.setIsActive(true);
 
-        // Medical Treatment Module
-        TreatmentManager tm = new TreatmentManager();
-        tm.addTreatment(new MedicalTreatment("Paracetamol", "500mg", "5 days"));
-        tm.addTreatment(new MedicalTreatment("Cough Syrup", "10ml", "7 days"));
+        Patient p2 = new Patient();
+        p2.setName("Bob Lim");
+        p2.setIcNumber("880202-07-1234");
+        p2.setDateOfBirth(LocalDate.of(1988, 2, 2));
+        p2.setSex("Male");
+        p2.setIsActive(true);
 
-        System.out.println("\nAll Medical Treatments:");
-        tm.displayAllTreatments();
+        // Add to MaintainPatient
+        mp.addPatient(p1);
+        mp.addPatient(p2);
+
+        // Display all
+        System.out.println("---- Patient List ----");
+        mp.displayAllPatients();
     }
 }
-

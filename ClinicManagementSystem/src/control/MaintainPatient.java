@@ -1,13 +1,38 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package control;
 
-/**
- *
- * @author Bernard
- */
+import adt.LinkedList;
+import entity.Patient;
+
 public class MaintainPatient {
-    
+    private LinkedList<Patient> patientList = new LinkedList<>();
+
+    public void addPatient(Patient p) {
+        patientList.add(p);
+    }
+
+    public boolean updatePatient(int index, Patient updated) {
+        if (index >= 0 && index < patientList.size()) {
+            patientList.remove(index);
+            patientList.add(updated);
+            return true;
+        }
+        return false;
+    }
+
+    public boolean deletePatient(int index) {
+        return patientList.remove(index);
+    }
+
+    public void displayAllPatients() {
+        for (int i = 0; i < patientList.size(); i++) {
+            System.out.println(i + ": " + patientList.get(i));
+        }
+    }
+
+    public Patient getPatient(int index) {
+        if (index >= 0 && index < patientList.size()) {
+            return patientList.get(index);
+        }
+        return null;
+    }
 }
