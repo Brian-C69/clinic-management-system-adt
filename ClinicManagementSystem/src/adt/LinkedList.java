@@ -1,6 +1,7 @@
 package adt;
 
 public class LinkedList<T> implements ListInterface<T> {
+
     private Node<T> head;
     private int size;
 
@@ -26,7 +27,9 @@ public class LinkedList<T> implements ListInterface<T> {
 
     @Override
     public boolean remove(int index) {
-        if (index < 0 || index >= size) return false;
+        if (index < 0 || index >= size) {
+            return false;
+        }
 
         if (index == 0) {
             head = head.next;
@@ -41,11 +44,29 @@ public class LinkedList<T> implements ListInterface<T> {
         return true;
     }
 
+    public boolean replace(int index, T newEntry) {
+        boolean isSuccessful = true;
+
+        if ((index >= 0) && (index <= size)) {
+            Node<T> currentNode = head;
+            for (int i = 0; i < index - 1; ++i) {
+                currentNode = currentNode.next;
+            }
+            currentNode.data = newEntry;
+        } else {
+            isSuccessful = false;
+        }
+
+        return isSuccessful;
+    }
+
     @Override
     public boolean contains(T item) {
         Node<T> current = head;
         while (current != null) {
-            if (current.data.equals(item)) return true;
+            if (current.data.equals(item)) {
+                return true;
+            }
             current = current.next;
         }
         return false;
@@ -53,7 +74,9 @@ public class LinkedList<T> implements ListInterface<T> {
 
     @Override
     public T get(int index) {
-        if (index < 0 || index >= size) return null;
+        if (index < 0 || index >= size) {
+            return null;
+        }
         Node<T> current = head;
         for (int i = 0; i < index; i++) {
             current = current.next;
@@ -78,6 +101,7 @@ public class LinkedList<T> implements ListInterface<T> {
     }
 
     private static class Node<T> {
+
         T data;
         Node<T> next;
 

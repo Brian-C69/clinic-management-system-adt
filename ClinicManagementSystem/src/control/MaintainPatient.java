@@ -10,10 +10,9 @@ public class MaintainPatient {
         patientList.add(p);
     }
 
-    public boolean updatePatient(int index, Patient updated) {
+    public boolean updatePatient(int index, Patient updatedPatient) {
         if (index >= 0 && index < patientList.size()) {
-            patientList.remove(index);
-            patientList.add(updated);
+            patientList.replace(index, updatedPatient);
             return true;
         }
         return false;

@@ -8,6 +8,7 @@ public class Main {
     public static void main(String[] args) {
         // Create MaintainPatient object
         MaintainPatient mp = new MaintainPatient();
+        MaintainDoctor md = new MaintainDoctor();
 
         // Sample Patients
         Patient p1 = new Patient();
@@ -23,13 +24,28 @@ public class Main {
         p2.setDateOfBirth(LocalDate.of(1988, 2, 2));
         p2.setSex("Male");
         p2.setIsActive(true);
+        
+        Patient p3 = new Patient();
+        p3.setName("Test 1");
+        p3.setSex("Male");
+        
+        //Doctor Sample
+        Doctor d1 = new Doctor();
+        d1.setName("Doctor Joe Mama");
+        d1.setGender("Male");
 
         // Add to MaintainPatient
         mp.addPatient(p1);
         mp.addPatient(p2);
+        mp.updatePatient(1, p3);
+        
+        // Add to MaintainDoctor
+        md.addDoctor(d1);
 
         // Display all
         System.out.println("---- Patient List ----");
         mp.displayAllPatients();
+        System.out.println("---- Doctor List ----");
+        md.displayAllDoctors();
     }
 }
