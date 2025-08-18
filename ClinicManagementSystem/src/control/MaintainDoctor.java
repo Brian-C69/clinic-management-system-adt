@@ -58,12 +58,9 @@ public class MaintainDoctor {
             if (doctorNewData.getDutySchedule() != null) {
                 existingDoctor.setDutySchedule(doctorNewData.getDutySchedule());
             }
-
-            // boolean type, so check with a default flag
             if (doctorNewData.isIsAvailable() != existingDoctor.isIsAvailable()) {
                 existingDoctor.setIsAvailable(doctorNewData.isIsAvailable());
             }
-
             if (doctorNewData.getConsultations() != null) {
                 existingDoctor.setConsultations(doctorNewData.getConsultations());
             }
@@ -79,11 +76,9 @@ public class MaintainDoctor {
             if (doctorNewData.getStatus() != null) {
                 existingDoctor.setStatus(doctorNewData.getStatus());
             }
-
             return true;
         }
         return false;
-
     }
 
     public boolean deleteDoctor(int index) {
@@ -94,5 +89,24 @@ public class MaintainDoctor {
         for (int i = 0; i < doctorList.size(); i++) {
             System.out.println(i + ": " + doctorList.get(i));
         }
+    }
+
+    // 🔹 NEW: return doctor by index
+    public Doctor getDoctor(int index) {
+        if (index >= 0 && index < doctorList.size()) {
+            return doctorList.get(index);
+        }
+        return null;
+    }
+
+    // 🔹 NEW: find doctor by ID
+    public Doctor findDoctorById(String doctorId) {
+        for (int i = 0; i < doctorList.size(); i++) {
+            Doctor d = doctorList.get(i);
+            if (d.getDoctorId().equals(doctorId)) {
+                return d;
+            }
+        }
+        return null;
     }
 }

@@ -94,4 +94,14 @@ public class SortedArrayList<T extends Comparable<? super T>> implements ListInt
             }
         };
     }
+
+    @Override
+    public boolean remove(T item) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean replace(int index, T newItem) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
 }
