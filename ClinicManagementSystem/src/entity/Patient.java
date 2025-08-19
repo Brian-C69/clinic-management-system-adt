@@ -1,9 +1,11 @@
 package entity;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import adt.*; 
+import adt.*;
 
 public class Patient {
+
     private String patientID;
     private String name;
     private String icNumber;
@@ -21,7 +23,6 @@ public class Patient {
     private LocalDate dateOfRegistration;
     private LocalDate lastVisitDate;
     private boolean isActive;
-    private QueueInterface<Consultation> consultationQueue;
 
     public Patient() {
     }
@@ -44,13 +45,16 @@ public class Patient {
         this.dateOfRegistration = dateOfRegistration;
         this.lastVisitDate = lastVisitDate;
         this.isActive = isActive;
-        this.consultationQueue = consultationQueue;
     }
 
-    public String patientID(){
+    public String getpatientID() {
         return patientID;
     }
-    
+
+    public void setPatientID(String patientID) {
+        this.patientID = patientID;
+    }
+
     public String getName() {
         return name;
     }
@@ -179,18 +183,9 @@ public class Patient {
         this.isActive = isActive;
     }
 
-    public QueueInterface<Consultation> getConsultationQueue() {
-        return consultationQueue;
-    }
-
-    public void setConsultationQueue(QueueInterface<Consultation> consultationQueue) {
-        this.consultationQueue = consultationQueue;
-    }
-
     @Override
     public String toString() {
-        return "Patient{" + "name=" + name + ", icNumber=" + icNumber + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", contactNumber=" + contactNumber + ", email=" + email + ", address=" + address + ", panel=" + panel + ", bloodType=" + bloodType + ", allergyHistory=" + allergyHistory + ", chronicConditions=" + chronicConditions + ", emergencyContactName=" + emergencyContactName + ", emergencyContactNumber=" + emergencyContactNumber + ", dateOfRegistration=" + dateOfRegistration + ", lastVisitDate=" + lastVisitDate + ", isActive=" + isActive + ", consultationQueue=" + consultationQueue + '}';
+        return "Patient{" + "Patient ID=" + patientID + "name=" + name + ", icNumber=" + icNumber + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", contactNumber=" + contactNumber + ", email=" + email + ", address=" + address + ", panel=" + panel + ", bloodType=" + bloodType + ", allergyHistory=" + allergyHistory + ", chronicConditions=" + chronicConditions + ", emergencyContactName=" + emergencyContactName + ", emergencyContactNumber=" + emergencyContactNumber + ", dateOfRegistration=" + dateOfRegistration + ", lastVisitDate=" + lastVisitDate + ", isActive=" + isActive + '}';
     }
-    
-    
+
 }

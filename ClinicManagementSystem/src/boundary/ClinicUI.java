@@ -137,7 +137,6 @@ public class ClinicUI {
                     consultCtrl.addConsultation(c);
                     // 🔹 Update links in doctor and patient
                     d.getConsultations().add(c);
-                    p.getConsultationQueue().enqueue(c);
                 }
                 case 3 -> {
                     int index = consultUI.inputConsultationIndex();

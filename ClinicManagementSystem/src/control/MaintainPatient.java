@@ -22,9 +22,9 @@ public class MaintainPatient {
                     mp.addPatient(p);
                     break;
                 case 3:
-                    mp.displayAllPatients();
                     int idx = ui.inputPatientIndex();
                     Patient update = ui.inputPatientDetails();
+                    mp.displayAllPatients();
                     mp.updateExistingPatient(idx, update);
                     break;
                 case 4:
@@ -42,7 +42,7 @@ public class MaintainPatient {
 
         System.out.println("Exiting Patient Management.");
     }
-    
+
     private LinkedList<Patient> patientList = new LinkedList<>();
 
     public void addPatient(Patient p) {
