@@ -24,12 +24,12 @@ public class ClinicInitializer {
 
     public ListInterface<Patient> initializePatients() {
         ListInterface<Patient> pList = new LinkedList<>();
-        pList.add(new Patient("Alice", "990101-10-1234", LocalDate.of(1999, 1, 1),
+        pList.add(new Patient("P001","Alice", "990101-10-1234", LocalDate.of(1999, 1, 1),
                 "F", "0123456789", "alice@mail.com", "KL", "Panel A",
                 "O+", "Peanuts", "Asthma", "Bob", "0191112222",
                 LocalDate.of(2020, 1, 1), LocalDate.of(2025, 8, 1), true,
                 new LinkedQueue<>()));
-        pList.add(new Patient("Ben", "950202-05-5678", LocalDate.of(1995, 2, 2),
+        pList.add(new Patient("P002","Ben", "950202-05-5678", LocalDate.of(1995, 2, 2),
                 "M", "0132223333", "ben@mail.com", "PJ", "Panel B",
                 "A-", "None", "Diabetes", "Jane", "0171234567",
                 LocalDate.of(2021, 2, 1), LocalDate.of(2025, 7, 28), true,

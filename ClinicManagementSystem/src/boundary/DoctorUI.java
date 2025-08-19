@@ -4,7 +4,6 @@ import entity.Doctor;
 import java.util.Scanner;
 
 public class DoctorUI {
-
     private Scanner scanner = new Scanner(System.in);
 
     public int getMenuChoice() {

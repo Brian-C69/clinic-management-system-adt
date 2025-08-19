@@ -72,9 +72,6 @@ public class LinkedList<T> implements ListInterface<T> {
         return false;
     }
 
-
-
-
     @Override
     public boolean replace(int index, T newItem) {
         if (index < 0 || index >= size) return false;
