@@ -161,43 +161,71 @@ public class ClinicUI {
     }
 
     // ---------------- Treatment Menu ----------------
-    private void treatmentMenu() {
-        int choice;
-        do {
-            choice = treatUI.getMenuChoice();
-            switch (choice) {
-                case 1 -> treatCtrl.displayAllTreatments();
-                case 2 -> {
-                    String medName = treatUI.inputMedicineName();
-                    Medicine m = new Medicine();
-                    m.setName(medName);
-                    MedicalTreatment t = new MedicalTreatment(
-                            m,
-                            treatUI.inputDosage(),
-                            treatUI.inputDuration(),
-                            treatUI.inputInstructions(),
-                            treatUI.inputStartDate(),
-                            null, null // skip patient/doctor binding for now
-                    );
-                    treatCtrl.addTreatment(t);
-                }
-                case 3 -> {
-                    int index = treatUI.inputTreatmentIndex();
-                    MedicalTreatment updated = treatCtrl.getTreatment(index);
-                    if (updated != null) {
-                        updated.setDosage(treatUI.inputDosage());
-                        updated.setDuration(treatUI.inputDuration());
-                        updated.setInstructions(treatUI.inputInstructions());
-                        updated.setStartDate(treatUI.inputStartDate());
-                    }
-                }
-                case 4 -> {
-                    int index = treatUI.inputTreatmentIndex();
-                    treatCtrl.deleteTreatment(index);
+    // ---------------- Treatment Menu ----------------
+private void treatmentMenu() {
+    int choice;
+    do {
+        choice = treatUI.getMenuChoice();
+        switch (choice) {
+            case 1 -> treatCtrl.displayAllTreatments();
+            case 2 -> {
+                // Link treatment to medicine
+                treatCtrl.displayAllMedicines();
+                int mIndex = treatUI.inputMedicineIndex();
+                Medicine m = treatCtrl.getMedicine(mIndex);
+
+                MedicalTreatment t = new MedicalTreatment(
+                        m,
+                        treatUI.inputDosage(),
+                        treatUI.inputDuration(),
+                        treatUI.inputInstructions(),
+                        treatUI.inputStartDate(),
+                        null, null // Later: link to patient/doctor if needed
+                );
+                treatCtrl.addTreatment(t);
+            }
+            case 3 -> {
+                int index = treatUI.inputTreatmentIndex();
+                MedicalTreatment updated = treatCtrl.getTreatment(index);
+                if (updated != null) {
+                    updated.setDosage(treatUI.inputDosage());
+                    updated.setDuration(treatUI.inputDuration());
+                    updated.setInstructions(treatUI.inputInstructions());
+                    updated.setStartDate(treatUI.inputStartDate());
                 }
             }
-        } while (choice != 0);
-    }
+            case 4 -> {
+                int index = treatUI.inputTreatmentIndex();
+                treatCtrl.deleteTreatment(index);
+            }
+            case 5 -> medicineMenu(); // 🔹 New branch for medicine management
+        }
+    } while (choice != 0);
+}
+
+// ---------------- Medicine Sub-Menu ----------------
+private void medicineMenu() {
+    int choice;
+    do {
+        choice = treatUI.getMedicineMenuChoice();
+        switch (choice) {
+            case 1 -> treatCtrl.displayAllMedicines();
+            case 2 -> {
+                Medicine m = treatUI.inputMedicineDetails();
+                treatCtrl.addMedicine(m);
+            }
+            case 3 -> {
+                int index = treatUI.inputMedicineIndex();
+                Medicine updated = treatUI.inputMedicineDetails();
+                treatCtrl.updateMedicine(index, updated);
+            }
+            case 4 -> {
+                int index = treatUI.inputMedicineIndex();
+                treatCtrl.deleteMedicine(index);
+            }
+        }
+    } while (choice != 0);
+}
 
     // ---------------- Helper to sync doctor edits ----------------
     private void syncDoctorUpdates() {
