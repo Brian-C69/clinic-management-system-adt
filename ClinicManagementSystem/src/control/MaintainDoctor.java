@@ -2,9 +2,9 @@ package control;
 
 import adt.LinkedList;
 import entity.Doctor;
+import boundary.DoctorUI;
 
 public class MaintainDoctor {
-
     private LinkedList<Doctor> doctorList = new LinkedList<>();
 
     public void addDoctor(Doctor d) {

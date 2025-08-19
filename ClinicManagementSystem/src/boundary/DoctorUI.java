@@ -36,7 +36,6 @@ public class DoctorUI {
         System.out.print("Enter Email: ");
         String email = scanner.nextLine();
 
-        // keep it simple for demo – we won’t ask for all fields
         Doctor d = new Doctor();
         d.setDoctorId(id);
         d.setName(name);

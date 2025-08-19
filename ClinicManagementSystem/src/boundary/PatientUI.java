@@ -26,20 +26,81 @@ public class PatientUI {
     }
 
     public Patient inputPatientDetails() {
+        Patient p = new Patient();
+
         System.out.print("Enter Patient Name: ");
         String name = scanner.nextLine();
+        if (!name.isEmpty()) {
+            p.setName(name);
+        }
+
         System.out.print("Enter IC Number: ");
         String ic = scanner.nextLine();
+        if (!ic.isEmpty()) {
+            p.setIcNumber(ic);
+        }
+
         System.out.print("Enter Contact Number: ");
         String phone = scanner.nextLine();
+        if (!phone.isEmpty()) {
+            p.setContactNumber(phone);
+        }
+
         System.out.print("Enter Email: ");
         String email = scanner.nextLine();
+        if (!email.isEmpty()) {
+            p.setEmail(email);
+        }
 
-        Patient p = new Patient();
-        p.setName(name);
-        p.setIcNumber(ic);
-        p.setContactNumber(phone);
-        p.setEmail(email);
+        System.out.print("Enter Address: ");
+        String address = scanner.nextLine();
+        if (!address.isEmpty()) {
+            p.setAddress(address);
+        }
+
+        System.out.print("Enter Panel: ");
+        String panel = scanner.nextLine();
+        if (!panel.isEmpty()) {
+            p.setPanel(panel);
+        }
+
+        System.out.print("Enter Blood Type: ");
+        String bloodType = scanner.nextLine();
+        if (!bloodType.isEmpty()) {
+            p.setBloodType(bloodType);
+        }
+
+        System.out.print("Enter Allergy History: ");
+        String allergy = scanner.nextLine();
+        if (!allergy.isEmpty()) {
+            p.setAllergyHistory(allergy);
+        }
+
+        System.out.print("Enter Chronic Conditions: ");
+        String chronic = scanner.nextLine();
+        if (!chronic.isEmpty()) {
+            p.setChronicConditions(chronic);
+        }
+
+        System.out.print("Enter Emergency Contact Name: ");
+        String emergencyName = scanner.nextLine();
+        if (!emergencyName.isEmpty()) {
+            p.setEmergencyContactName(emergencyName);
+        }
+
+        System.out.print("Enter Emergency Contact Number: ");
+        String emergencyPhone = scanner.nextLine();
+        if (!emergencyPhone.isEmpty()) {
+            p.setEmergencyContactNumber(emergencyPhone);
+        }
+
+        // Optional boolean field
+        System.out.print("Is the patient active? (true/false): ");
+        String activeInput = scanner.nextLine();
+        if (!activeInput.isEmpty()) {
+            p.setIsActive(Boolean.parseBoolean(activeInput));
+        }
+
         return p;
     }
 
