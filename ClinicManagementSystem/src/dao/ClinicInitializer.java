@@ -25,6 +25,5 @@ public class ClinicInitializer {
     public static void main(String[] args) {
         ClinicInitializer ci = new ClinicInitializer();
         System.out.println("Doctors Initialized: " + ci.initializeDoctors().size());
-        System.out.println("Patients Initialized: " + ci.initializePatients().size());
     }
 }
