@@ -27,7 +27,7 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(String patientID, String name, String icNumber, LocalDate dateOfBirth, String sex, String contactNumber, String email, String address, String panel, String bloodType, String allergyHistory, String chronicConditions, String emergencyContactName, String emergencyContactNumber, LocalDate dateOfRegistration, LocalDate lastVisitDate, boolean isActive, QueueInterface<Consultation> consultationQueue) {
+    public Patient(String patientID, String name, String icNumber, LocalDate dateOfBirth, String sex, String contactNumber, String email, String address, String panel, String bloodType, String allergyHistory, String chronicConditions, String emergencyContactName, String emergencyContactNumber, LocalDate dateOfRegistration, LocalDate lastVisitDate, boolean isActive) {
         this.name = patientID;
         this.name = name;
         this.icNumber = icNumber;

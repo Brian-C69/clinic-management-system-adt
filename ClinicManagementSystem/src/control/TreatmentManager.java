@@ -1,11 +1,9 @@
 package control;
 
-import adt.LinkedList;
 import adt.ListInterface;
+import adt.LinkedList;
 import entity.MedicalTreatment;
 import entity.Medicine;
-import entity.Patient;
-import entity.Doctor;
 
 public class TreatmentManager {
     private ListInterface<MedicalTreatment> treatmentList = new LinkedList<>();
@@ -24,23 +22,19 @@ public class TreatmentManager {
     }
 
     public Medicine getMedicine(int index) {
-        if (index >= 0 && index < medicineStock.size()) {
-            return medicineStock.get(index);
-        }
-        return null;
+        return (index >= 0 && index < medicineStock.size()) ? medicineStock.get(index) : null;
     }
 
     public boolean updateMedicine(int index, Medicine newMed) {
         return medicineStock.replace(index, newMed);
     }
 
-    public boolean deleteMedicine(int index) {
+    public Medicine deleteMedicine(int index) {
         return medicineStock.remove(index);
     }
 
     // ---------------- Treatment Management ----------------
     public void addTreatment(MedicalTreatment t) {
-        // Deduct stock from medicine when treatment is prescribed
         Medicine prescribed = t.getMedicine();
         for (int i = 0; i < medicineStock.size(); i++) {
             Medicine m = medicineStock.get(i);
@@ -66,17 +60,14 @@ public class TreatmentManager {
     }
 
     public MedicalTreatment getTreatment(int index) {
-        if (index >= 0 && index < treatmentList.size()) {
-            return treatmentList.get(index);
-        }
-        return null;
+        return (index >= 0 && index < treatmentList.size()) ? treatmentList.get(index) : null;
     }
 
     public boolean updateTreatment(int index, MedicalTreatment updated) {
         return treatmentList.replace(index, updated);
     }
 
-    public boolean deleteTreatment(int index) {
+    public MedicalTreatment deleteTreatment(int index) {
         return treatmentList.remove(index);
     }
 }

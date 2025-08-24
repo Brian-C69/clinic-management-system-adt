@@ -120,7 +120,7 @@ public class ClinicUI {
                     Doctor d = doctorCtrl.getDoctor(dIndex);
 
                     Consultation c = new Consultation(
-                            consultUI.inputConsultationId(),
+                            consultUI.inputCo.jnsultationId(),
                             consultUI.inputConsultationDateTime(),
                             p, d,
                             consultUI.inputSymptoms(),

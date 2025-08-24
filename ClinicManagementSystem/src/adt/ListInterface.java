@@ -1,13 +1,13 @@
 package adt;
 
 public interface ListInterface<T> {
-    void add(T item);
-    boolean remove(T item);
-    boolean remove(int index);     // NEW - remove by index
-    boolean contains(T item);
-    T get(int index);
-    boolean replace(int index, T newItem); // NEW - replace at index
-    boolean isEmpty();
-    int size();
+    void add(T newEntry);
+    boolean add(int newPosition, T newEntry);
+    T remove(int givenPosition);
     void clear();
+    boolean replace(int givenPosition, T newEntry);
+    T get(int givenPosition);
+    boolean contains(T anEntry);
+    int size();
+    boolean isEmpty();
 }

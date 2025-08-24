@@ -1,87 +1,124 @@
 package adt;
 
-public class LinkedList<T> implements ListInterface<T> {
-    private Node<T> head;
-    private int size;
+public class LinkedList<T> implements ListInterface<T>, java.io.Serializable {
+    private Node<T> firstNode;
+    private int numberOfEntries;
+
+    private static class Node<T> implements java.io.Serializable {
+        private T data;
+        private Node<T> next;
+
+        private Node(T data) {
+            this.data = data;
+            this.next = null;
+        }
+    }
 
     public LinkedList() {
-        head = null;
-        size = 0;
+        firstNode = null;
+        numberOfEntries = 0;
     }
 
     @Override
-    public void add(T item) {
-        Node<T> newNode = new Node<>(item);
-        if (head == null) head = newNode;
-        else {
-            Node<T> cur = head;
-            while (cur.next != null) cur = cur.next;
-            cur.next = newNode;
+    public void add(T newEntry) {
+        Node<T> newNode = new Node<>(newEntry);
+        if (isEmpty()) {
+            firstNode = newNode;
+        } else {
+            Node<T> lastNode = getNodeAt(numberOfEntries - 1);
+            lastNode.next = newNode;
         }
-        size++;
+        numberOfEntries++;
     }
 
     @Override
-    public boolean remove(T item) {
-        if (head == null) return false;
-        if (head.data.equals(item)) {
-            head = head.next;
-            size--;
-            return true;
-        }
-        Node<T> cur = head;
-        while (cur.next != null && !cur.next.data.equals(item)) cur = cur.next;
-        if (cur.next != null) {
-            cur.next = cur.next.next;
-            size--;
+    public boolean add(int newPosition, T newEntry) {
+        if ((newPosition >= 0) && (newPosition <= numberOfEntries)) {
+            Node<T> newNode = new Node<>(newEntry);
+            if (newPosition == 0) {
+                newNode.next = firstNode;
+                firstNode = newNode;
+            } else {
+                Node<T> nodeBefore = getNodeAt(newPosition - 1);
+                newNode.next = nodeBefore.next;
+                nodeBefore.next = newNode;
+            }
+            numberOfEntries++;
             return true;
         }
         return false;
     }
 
     @Override
-    public boolean remove(int index) {
-        if (index < 0 || index >= size) return false;
-        if (index == 0) head = head.next;
-        else {
-            Node<T> cur = head;
-            for (int i = 0; i < index - 1; i++) cur = cur.next;
-            cur.next = cur.next.next;
+    public T remove(int givenPosition) {
+        if ((givenPosition >= 0) && (givenPosition < numberOfEntries)) {
+            T result = null;
+            if (givenPosition == 0) {
+                result = firstNode.data;
+                firstNode = firstNode.next;
+            } else {
+                Node<T> nodeBefore = getNodeAt(givenPosition - 1);
+                Node<T> nodeToRemove = nodeBefore.next;
+                result = nodeToRemove.data;
+                nodeBefore.next = nodeToRemove.next;
+            }
+            numberOfEntries--;
+            return result;
         }
-        size--;
-        return true;
+        return null;
     }
 
     @Override
-    public T get(int index) {
-        if (index < 0 || index >= size) return null;
-        Node<T> cur = head;
-        for (int i = 0; i < index; i++) cur = cur.next;
-        return cur.data;
+    public void clear() {
+        firstNode = null;
+        numberOfEntries = 0;
     }
-    
+
     @Override
-    public boolean contains(T item) {
-        Node<T> current = head;
-        while (current != null) {
-            if (current.data.equals(item)) {
+    public boolean replace(int givenPosition, T newEntry) {
+        if ((givenPosition >= 0) && (givenPosition < numberOfEntries)) {
+            Node<T> desiredNode = getNodeAt(givenPosition);
+            desiredNode.data = newEntry;
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public T get(int givenPosition) {
+        if ((givenPosition >= 0) && (givenPosition < numberOfEntries)) {
+            return getNodeAt(givenPosition).data;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean contains(T anEntry) {
+        Node<T> currentNode = firstNode;
+        while (currentNode != null) {
+            if (currentNode.data.equals(anEntry)) {
                 return true;
             }
-            current = current.next;
+            currentNode = currentNode.next;
         }
         return false;
     }
 
     @Override
-    public boolean replace(int index, T newItem) {
-        if (index < 0 || index >= size) return false;
-        Node<T> cur = head;
-        for (int i = 0; i < index; i++) cur = cur.next;
-        cur.data = newItem;
-        return true;
+    public int size() {
+        return numberOfEntries;
     }
 
-    @Override public boolean isEmpty() { return size == 0; }
-    @Override public int size() { return size; }
-    @Override public void clear() { head = null; size = 0; }
+    @Override
+    public boolean isEmpty() {
+        return numberOfEntries == 0;
+    }
+
+    private Node<T> getNodeAt(int givenPosition) {
+        Node<T> currentNode = firstNode;
+        for (int i = 0; i < givenPosition; i++) {
+            currentNode = currentNode.next;
+        }
+        return currentNode;
+    }
 }
