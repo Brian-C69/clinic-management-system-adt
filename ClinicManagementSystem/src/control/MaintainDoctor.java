@@ -21,21 +21,13 @@ public class MaintainDoctor {
 
             if (doctorNewData.getDoctorId() != null) existingDoctor.setDoctorId(doctorNewData.getDoctorId());
             if (doctorNewData.getName() != null) existingDoctor.setName(doctorNewData.getName());
-            if (doctorNewData.getDateOfBirth() != null) existingDoctor.setDateOfBirth(doctorNewData.getDateOfBirth());
-            if (doctorNewData.getIcNumber() != null) existingDoctor.setIcNumber(doctorNewData.getIcNumber());
             if (doctorNewData.getMmcNumber() != null) existingDoctor.setMmcNumber(doctorNewData.getMmcNumber());
             if (doctorNewData.getSpecialization() != null) existingDoctor.setSpecialization(doctorNewData.getSpecialization());
-            if (doctorNewData.getType() != null) existingDoctor.setType(doctorNewData.getType());
-            if (doctorNewData.getPhone() != null) existingDoctor.setPhone(doctorNewData.getPhone());
             if (doctorNewData.getEmail() != null) existingDoctor.setEmail(doctorNewData.getEmail());
-            if (doctorNewData.getAddress() != null) existingDoctor.setAddress(doctorNewData.getAddress());
             if (doctorNewData.getGender() != null) existingDoctor.setGender(doctorNewData.getGender());
             if (doctorNewData.getDutySchedule() != null) existingDoctor.setDutySchedule(doctorNewData.getDutySchedule());
             if (doctorNewData.isIsAvailable() != existingDoctor.isIsAvailable()) existingDoctor.setIsAvailable(doctorNewData.isIsAvailable());
             if (doctorNewData.getConsultations() != null) existingDoctor.setConsultations(doctorNewData.getConsultations());
-            if (doctorNewData.getConsultationRate() != 0.0) existingDoctor.setConsultationRate(doctorNewData.getConsultationRate());
-            if (doctorNewData.getDateJoined() != null) existingDoctor.setDateJoined(doctorNewData.getDateJoined());
-            if (doctorNewData.getTotalPatientsSeen() != 0) existingDoctor.setTotalPatientsSeen(doctorNewData.getTotalPatientsSeen());
             if (doctorNewData.getStatus() != null) existingDoctor.setStatus(doctorNewData.getStatus());
 
             return true;

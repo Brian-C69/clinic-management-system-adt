@@ -40,7 +40,6 @@ public class DoctorUI {
         d.setDoctorId(id);
         d.setName(name);
         d.setSpecialization(specialization);
-        d.setPhone(phone);
         d.setEmail(email);
         return d;
     }

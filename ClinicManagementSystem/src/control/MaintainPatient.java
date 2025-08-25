@@ -55,15 +55,8 @@ public class MaintainPatient {
             if (patientNewData.getIcNumber() != null) exisitingPatient.setIcNumber(patientNewData.getIcNumber());
             if (patientNewData.getDateOfBirth() != null) exisitingPatient.setDateOfBirth(patientNewData.getDateOfBirth());
             if (patientNewData.getSex() != null) exisitingPatient.setSex(patientNewData.getSex());
-            if (patientNewData.getContactNumber() != null) exisitingPatient.setContactNumber(patientNewData.getContactNumber());
-            if (patientNewData.getEmail() != null) exisitingPatient.setEmail(patientNewData.getEmail());
-            if (patientNewData.getAddress() != null) exisitingPatient.setAddress(patientNewData.getAddress());
-            if (patientNewData.getPanel() != null) exisitingPatient.setPanel(patientNewData.getPanel());
-            if (patientNewData.getBloodType() != null) exisitingPatient.setBloodType(patientNewData.getBloodType());
+            if (patientNewData.getContactNumber() != null) exisitingPatient.setContactNumber(patientNewData.getContactNumber());        
             if (patientNewData.getAllergyHistory() != null) exisitingPatient.setAllergyHistory(patientNewData.getAllergyHistory());
-            if (patientNewData.getChronicConditions() != null) exisitingPatient.setChronicConditions(patientNewData.getChronicConditions());
-            if (patientNewData.getEmergencyContactName() != null) exisitingPatient.setEmergencyContactName(patientNewData.getEmergencyContactName());
-            if (patientNewData.getEmergencyContactNumber() != null) exisitingPatient.setEmergencyContactNumber(patientNewData.getEmergencyContactNumber());
             if (patientNewData.getDateOfRegistration() != null) exisitingPatient.setDateOfRegistration(patientNewData.getDateOfRegistration());
             if (patientNewData.getLastVisitDate() != null) exisitingPatient.setLastVisitDate(patientNewData.getLastVisitDate());
 

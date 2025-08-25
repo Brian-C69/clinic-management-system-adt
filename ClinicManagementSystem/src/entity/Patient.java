@@ -11,15 +11,8 @@ public class Patient {
     private String icNumber;
     private LocalDate dateOfBirth;
     private String sex;
-    private String contactNumber;
-    private String email;
-    private String address;
-    private String panel;
-    private String bloodType;
+    private String contactNumber; 
     private String allergyHistory;
-    private String chronicConditions;
-    private String emergencyContactName;
-    private String emergencyContactNumber;
     private LocalDate dateOfRegistration;
     private LocalDate lastVisitDate;
     private boolean isActive;
@@ -27,21 +20,14 @@ public class Patient {
     public Patient() {
     }
 
-    public Patient(String patientID, String name, String icNumber, LocalDate dateOfBirth, String sex, String contactNumber, String email, String address, String panel, String bloodType, String allergyHistory, String chronicConditions, String emergencyContactName, String emergencyContactNumber, LocalDate dateOfRegistration, LocalDate lastVisitDate, boolean isActive) {
+    public Patient(String patientID, String name, String icNumber, LocalDate dateOfBirth, String sex, String contactNumber, String allergyHistory, LocalDate dateOfRegistration, LocalDate lastVisitDate, boolean isActive) {
         this.name = patientID;
         this.name = name;
         this.icNumber = icNumber;
         this.dateOfBirth = dateOfBirth;
         this.sex = sex;
         this.contactNumber = contactNumber;
-        this.email = email;
-        this.address = address;
-        this.panel = panel;
-        this.bloodType = bloodType;
         this.allergyHistory = allergyHistory;
-        this.chronicConditions = chronicConditions;
-        this.emergencyContactName = emergencyContactName;
-        this.emergencyContactNumber = emergencyContactNumber;
         this.dateOfRegistration = dateOfRegistration;
         this.lastVisitDate = lastVisitDate;
         this.isActive = isActive;
@@ -95,68 +81,12 @@ public class Patient {
         this.contactNumber = contactNumber;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public String getPanel() {
-        return panel;
-    }
-
-    public void setPanel(String panel) {
-        this.panel = panel;
-    }
-
-    public String getBloodType() {
-        return bloodType;
-    }
-
-    public void setBloodType(String bloodType) {
-        this.bloodType = bloodType;
-    }
-
     public String getAllergyHistory() {
         return allergyHistory;
     }
 
     public void setAllergyHistory(String allergyHistory) {
         this.allergyHistory = allergyHistory;
-    }
-
-    public String getChronicConditions() {
-        return chronicConditions;
-    }
-
-    public void setChronicConditions(String chronicConditions) {
-        this.chronicConditions = chronicConditions;
-    }
-
-    public String getEmergencyContactName() {
-        return emergencyContactName;
-    }
-
-    public void setEmergencyContactName(String emergencyContactName) {
-        this.emergencyContactName = emergencyContactName;
-    }
-
-    public String getEmergencyContactNumber() {
-        return emergencyContactNumber;
-    }
-
-    public void setEmergencyContactNumber(String emergencyContactNumber) {
-        this.emergencyContactNumber = emergencyContactNumber;
     }
 
     public LocalDate getDateOfRegistration() {
@@ -185,7 +115,7 @@ public class Patient {
 
     @Override
     public String toString() {
-        return "Patient{" + "Patient ID=" + patientID + "name=" + name + ", icNumber=" + icNumber + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", contactNumber=" + contactNumber + ", email=" + email + ", address=" + address + ", panel=" + panel + ", bloodType=" + bloodType + ", allergyHistory=" + allergyHistory + ", chronicConditions=" + chronicConditions + ", emergencyContactName=" + emergencyContactName + ", emergencyContactNumber=" + emergencyContactNumber + ", dateOfRegistration=" + dateOfRegistration + ", lastVisitDate=" + lastVisitDate + ", isActive=" + isActive + '}';
+        return "Patient{" + "Patient ID=" + patientID + "name=" + name + ", icNumber=" + icNumber + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", contactNumber=" + contactNumber + ", allergyHistory=" + allergyHistory + ", dateOfRegistration=" + dateOfRegistration + ", lastVisitDate=" + lastVisitDate + ", isActive=" + isActive + '}';
     }
 
 }
