@@ -1,68 +1,76 @@
 package boundary;
 
-import entity.Consultation;
-import adt.LinkedList;
-
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Scanner;
+import adt.LinkedList;
+import adt.ListInterface;
+import entity.*;
 
 public class ConsultationUI {
-    private Scanner scanner = new Scanner(System.in);
+    private Scanner sc = new Scanner(System.in);
 
     public int getMenuChoice() {
-        System.out.println("\n=== Consultation Menu ===");
-        System.out.println("1. List All Consultations");
+        System.out.println("\n===== Consultation Management =====");
+        System.out.println("1. Display All Consultations");
         System.out.println("2. Add Consultation");
         System.out.println("3. Update Consultation");
         System.out.println("4. Delete Consultation");
-        System.out.println("0. Back");
+        System.out.println("0. Exit");
         System.out.print("Enter choice: ");
-        return scanner.nextInt();
+        return sc.nextInt();
     }
 
     public int inputConsultationIndex() {
         System.out.print("Enter consultation index: ");
-        return scanner.nextInt();
+        return sc.nextInt();
     }
 
     public Consultation inputConsultationDetails() {
-        scanner.nextLine(); // clear buffer
-        System.out.print("Enter Consultation ID: ");
-        String id = scanner.nextLine();
+        sc.nextLine(); // consume newline
+        System.out.println("\n--- Enter Consultation Details ---");
+        System.out.print("Consultation ID: ");
+        String id = sc.nextLine();
 
-        System.out.print("Enter Symptoms: ");
-        String symptoms = scanner.nextLine();
+        LocalDateTime dateTime = LocalDateTime.now(); // simplified for demo
+        System.out.println("DateTime set as current: " + dateTime);
 
-        System.out.print("Enter Diagnosis: ");
-        String diagnosis = scanner.nextLine();
+        // For now, create dummy Patient and Doctor (later integrate MaintainPatient / MaintainDoctor)
+        Patient patient = new Patient();
+        patient.setName("Dummy Patient");
 
-        System.out.print("Enter Notes: ");
-        String notes = scanner.nextLine();
+        Doctor doctor = new Doctor();
+        doctor.setName("Dummy Doctor");
 
-        System.out.print("Enter Duration (minutes): ");
-        int duration = scanner.nextInt();
+        System.out.print("Symptoms: ");
+        String symptoms = sc.nextLine();
 
-        System.out.print("Enter Consultation Fee: ");
-        double fee = scanner.nextDouble();
-        scanner.nextLine();
+        System.out.print("Diagnosis: ");
+        String diagnosis = sc.nextLine();
 
-        System.out.print("Enter Status (Scheduled/Completed/Cancelled): ");
-        String status = scanner.nextLine();
+        ListInterface<MedicalTreatment> treatments = new LinkedList<>(); // empty list for now
 
-        return new Consultation(
-                id,
-                LocalDateTime.now(),
-                null, // Patient linked in ClinicUI later
-                null, // Doctor linked in ClinicUI later
-                symptoms,
-                diagnosis,
-                new LinkedList<>(), // Treatments empty initially
-                notes,
-                null, // Next appointment optional
-                true,
-                duration,
-                fee,
-                status
-        );
+        System.out.print("Notes: ");
+        String notes = sc.nextLine();
+
+        System.out.print("Next appointment (yyyy-mm-dd): ");
+        String nextDateStr = sc.nextLine();
+        LocalDate nextAppointment = nextDateStr.isEmpty() ? null : LocalDate.parse(nextDateStr);
+
+        System.out.print("Is Follow Up? (true/false): ");
+        boolean isFollowUp = sc.nextBoolean();
+
+        System.out.print("Duration (minutes): ");
+        int duration = sc.nextInt();
+
+        System.out.print("Consultation Fee: ");
+        double fee = sc.nextDouble();
+        sc.nextLine(); // consume newline
+
+        System.out.print("Status: ");
+        String status = sc.nextLine();
+
+        return new Consultation(id, dateTime, patient, doctor, symptoms, diagnosis,
+                treatments, notes, nextAppointment, isFollowUp, duration, fee, status);
     }
 }
