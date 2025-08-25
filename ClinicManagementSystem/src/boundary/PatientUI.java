@@ -17,6 +17,7 @@ public class PatientUI {
         System.out.println("2. Add new patient");
         System.out.println("3. Update patient");
         System.out.println("4. Delete patient");
+        System.out.println("5. Search patient by name");
         System.out.println("0. Quit");
         System.out.print("Enter choice: ");
         int choice = scanner.nextInt();
@@ -117,10 +118,24 @@ public class PatientUI {
         int index = scanner.nextInt();
         scanner.nextLine();
 
-        if (index < 0 && index >= patientList.size()) {
+        if (index < 0 || index >= patientList.size()) {
 
             return index;
         }
         return 123;
+    }
+    
+    public String inputPatientName() {
+        System.out.print("Please enter patient name: ");
+        return scanner.nextLine();
+    }
+
+    public void displayPatient(Patient p) {
+        if (p != null) {
+        System.out.println("Patient found!");
+        System.out.println("Name: " + p.getName());
+    } else {
+        System.out.println("Patient not found.");
+    }
     }
 }
