@@ -4,7 +4,7 @@ import adt.ListInterface;
 import adt.LinkedList;
 import entity.Patient;
 import boundary.PatientUI;
-import adt.Node;
+
 
 public class MaintainPatient {
 
