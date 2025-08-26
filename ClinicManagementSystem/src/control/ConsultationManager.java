@@ -3,13 +3,18 @@ package control;
 import adt.LinkedList;
 import adt.ListInterface;
 import boundary.ConsultationUI;
-import entity.Consultation;
-import entity.Doctor;
-import entity.Patient;
+import entity.*;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Scanner;
 
 public class ConsultationManager {
     private ListInterface<Consultation> consultationList = new LinkedList<>();
     private ConsultationUI consultUI = new ConsultationUI();
+    private MaintainPatient patientCtrl = new MaintainPatient();
+    private MaintainDoctor doctorCtrl = new MaintainDoctor();
+    private Scanner sc = new Scanner(System.in);
 
     // ================= Main Menu Loop =================
     public void runConsultationMaintenance() {
@@ -29,9 +34,61 @@ public class ConsultationManager {
 
     // CREATE
     public void addConsultation() {
-        Consultation c = consultUI.inputConsultationDetails();
+        // Select patient
+        System.out.println("\n--- Select Patient ---");
+        patientCtrl.displayAllPatients();
+        int pIndex = getValidatedIndex("Enter patient index (starting from 1): ", patientCtrl.getSize());
+        Patient selectedPatient = patientCtrl.getPatient(pIndex - 1);
+
+        // Select doctor
+        System.out.println("\n--- Select Doctor ---");
+        doctorCtrl.displayAllDoctors();
+        int dIndex = getValidatedIndex("Enter doctor index (starting from 1): ", doctorCtrl.getSize());
+        Doctor selectedDoctor = doctorCtrl.getDoctor(dIndex - 1);
+
+        // Consultation ID validation
+        String consultationId;
+        while (true) {
+            System.out.print("Enter Consultation ID (format: C001): ");
+            consultationId = sc.nextLine().trim();
+            if (consultationId.matches("^C\\d{3}$")) break;
+            System.out.println("❌ Invalid format! ID must start with 'C' followed by 3 digits (e.g., C001).");
+        }
+
+        // DateTime
+        LocalDateTime dateTime = LocalDateTime.now();
+
+        // Symptoms (cannot be empty)
+        String symptoms = getNonEmptyInput("Enter symptoms: ");
+
+        // Diagnosis (cannot be empty)
+        String diagnosis = getNonEmptyInput("Enter diagnosis: ");
+
+        // Notes
+        String notes = getNonEmptyInput("Enter notes: ");
+
+        // Next appointment
+        System.out.print("Enter next appointment date (yyyy-mm-dd, leave empty if none): ");
+        String nextApptStr = sc.nextLine().trim();
+        LocalDate nextAppointment = nextApptStr.isEmpty() ? null : LocalDate.parse(nextApptStr);
+
+        // Duration
+        int durationMinutes = getValidatedInteger("Enter duration in minutes: ");
+
+        // Fee
+        double consultationFee = getValidatedDouble("Enter consultation fee: ");
+
+        // Status
+        String status = getNonEmptyInput("Enter status: ");
+
+        Consultation c = new Consultation(
+                consultationId, dateTime, selectedPatient, selectedDoctor,
+                symptoms, diagnosis, new LinkedList<>(), notes,
+                nextAppointment, false, durationMinutes, consultationFee, status
+        );
+
         consultationList.add(c);
-        System.out.println("✅ Consultation added.");
+        System.out.println("✅ Consultation added successfully!");
     }
 
     // READ
@@ -41,21 +98,36 @@ public class ConsultationManager {
         } else {
             System.out.println("\n--- All Consultations ---");
             for (int i = 0; i < consultationList.size(); i++) {
-                System.out.println(i + " -> " + consultationList.get(i));
+                System.out.println((i + 1) + " -> " + consultationList.get(i));
             }
         }
     }
 
-    public Consultation getConsultation(int index) {
+    public Consultation getConsultation(int userIndex) {
+        int index = userIndex - 1; 
         return (index >= 0 && index < consultationList.size()) ? consultationList.get(index) : null;
     }
 
     // UPDATE
     public void updateConsultation() {
-        int index = consultUI.inputConsultationIndex();
+        if (consultationList.size() == 0) {
+            System.out.println("No consultations available to update.");
+            return;
+        }
+
+        int userIndex = consultUI.inputConsultationIndex();
+        int index = userIndex - 1; 
         if (index >= 0 && index < consultationList.size()) {
-            Consultation updated = consultUI.inputConsultationDetails();
-            consultationList.replace(index, updated);
+            Consultation existing = consultationList.get(index);
+
+            // Only editable fields
+            existing.setSymptoms(getNonEmptyInput("Enter new symptoms: "));
+            existing.setDiagnosis(getNonEmptyInput("Enter new diagnosis: "));
+            existing.setNotes(getNonEmptyInput("Enter new notes: "));
+            existing.setDurationMinutes(getValidatedInteger("Enter new duration (minutes): "));
+            existing.setConsultationFee(getValidatedDouble("Enter new consultation fee: "));
+            existing.setStatus(getNonEmptyInput("Enter new status: "));
+
             System.out.println("✅ Consultation updated.");
         } else {
             System.out.println("Invalid consultation index.");
@@ -64,7 +136,13 @@ public class ConsultationManager {
 
     // DELETE
     public void deleteConsultation() {
-        int index = consultUI.inputConsultationIndex();
+        if (consultationList.size() == 0) {
+            System.out.println("No consultations available to delete.");
+            return;
+        }
+
+        int userIndex = consultUI.inputConsultationIndex();
+        int index = userIndex - 1; 
         if (index >= 0 && index < consultationList.size()) {
             Consultation removed = consultationList.remove(index);
             System.out.println("✅ Deleted consultation: " + removed.getConsultationId());
@@ -73,34 +151,64 @@ public class ConsultationManager {
         }
     }
 
-    // Helper methods for Doctor/Patient deletion (optional integration)
-    public void deleteConsultationsByDoctor(Doctor doctor) {
-        for (int i = 0; i < consultationList.size(); i++) {
-            Consultation c = consultationList.get(i);
-            if (c.getDoctor() != null && c.getDoctor().equals(doctor)) {
-                consultationList.remove(i);
-                i--;
+    // ================= Validation Helpers =================
+    private String getNonEmptyInput(String prompt) {
+        String input;
+        while (true) {
+            System.out.print(prompt);
+            input = sc.nextLine().trim();
+            if (!input.isEmpty()) return input;
+            System.out.println("❌ Input cannot be empty!");
+        }
+    }
+
+    private int getValidatedIndex(String prompt, int maxSize) {
+        int index;
+        while (true) {
+            try {
+                System.out.print(prompt);
+                index = Integer.parseInt(sc.nextLine().trim());
+                if (index >= 1 && index <= maxSize) return index;
+                System.out.println("❌ Invalid choice! Please enter a number between 1 and " + maxSize);
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Invalid input! Please enter a number.");
             }
         }
     }
 
-    public void deleteConsultationsByPatient(Patient patient) {
-        for (int i = 0; i < consultationList.size(); i++) {
-            Consultation c = consultationList.get(i);
-            if (c.getPatient() != null && c.getPatient().equals(patient)) {
-                consultationList.remove(i);
-                i--;
+    private int getValidatedInteger(String prompt) {
+        while (true) {
+            try {
+                System.out.print(prompt);
+                return Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Please enter a valid integer.");
             }
         }
     }
 
-    public int getSize() {
-        return consultationList.size();
+    private double getValidatedDouble(String prompt) {
+        while (true) {
+            try {
+                System.out.print(prompt);
+                return Double.parseDouble(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Please enter a valid number.");
+            }
+        }
     }
 
     // ================= Testing =================
     public static void main(String[] args) {
         ConsultationManager consultCtrl = new ConsultationManager();
+
+        // Pre-load sample data
+        Patient p1 = new Patient(); p1.setName("Alice"); consultCtrl.patientCtrl.addPatient(p1);
+        Patient p2 = new Patient(); p2.setName("Bob"); consultCtrl.patientCtrl.addPatient(p2);
+
+        Doctor d1 = new Doctor(); d1.setName("Dr. Smith"); consultCtrl.doctorCtrl.addDoctor(d1);
+        Doctor d2 = new Doctor(); d2.setName("Dr. Jane"); consultCtrl.doctorCtrl.addDoctor(d2);
+
         consultCtrl.runConsultationMaintenance();
     }
 }

@@ -26,21 +26,15 @@ public class ConsultationUI {
         return sc.nextInt();
     }
 
-    public Consultation inputConsultationDetails() {
+    // 🔹 Ask for consultation details (excluding patient/doctor selection)
+    public Consultation inputConsultationDetails(Patient patient, Doctor doctor) {
         sc.nextLine(); // consume newline
         System.out.println("\n--- Enter Consultation Details ---");
         System.out.print("Consultation ID: ");
         String id = sc.nextLine();
 
-        LocalDateTime dateTime = LocalDateTime.now(); // simplified for demo
+        LocalDateTime dateTime = LocalDateTime.now(); // set current date/time
         System.out.println("DateTime set as current: " + dateTime);
-
-        // For now, create dummy Patient and Doctor (later integrate MaintainPatient / MaintainDoctor)
-        Patient patient = new Patient();
-        patient.setName("Dummy Patient");
-
-        Doctor doctor = new Doctor();
-        doctor.setName("Dummy Doctor");
 
         System.out.print("Symptoms: ");
         String symptoms = sc.nextLine();
