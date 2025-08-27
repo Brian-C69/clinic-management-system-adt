@@ -121,4 +121,22 @@ public class LinkedList<T> implements ListInterface<T>, java.io.Serializable {
         }
         return currentNode;
     }
+    
+    public void enqueue(T item){
+        add(item);
+    }
+    
+    public T dequeue(){
+        if(isEmpty()){
+            return null;
+        }
+        return remove(0);
+    }
+    
+    public T peek(){
+        if(isEmpty()){
+            return null;
+        }
+        return get(0);
+    }
 }

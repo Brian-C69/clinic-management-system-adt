@@ -11,16 +11,17 @@ public class Patient {
     private String icNumber;
     private LocalDate dateOfBirth;
     private String sex;
-    private String contactNumber; 
+    private String contactNumber;
     private String allergyHistory;
     private LocalDate dateOfRegistration;
     private LocalDate lastVisitDate;
     private boolean isActive;
+    private String queueNumber;
 
     public Patient() {
     }
 
-    public Patient(String patientID, String name, String icNumber, LocalDate dateOfBirth, String sex, String contactNumber, String allergyHistory, LocalDate dateOfRegistration, LocalDate lastVisitDate, boolean isActive) {
+    public Patient(String patientID, String name, String icNumber, LocalDate dateOfBirth, String sex, String contactNumber, String allergyHistory, LocalDate dateOfRegistration, LocalDate lastVisitDate, boolean isActive, String queueNumber) {
         this.name = patientID;
         this.name = name;
         this.icNumber = icNumber;
@@ -31,9 +32,10 @@ public class Patient {
         this.dateOfRegistration = dateOfRegistration;
         this.lastVisitDate = lastVisitDate;
         this.isActive = isActive;
+        this.queueNumber = queueNumber;
     }
 
-    public String getpatientID() {
+    public String getPatientID() {
         return patientID;
     }
 
@@ -113,9 +115,42 @@ public class Patient {
         this.isActive = isActive;
     }
 
+    public String getQueueNumber() {
+        return queueNumber;
+    }
+
+    public void setQueueNumber(String queueNumber) {
+        this.queueNumber = queueNumber;
+    }
+
     @Override
     public String toString() {
-        return "Patient{" + "Patient ID=" + patientID + "name=" + name + ", icNumber=" + icNumber + ", dateOfBirth=" + dateOfBirth + ", sex=" + sex + ", contactNumber=" + contactNumber + ", allergyHistory=" + allergyHistory + ", dateOfRegistration=" + dateOfRegistration + ", lastVisitDate=" + lastVisitDate + ", isActive=" + isActive + '}';
+        return String.format(
+                "\n---------------- Patient Information ----------------\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "-----------------------------------------------------\n",
+                "Patient ID", patientID,
+                "Name", name,
+                "IC Number", icNumber,
+                "Date of Birth", (dateOfBirth != null ? dateOfBirth : "-"),
+                "Sex", sex,
+                "Contact No.", contactNumber,
+                "Allergies", allergyHistory,
+                "Registered", (dateOfRegistration != null ? dateOfRegistration : "-"),
+                "Last Visit", (lastVisitDate != null ? lastVisitDate : "-"),
+                "Active", isActive,
+                "Queue No.", queueNumber
+        );
     }
 
 }

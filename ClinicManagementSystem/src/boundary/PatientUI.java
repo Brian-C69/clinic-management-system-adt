@@ -30,83 +30,66 @@ public class PatientUI {
         System.out.println("\nList of Patients:\n" + outputStr);
     }
 
-    public Patient inputPatientDetails() {
+    public Patient inputPatientDetails(int queueCounter) {
         Patient p = new Patient();
 
         System.out.print("Enter Patient ID: ");
-        String patientID = scanner.nextLine();
-        if (!patientID.isEmpty()) {
-            p.setPatientID(patientID);
+        String patientID = scanner.nextLine().trim();
+        while (patientID.isEmpty()) {
+            System.out.print("Patient ID cannot be empty. Please enter again: ");
+            patientID = scanner.nextLine().trim();
         }
+        p.setPatientID(patientID);
 
         System.out.print("Enter Patient Name: ");
-        String name = scanner.nextLine();
-        if (!name.isEmpty()) {
-            p.setName(name);
+        String name = scanner.nextLine().trim();
+        while (name.isEmpty()) {
+            System.out.print("Name cannot be empty. Please enter again: ");
+            name = scanner.nextLine().trim();
         }
+        p.setName(name);
 
         System.out.print("Enter IC Number: ");
-        String ic = scanner.nextLine();
+        String ic = scanner.nextLine().trim();
         if (!ic.isEmpty()) {
             p.setIcNumber(ic);
         }
 
-        System.out.print("Enter Date of Birth (yyyy-MM-dd): ");
-        String dobStr = scanner.nextLine();
-        if (!dobStr.isEmpty()) {
-            try {
-                LocalDate dob = LocalDate.parse(dobStr);
-                p.setDateOfBirth(dob);
-            } catch (DateTimeParseException e) {
-                System.out.println("Invalid date format. Skipping Date of Birth.");
-            }
-        }
+        p.setDateOfBirth(readDate("Enter Date of Birth (yyyy-MM-dd): "));
 
-        System.out.print("Enter Sex: ");
-        String sex = scanner.nextLine();
+        System.out.print("Enter Sex (M/F): ");
+        String sex = scanner.nextLine().trim();
         if (!sex.isEmpty()) {
             p.setSex(sex);
         }
 
         System.out.print("Enter Contact Number: ");
-        String phone = scanner.nextLine();
+        String phone = scanner.nextLine().trim();
         if (!phone.isEmpty()) {
             p.setContactNumber(phone);
         }
 
         System.out.print("Enter Allergy History: ");
-        String allergy = scanner.nextLine();
+        String allergy = scanner.nextLine().trim();
         if (!allergy.isEmpty()) {
             p.setAllergyHistory(allergy);
         }
 
-        System.out.print("Enter Date of Registration (yyyy-MM-dd): ");
-        String regStr = scanner.nextLine();
-        if (!regStr.isEmpty()) {
-            try {
-                LocalDate regDate = LocalDate.parse(regStr);
-                p.setDateOfRegistration(regDate);
-            } catch (DateTimeParseException e) {
-                System.out.println("Invalid date format. Skipping Date of Registration.");
-            }
-        }
-
-        System.out.print("Enter Last Visit Date (yyyy-MM-dd): ");
-        String visitStr = scanner.nextLine();
-        if (!visitStr.isEmpty()) {
-            try {
-                LocalDate visitDate = LocalDate.parse(visitStr);
-                p.setLastVisitDate(visitDate);
-            } catch (DateTimeParseException e) {
-                System.out.println("Invalid date format. Skipping Last Visit Date.");
-            }
-        }
+        p.setDateOfRegistration(readDate("Enter Date of Registration (yyyy-MM-dd): "));
+        p.setLastVisitDate(readDate("Enter Last Visit Date (yyyy-MM-dd): "));
 
         System.out.print("Is the patient active? (true/false): ");
-        String activeInput = scanner.nextLine();
+        String activeInput = scanner.nextLine().trim();
         if (!activeInput.isEmpty()) {
             p.setIsActive(Boolean.parseBoolean(activeInput));
+        } else {
+            p.setIsActive(true); // default active
         }
+
+        // Automatically assign queue number (example format Q001, Q002...)
+        String queueNo = String.format("Q%03d", queueCounter);
+        p.setQueueNumber(queueNo);
+        System.out.println("Assigned Queue Number: " + queueNo);
 
         return p;
     }
@@ -124,7 +107,7 @@ public class PatientUI {
         }
         return 123;
     }
-    
+
     public String inputPatientName() {
         System.out.print("Please enter patient name: ");
         return scanner.nextLine();
@@ -132,10 +115,25 @@ public class PatientUI {
 
     public void displayPatient(Patient p) {
         if (p != null) {
-        System.out.println("Patient found!");
-        System.out.println("Name: " + p.getName());
-    } else {
-        System.out.println("Patient not found.");
+            System.out.println("Patient found!");
+            System.out.println("Name: " + p.getName());
+        } else {
+            System.out.println("Patient not found.");
+        }
     }
+
+    private LocalDate readDate(String prompt) {
+        System.out.print(prompt);
+        String input = scanner.nextLine().trim();
+        if (input.isEmpty()) {
+            return null;
+        }
+
+        try {
+            return LocalDate.parse(input);
+        } catch (DateTimeParseException e) {
+            System.out.println("Invalid date format. Expected yyyy-MM-dd. Skipping...");
+            return null;
+        }
     }
 }
