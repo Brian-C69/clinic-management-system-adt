@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import adt.*;
 
 public class MedicalTreatment implements Comparable<MedicalTreatment> {
-    private Medicine medicine;
+    private String medicine;
     private String dosage;
     private String duration;
     private String instructions;
@@ -22,7 +22,7 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
     public MedicalTreatment() {
     }
 
-    public MedicalTreatment(Medicine medicine, String dosage, String duration, String instructions, LocalDate startDate, Patient patient, Doctor doctor) {
+    public MedicalTreatment(String medicine, String dosage, String duration, String instructions, LocalDate startDate, Patient patient, Doctor doctor) {
         this.medicine = medicine;
         this.dosage = dosage;
         this.duration = duration;
@@ -32,11 +32,11 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
         this.doctor = doctor;
     }
 
-    public Medicine getMedicine() {
+    public String getMedicine() {
         return medicine;
     }
 
-    public void setMedicine(Medicine medicine) {
+    public void setMedicine(String medicine) {
         this.medicine = medicine;
     }
 

@@ -1,10 +1,11 @@
+// File: adt/LinkedList.java
 package adt;
 
-public class LinkedList<T> implements ListInterface<T>, java.io.Serializable {
+public class LinkedList<T> implements ListInterface<T> {
     private Node<T> firstNode;
     private int numberOfEntries;
 
-    private static class Node<T> implements java.io.Serializable {
+    private static class Node<T> {
         private T data;
         private Node<T> next;
 
