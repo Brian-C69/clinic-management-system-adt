@@ -1,7 +1,7 @@
+// File: boundary/MedicalTreatmentUI.java
 package boundary;
 
 import entity.MedicalTreatment;
-import entity.Medicine;
 import entity.Patient;
 import entity.Doctor;
 
@@ -17,18 +17,6 @@ public class MedicalTreatmentUI {
         System.out.println("2. Add new treatment");
         System.out.println("3. Update treatment");
         System.out.println("4. Delete treatment");
-        System.out.println("5. Manage Medicines");
-        System.out.println("0. Back");
-        System.out.print("Enter choice: ");
-        return scanner.nextInt();
-    }
-
-    public int getMedicineMenuChoice() {
-        System.out.println("\n===== Medicine Inventory Menu =====");
-        System.out.println("1. List all medicines");
-        System.out.println("2. Add new medicine");
-        System.out.println("3. Update medicine");
-        System.out.println("4. Delete medicine");
         System.out.println("0. Back");
         System.out.print("Enter choice: ");
         return scanner.nextInt();
@@ -41,36 +29,7 @@ public class MedicalTreatmentUI {
         return scanner.nextLine();
     }
 
-    public Medicine inputMedicineDetails() {
-        scanner.nextLine(); // flush
-        System.out.print("Enter name: ");
-        String name = scanner.nextLine();
-        System.out.print("Enter description: ");
-        String desc = scanner.nextLine();
-        System.out.print("Enter type: ");
-        String type = scanner.nextLine();
-        System.out.print("Enter quantity available: ");
-        int qty = scanner.nextInt();
-        System.out.print("Enter unit price: ");
-        double price = scanner.nextDouble();
-        scanner.nextLine();
-        System.out.print("Enter manufacturer: ");
-        String manu = scanner.nextLine();
-        System.out.print("Enter batch number: ");
-        String batch = scanner.nextLine();
-        System.out.print("Enter expiry year (YYYY): ");
-        int year = scanner.nextInt();
-        System.out.print("Enter expiry month (1-12): ");
-        int month = scanner.nextInt();
-        System.out.print("Enter expiry day: ");
-        int day = scanner.nextInt();
-
-        return new Medicine(name, desc, type, qty, price,
-                LocalDate.of(year, month, day), manu, batch);
-    }
-
     public String inputDosage() {
-        scanner.nextLine();
         System.out.print("Enter dosage: ");
         return scanner.nextLine();
     }
@@ -92,6 +51,7 @@ public class MedicalTreatmentUI {
         int m = scanner.nextInt();
         System.out.print("Enter start day: ");
         int d = scanner.nextInt();
+        scanner.nextLine(); // flush
         return LocalDate.of(y, m, d);
     }
 
@@ -100,8 +60,43 @@ public class MedicalTreatmentUI {
         return scanner.nextInt();
     }
 
-    public int inputMedicineIndex() {
-        System.out.print("Enter medicine index: ");
-        return scanner.nextInt();
+    // ---------------- Treatment Builders ----------------
+    public MedicalTreatment createTreatment(Patient patient, Doctor doctor) {
+        String medicine = inputMedicineName();
+        String dosage = inputDosage();
+        String duration = inputDuration();
+        String instructions = inputInstructions();
+        LocalDate startDate = inputStartDate();
+        return new MedicalTreatment(medicine, dosage, duration, instructions, startDate, patient, doctor);
+    }
+
+    public MedicalTreatment updateTreatment(MedicalTreatment old, Patient patient, Doctor doctor) {
+        System.out.println("\nUpdating treatment (press enter to keep old value):");
+
+        scanner.nextLine(); // flush
+        System.out.print("Medicine [" + old.getMedicine() + "]: ");
+        String medicine = scanner.nextLine();
+        if (medicine.isEmpty()) medicine = old.getMedicine();
+
+        System.out.print("Dosage [" + old.getDosage() + "]: ");
+        String dosage = scanner.nextLine();
+        if (dosage.isEmpty()) dosage = old.getDosage();
+
+        System.out.print("Duration [" + old.getDuration() + "]: ");
+        String duration = scanner.nextLine();
+        if (duration.isEmpty()) duration = old.getDuration();
+
+        System.out.print("Instructions [" + old.getInstructions() + "]: ");
+        String instructions = scanner.nextLine();
+        if (instructions.isEmpty()) instructions = old.getInstructions();
+
+        LocalDate startDate = old.getStartDate();
+        System.out.print("Change start date? (y/n): ");
+        String ans = scanner.nextLine();
+        if (ans.equalsIgnoreCase("y")) {
+            startDate = inputStartDate();
+        }
+
+        return new MedicalTreatment(medicine, dosage, duration, instructions, startDate, patient, doctor);
     }
 }
