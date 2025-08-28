@@ -107,7 +107,7 @@ public class Patient {
         this.lastVisitDate = lastVisitDate;
     }
 
-    public boolean isIsActive() {
+    public boolean isActive() {
         return isActive;
     }
 
