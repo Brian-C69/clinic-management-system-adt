@@ -113,7 +113,7 @@ public class MaintainDoctor {
     }
 
     // ========= Input Helpers =========
-    private Doctor inputDoctorDetails() {
+    Doctor inputDoctorDetails() {
         String id = getValidatedDoctorId();
         String name = getNonEmptyInput("Enter doctor name: ");
         String specialization = getNonEmptyInput("Enter specialization: ");

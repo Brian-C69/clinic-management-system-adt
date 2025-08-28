@@ -287,7 +287,7 @@ public class MaintainPatient {
     }
 
     // ========= Input Helpers =========
-    private Patient inputPatientDetails() {
+    Patient inputPatientDetails() {
         String id = getValidatedPatientId();
         String name = getNonEmptyInput("Enter patient name: ");
         String ic = getNonEmptyInput("Enter IC number: ");

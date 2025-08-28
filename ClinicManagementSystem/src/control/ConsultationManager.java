@@ -34,17 +34,45 @@ public class ConsultationManager {
 
     // CREATE
     public void addConsultation() {
-        // Select patient
+        // ========== Select or Register Patient ==========
         System.out.println("\n--- Select Patient ---");
-        patientCtrl.displayAllPatients();
-        int pIndex = getValidatedIndex("Enter patient index (starting from 1): ", patientCtrl.getSize());
-        Patient selectedPatient = patientCtrl.getPatient(pIndex - 1);
+        if (patientCtrl.getSize() > 0) {
+            patientCtrl.displayAllPatients();
+        } else {
+            System.out.println("⚠ No patients registered yet.");
+        }
 
-        // Select doctor
+        System.out.print("Enter patient index (0 to register new): ");
+        int pChoice = getValidatedIndex("", patientCtrl.getSize(), true);
+
+        Patient selectedPatient;
+        if (pChoice == 0) {
+            System.out.println("\n--- Register New Patient ---");
+            selectedPatient = patientCtrl.inputPatientDetails();
+            patientCtrl.addPatient(selectedPatient);
+        } else {
+            selectedPatient = patientCtrl.getPatient(pChoice - 1);
+        }
+
+        // ========== Select or Register Doctor ==========
         System.out.println("\n--- Select Doctor ---");
-        doctorCtrl.displayAllDoctors();
-        int dIndex = getValidatedIndex("Enter doctor index (starting from 1): ", doctorCtrl.getSize());
-        Doctor selectedDoctor = doctorCtrl.getDoctor(dIndex - 1);
+        if (doctorCtrl.getSize() > 0) {
+            doctorCtrl.displayAllDoctors();
+        } else {
+            System.out.println("⚠ No doctors registered yet.");
+        }
+
+        System.out.print("Enter doctor index (0 to register new): ");
+        int dChoice = getValidatedIndex("", doctorCtrl.getSize(), true);
+
+        Doctor selectedDoctor;
+        if (dChoice == 0) {
+            System.out.println("\n--- Register New Doctor ---");
+            selectedDoctor = doctorCtrl.inputDoctorDetails();
+            doctorCtrl.addDoctor(selectedDoctor);
+        } else {
+            selectedDoctor = doctorCtrl.getDoctor(dChoice - 1);
+        }
 
         // Consultation ID validation
         String consultationId;
@@ -162,14 +190,17 @@ public class ConsultationManager {
         }
     }
 
-    private int getValidatedIndex(String prompt, int maxSize) {
+    // overloaded version (allow 0 if creating new entry)
+    private int getValidatedIndex(String prompt, int maxSize, boolean allowZero) {
         int index;
         while (true) {
             try {
-                System.out.print(prompt);
+                if (!prompt.isEmpty()) System.out.print(prompt);
                 index = Integer.parseInt(sc.nextLine().trim());
-                if (index >= 1 && index <= maxSize) return index;
-                System.out.println("❌ Invalid choice! Please enter a number between 1 and " + maxSize);
+                if ((allowZero && index == 0) || (index >= 1 && index <= maxSize)) {
+                    return index;
+                }
+                System.out.println("❌ Invalid choice! Please enter between 1 and " + maxSize + (allowZero ? " or 0 for new" : ""));
             } catch (NumberFormatException e) {
                 System.out.println("❌ Invalid input! Please enter a number.");
             }
@@ -201,14 +232,6 @@ public class ConsultationManager {
     // ================= Testing =================
     public static void main(String[] args) {
         ConsultationManager consultCtrl = new ConsultationManager();
-
-        // Pre-load sample data
-        Patient p1 = new Patient(); p1.setName("Alice"); consultCtrl.patientCtrl.addPatient(p1);
-        Patient p2 = new Patient(); p2.setName("Bob"); consultCtrl.patientCtrl.addPatient(p2);
-
-        Doctor d1 = new Doctor(); d1.setName("Dr. Smith"); consultCtrl.doctorCtrl.addDoctor(d1);
-        Doctor d2 = new Doctor(); d2.setName("Dr. Jane"); consultCtrl.doctorCtrl.addDoctor(d2);
-
         consultCtrl.runConsultationMaintenance();
     }
 }
