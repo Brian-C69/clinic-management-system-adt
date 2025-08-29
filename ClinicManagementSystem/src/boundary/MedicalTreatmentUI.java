@@ -1,4 +1,3 @@
-// File: boundary/MedicalTreatmentUI.java
 package boundary;
 
 import entity.MedicalTreatment;
@@ -11,8 +10,9 @@ import java.time.LocalDate;
 import java.util.Scanner;
 
 public class MedicalTreatmentUI {
-    private Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner = new Scanner(System.in);
 
+    // ---------- Menu ----------
     public int getMenuChoice() {
         System.out.println("\n===== Medical Treatment Menu =====");
         System.out.println("1. List all treatments");
@@ -21,96 +21,54 @@ public class MedicalTreatmentUI {
         System.out.println("4. Delete treatment");
         System.out.println("0. Back");
         System.out.print("Enter choice: ");
-        return scanner.nextInt();
+        return readInt();
     }
 
-    // ---------------- Input Methods ----------------
-    public String inputMedicineName() {
-        scanner.nextLine(); // flush
-        System.out.print("Enter medicine name: ");
-        return scanner.nextLine();
-    }
-
-    public String inputDosage() {
-        System.out.print("Enter dosage: ");
-        return scanner.nextLine();
-    }
-
-    public String inputDuration() {
-        System.out.print("Enter duration (e.g. 7 days): ");
-        return scanner.nextLine();
-    }
-
-    public String inputInstructions() {
-        System.out.print("Enter instructions: ");
-        return scanner.nextLine();
-    }
-
-    public LocalDate inputStartDate() {
-        System.out.print("Enter start year (YYYY): ");
-        int y = scanner.nextInt();
-        System.out.print("Enter start month (1-12): ");
-        int m = scanner.nextInt();
-        System.out.print("Enter start day: ");
-        int d = scanner.nextInt();
-        scanner.nextLine(); // flush
-        return LocalDate.of(y, m, d);
-    }
-
-    public int inputTreatmentIndex() {
-        System.out.print("Enter treatment index: ");
-        return scanner.nextInt();
-    }
-
-    // ---------------- Treatment Builders ----------------
+    // ---------- Treatment Creation ----------
     public MedicalTreatment createTreatment(Patient patient, Doctor doctor) {
-        String medicine = inputMedicineName();
-        String dosage = inputDosage();
-        String duration = inputDuration();
-        String instructions = inputInstructions();
+        scanner.nextLine(); // flush before text input
+        System.out.println("\n--- Creating Medical Treatment ---");
+        String medicine = readLine("Enter medicine name: ");
+        String dosage = readLine("Enter dosage: ");
+        String duration = readLine("Enter duration (e.g. 7 days): ");
+        String instructions = readLine("Enter instructions: ");
+        String diagnosis = readLine("Enter diagnosis: ");
         LocalDate startDate = inputStartDate();
-        return new MedicalTreatment(medicine, dosage, duration, instructions, startDate, patient, doctor);
+        return new MedicalTreatment(medicine, dosage, duration, instructions, startDate, patient, doctor, diagnosis);
     }
 
     public MedicalTreatment updateTreatment(MedicalTreatment old, Patient patient, Doctor doctor) {
-        System.out.println("\nUpdating treatment (press enter to keep old value):");
+        System.out.println("\n--- Updating Treatment (press Enter to keep current) ---");
 
-        scanner.nextLine(); // flush
-        System.out.print("Medicine [" + old.getMedicine() + "]: ");
-        String medicine = scanner.nextLine();
-        if (medicine.isEmpty()) medicine = old.getMedicine();
-
-        System.out.print("Dosage [" + old.getDosage() + "]: ");
-        String dosage = scanner.nextLine();
-        if (dosage.isEmpty()) dosage = old.getDosage();
-
-        System.out.print("Duration [" + old.getDuration() + "]: ");
-        String duration = scanner.nextLine();
-        if (duration.isEmpty()) duration = old.getDuration();
-
-        System.out.print("Instructions [" + old.getInstructions() + "]: ");
-        String instructions = scanner.nextLine();
-        if (instructions.isEmpty()) instructions = old.getInstructions();
+        String medicine = readOptional("Medicine", old.getMedicine());
+        String dosage = readOptional("Dosage", old.getDosage());
+        String duration = readOptional("Duration", old.getDuration());
+        String instructions = readOptional("Instructions", old.getInstructions());
+        String diagnosis = readOptional("Diagnosis", old.getDiagnosis());
 
         LocalDate startDate = old.getStartDate();
-        System.out.print("Change start date? (y/n): ");
-        String ans = scanner.nextLine();
-        if (ans.equalsIgnoreCase("y")) {
+        if (askYesNo("Change start date? (y/n): ")) {
             startDate = inputStartDate();
         }
 
-        return new MedicalTreatment(medicine, dosage, duration, instructions, startDate, patient, doctor);
+        return new MedicalTreatment(medicine, dosage, duration, instructions, startDate, patient, doctor, diagnosis);
     }
 
-    // ---------------- Shared Selectors ----------------
+    // ---------- Index Prompt ----------
+    public int inputTreatmentIndex() {
+        System.out.print("Enter treatment index: ");
+        return readInt();
+    }
+
+    // ---------- Select Patient/Doctor ----------
     public Patient selectPatient(MaintainPatient patientCtrl) {
         System.out.println("\n--- Select Patient ---");
         for (int i = 0; i < patientCtrl.getSize(); i++) {
             Patient p = patientCtrl.getPatient(i);
             System.out.printf("%d. %s (%s)%n", i + 1, p.getName(), p.getPatientID());
         }
-        System.out.print("Enter patient index (starting from 1, 0 to cancel): ");
-        int ix = readIntSafe();
+        System.out.print("Enter patient index (1-n, 0 to cancel): ");
+        int ix = readInt();
         if (ix == 0) return null;
         Patient p = patientCtrl.getPatient(ix - 1);
         if (p == null) System.out.println("❌ Invalid patient index.");
@@ -123,21 +81,56 @@ public class MedicalTreatmentUI {
             Doctor d = doctorCtrl.getDoctor(i);
             System.out.printf("%d. %s (%s)%n", i + 1, d.getName(), d.getDoctorId());
         }
-        System.out.print("Enter doctor index (starting from 1, 0 to cancel): ");
-        int ix = readIntSafe();
+        System.out.print("Enter doctor index (1-n, 0 to cancel): ");
+        int ix = readInt();
         if (ix == 0) return null;
         Doctor d = doctorCtrl.getDoctor(ix - 1);
         if (d == null) System.out.println("❌ Invalid doctor index.");
         return d;
     }
 
-    private int readIntSafe() {
+    // ---------- Date Input ----------
+    public LocalDate inputStartDate() {
+        int y = readInt("Enter start year (YYYY): ");
+        int m = readInt("Enter start month (1-12): ");
+        int d = readInt("Enter start day: ");
+        return LocalDate.of(y, m, d);
+    }
+
+    // ---------- Input Helpers ----------
+    private int readInt() {
+        return readInt(null);
+    }
+
+    private int readInt(String prompt) {
         while (true) {
-            String s = scanner.nextLine().trim();
-            try { return Integer.parseInt(s); }
-            catch (NumberFormatException e) {
-                System.out.print("Enter a number: ");
+            if (prompt != null) System.out.print(prompt);
+            try {
+                return Integer.parseInt(scanner.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Enter a valid number.");
             }
+        }
+    }
+
+    private String readLine(String prompt) {
+        System.out.print(prompt);
+        return scanner.nextLine().trim();
+    }
+
+    private String readOptional(String label, String oldValue) {
+        System.out.printf("%s [%s]: ", label, oldValue);
+        String input = scanner.nextLine().trim();
+        return input.isEmpty() ? oldValue : input;
+    }
+
+    private boolean askYesNo(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim().toLowerCase();
+            if (input.matches("y|yes|true|1")) return true;
+            if (input.matches("n|no|false|0")) return false;
+            System.out.println("❌ Please enter y/n.");
         }
     }
 }

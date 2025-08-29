@@ -1,10 +1,12 @@
 // File: entity/MedicalTreatment.java
 package entity;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import adt.*;
 
 public class MedicalTreatment implements Comparable<MedicalTreatment> {
+
     private String medicine;
     private String dosage;
     private String duration;
@@ -12,21 +14,27 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
     private LocalDate startDate;
     private Patient patient;
     private Doctor doctor;
+    private String diagnosis;
 
     @Override
     public int compareTo(MedicalTreatment other) {
-    if (this.startDate == null && other.startDate == null) return 0;
-    if (this.startDate == null) return -1;
-    if (other.startDate == null) return 1;
-    return this.startDate.compareTo(other.startDate);
-}
+        if (this.startDate == null && other.startDate == null) {
+            return 0;
+        }
+        if (this.startDate == null) {
+            return -1;
+        }
+        if (other.startDate == null) {
+            return 1;
+        }
+        return this.startDate.compareTo(other.startDate);
+    }
 
-
-    
     public MedicalTreatment() {
     }
 
-    public MedicalTreatment(String medicine, String dosage, String duration, String instructions, LocalDate startDate, Patient patient, Doctor doctor) {
+    public MedicalTreatment(String medicine, String dosage, String duration, String instructions,
+            LocalDate startDate, Patient patient, Doctor doctor, String diagnosis) {
         this.medicine = medicine;
         this.dosage = dosage;
         this.duration = duration;
@@ -34,6 +42,7 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
         this.startDate = startDate;
         this.patient = patient;
         this.doctor = doctor;
+        this.diagnosis = diagnosis;
     }
 
     public String getMedicine() {
@@ -92,16 +101,20 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
         this.doctor = doctor;
     }
 
+    public String getDiagnosis() {
+        return diagnosis;
+    }
+
+    public void setDiagnosis(String diagnosis) {
+        this.diagnosis = diagnosis;
+    }
+
     @Override
     public String toString() {
-    String pn = patient != null ? patient.getName() : "-";
-    String dn = doctor != null ? doctor.getName() : "-";
-    return String.format("Treatment[%s %s] start=%s | patient=%s | doctor=%s",
-            medicine, dosage, startDate, pn, dn);
+        String pn = patient != null ? patient.getName() : "-";
+        String dn = doctor != null ? doctor.getName() : "-";
+        return String.format("Treatment[%s %s, Diagnosis=%s] start=%s | patient=%s | doctor=%s",
+                medicine, dosage, diagnosis, startDate, pn, dn);
+    }
+
 }
-
-    
-    
-}
-
-

@@ -11,7 +11,7 @@ public class Consultation {
     private Patient patient;
     private Doctor doctor;
     private String symptoms;
-    private String diagnosis;
+    
     private ListInterface<MedicalTreatment> treatments;
     private String notes;
     private LocalDate nextAppointment;
@@ -24,7 +24,7 @@ public class Consultation {
     }
 
     public Consultation(String consultationId, LocalDateTime consultationDateTime, Patient patient, Doctor doctor,
-            String symptoms, String diagnosis, ListInterface<MedicalTreatment> treatments, String notes,
+            String symptoms, ListInterface<MedicalTreatment> treatments, String notes,
             LocalDate nextAppointment, boolean isFollowUp, int durationMinutes, double consultationFee,
             String status) {
         this.consultationId = consultationId;
@@ -32,7 +32,6 @@ public class Consultation {
         this.patient = patient;
         this.doctor = doctor;
         this.symptoms = symptoms;
-        this.diagnosis = diagnosis;
         this.treatments = treatments;
         this.notes = notes;
         this.nextAppointment = nextAppointment;
@@ -95,14 +94,6 @@ public class Consultation {
         this.symptoms = symptoms;
     }
 
-    public String getDiagnosis() {
-        return diagnosis;
-    }
-
-    public void setDiagnosis(String diagnosis) {
-        this.diagnosis = diagnosis;
-    }
-
     public ListInterface<MedicalTreatment> getTreatments() {
         return treatments;
     }
@@ -127,9 +118,9 @@ public class Consultation {
         this.nextAppointment = nextAppointment;
     }
 
-    public boolean getisIsFollowUp() {
-        return isFollowUp;
-    }
+    public boolean isFollowUp() {
+    return isFollowUp;
+}
 
     public void setIsFollowUp(boolean isFollowUp) {
         this.isFollowUp = isFollowUp;
@@ -164,8 +155,7 @@ public int getDurationMinutes() {
         String pid = patient != null ? patient.getPatientID() + " - " + patient.getName() : "-";
         String did = doctor != null ? doctor.getDoctorId() + " - " + doctor.getName() : "-";
         String when = consultationDateTime != null ? consultationDateTime.toString() : "-";
-        String next = nextAppointment != null ? nextAppointment.toString() : "-";
-        return String.format("Consultation[%s] @ %s | Patient: %s | Doctor: %s | Status: %s | Fee: %.2f | Symptoms %s | Notes %s | Next Appointment %s",
-                consultationId, when, pid, did, status, consultationFee, symptoms, notes, next);
+        return String.format("Consultation[%s] @ %s | Patient: %s | Doctor: %s | Status: %s | Fee: %.2f",
+                consultationId, when, pid, did, status, consultationFee);
     }
 }

@@ -1,4 +1,3 @@
-// File: boundary/ConsultationUI.java
 package boundary;
 
 import java.time.LocalDate;
@@ -13,8 +12,10 @@ import entity.MedicalTreatment;
 import entity.Patient;
 
 public class ConsultationUI {
-    private Scanner sc = new Scanner(System.in);
 
+    private final Scanner sc = new Scanner(System.in);
+
+    // ---------- Menu ----------
     public int getMenuChoice() {
         System.out.println("\n===== Consultation Management =====");
         System.out.println("1. Display All Consultations");
@@ -24,57 +25,88 @@ public class ConsultationUI {
         System.out.println("5. Add Treatment to Consultation");
         System.out.println("0. Exit");
         System.out.print("Enter choice: ");
-        return sc.nextInt();
+        return readInt();
     }
 
     public int inputConsultationIndex() {
         System.out.print("Enter consultation index: ");
-        return sc.nextInt();
+        return readInt();
     }
 
-    /**
-     * Used when manually creating a Consultation object
-     * (if you ever want to do that without using ConsultationManager)
-     */
+    // ---------- Manual Creation ----------
     public Consultation inputConsultationDetails(Patient patient, Doctor doctor) {
-        sc.nextLine(); // consume leftover newline
+        sc.nextLine(); // flush input
         System.out.println("\n--- Enter Consultation Details ---");
 
         System.out.print("Consultation ID: ");
-        String id = sc.nextLine();
+        String id = sc.nextLine().trim();
 
         LocalDateTime dateTime = LocalDateTime.now();
         System.out.println("DateTime set as current: " + dateTime);
 
         System.out.print("Symptoms: ");
-        String symptoms = sc.nextLine();
+        String symptoms = sc.nextLine().trim();
 
-        System.out.print("Diagnosis: ");
-        String diagnosis = sc.nextLine();
-
-        ListInterface<MedicalTreatment> treatments = new LinkedList<>(); // empty list initially
+        ListInterface<MedicalTreatment> treatments = new LinkedList<>();
 
         System.out.print("Notes: ");
-        String notes = sc.nextLine();
+        String notes = sc.nextLine().trim();
 
         System.out.print("Next appointment (yyyy-mm-dd): ");
-        String nextDateStr = sc.nextLine();
+        String nextDateStr = sc.nextLine().trim();
         LocalDate nextAppointment = nextDateStr.isEmpty() ? null : LocalDate.parse(nextDateStr);
 
-        System.out.print("Is Follow Up? (true/false): ");
-        boolean isFollowUp = sc.nextBoolean();
-
-        System.out.print("Duration (minutes): ");
-        int duration = sc.nextInt();
-
-        System.out.print("Consultation Fee: ");
-        double fee = sc.nextDouble();
-        sc.nextLine(); // consume newline
+        boolean isFollowUp = askBoolean("Is Follow Up? (true/false): ");
+        int duration = readInt("Duration (minutes): ");
+        double fee = readDouble("Consultation Fee: ");
 
         System.out.print("Status: ");
-        String status = sc.nextLine();
+        String status = sc.nextLine().trim();
 
-        return new Consultation(id, dateTime, patient, doctor, symptoms, diagnosis,
-                treatments, notes, nextAppointment, isFollowUp, duration, fee, status);
+        return new Consultation(id, dateTime, patient, doctor, symptoms, treatments, notes,
+                nextAppointment, isFollowUp, duration, fee, status);
+    }
+
+    // ---------- Helpers ----------
+    private int readInt() {
+        return readInt("");
+    }
+
+    private int readInt(String prompt) {
+        while (true) {
+            if (!prompt.isEmpty()) {
+                System.out.print(prompt);
+            }
+            try {
+                return Integer.parseInt(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Enter a valid integer.");
+            }
+        }
+    }
+
+    private double readDouble(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try {
+                return Double.parseDouble(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Enter a valid number.");
+            }
+        }
+    }
+
+    private boolean askBoolean(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = sc.nextLine().trim().toLowerCase();
+            if (input.matches("true|t|yes|y|1")) {
+                return true;
+            }
+            if (input.matches("false|f|no|n|0")) {
+                return false;
+            }
+            System.out.println("❌ Please enter true/false or yes/no.");
+        }
     }
 }
