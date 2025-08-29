@@ -1,7 +1,10 @@
 // File: adt/LinkedList.java
 package adt;
 
-public class LinkedList<T> implements ListInterface<T> {
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+public class LinkedList<T> implements ListInterface<T>, Iterable<T> {
     private Node<T> firstNode;
     private int numberOfEntries;
 
@@ -122,22 +125,46 @@ public class LinkedList<T> implements ListInterface<T> {
         }
         return currentNode;
     }
-    
-    public void enqueue(T item){
+
+    // ===== Queue Operations =====
+    public void enqueue(T item) {
         add(item);
     }
-    
-    public T dequeue(){
-        if(isEmpty()){
+
+    public T dequeue() {
+        if (isEmpty()) {
             return null;
         }
         return remove(0);
     }
-    
-    public T peek(){
-        if(isEmpty()){
+
+    public T peek() {
+        if (isEmpty()) {
             return null;
         }
         return get(0);
+    }
+
+    // ===== Iterable Implementation =====
+    @Override
+    public Iterator<T> iterator() {
+        return new Iterator<T>() {
+            private Node<T> current = firstNode;
+
+            @Override
+            public boolean hasNext() {
+                return current != null;
+            }
+
+            @Override
+            public T next() {
+                if (!hasNext()) {
+                    throw new NoSuchElementException();
+                }
+                T data = current.data;
+                current = current.next;
+                return data;
+            }
+        };
     }
 }

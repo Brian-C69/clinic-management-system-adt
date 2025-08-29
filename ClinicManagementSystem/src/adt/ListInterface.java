@@ -1,6 +1,9 @@
+// File: adt/ListInterface.java
 package adt;
 
-public interface ListInterface<T> {
+import java.util.Iterator;
+
+public interface ListInterface<T> extends Iterable<T> {
     void add(T newEntry);
     boolean add(int newPosition, T newEntry);
     T remove(int givenPosition);
@@ -10,4 +13,7 @@ public interface ListInterface<T> {
     boolean contains(T anEntry);
     int size();
     boolean isEmpty();
+
+    @Override
+    Iterator<T> iterator();
 }

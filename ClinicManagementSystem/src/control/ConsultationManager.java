@@ -1,8 +1,11 @@
+// File: control/ConsultationManager.java
 package control;
 
 import adt.LinkedList;
 import adt.ListInterface;
 import boundary.ConsultationUI;
+import boundary.PatientUI;
+import boundary.DoctorUI;
 import entity.*;
 
 import java.time.LocalDate;
@@ -12,8 +15,13 @@ import java.util.Scanner;
 public class ConsultationManager {
     private ListInterface<Consultation> consultationList = new LinkedList<>();
     private ConsultationUI consultUI = new ConsultationUI();
+
     private MaintainPatient patientCtrl = new MaintainPatient();
+    private PatientUI patientUI = new PatientUI(patientCtrl);
+
     private MaintainDoctor doctorCtrl = new MaintainDoctor();
+    private DoctorUI doctorUI = new DoctorUI(doctorCtrl);
+
     private Scanner sc = new Scanner(System.in);
 
     // ================= Main Menu Loop =================
@@ -37,7 +45,7 @@ public class ConsultationManager {
         // ========== Select or Register Patient ==========
         System.out.println("\n--- Select Patient ---");
         if (patientCtrl.getSize() > 0) {
-            patientCtrl.displayAllPatients();
+            patientUI.displayAllPatients();
         } else {
             System.out.println("⚠ No patients registered yet.");
         }
@@ -48,7 +56,7 @@ public class ConsultationManager {
         Patient selectedPatient;
         if (pChoice == 0) {
             System.out.println("\n--- Register New Patient ---");
-            selectedPatient = patientCtrl.inputPatientDetails();
+            selectedPatient = patientUI.inputPatientDetails();
             patientCtrl.addPatient(selectedPatient);
         } else {
             selectedPatient = patientCtrl.getPatient(pChoice - 1);
@@ -57,7 +65,7 @@ public class ConsultationManager {
         // ========== Select or Register Doctor ==========
         System.out.println("\n--- Select Doctor ---");
         if (doctorCtrl.getSize() > 0) {
-            doctorCtrl.displayAllDoctors();
+            doctorUI.displayAllDoctors();
         } else {
             System.out.println("⚠ No doctors registered yet.");
         }
@@ -68,7 +76,7 @@ public class ConsultationManager {
         Doctor selectedDoctor;
         if (dChoice == 0) {
             System.out.println("\n--- Register New Doctor ---");
-            selectedDoctor = doctorCtrl.inputDoctorDetails();
+            selectedDoctor = doctorUI.inputDoctorDetails();
             doctorCtrl.addDoctor(selectedDoctor);
         } else {
             selectedDoctor = doctorCtrl.getDoctor(dChoice - 1);
@@ -86,12 +94,10 @@ public class ConsultationManager {
         // DateTime
         LocalDateTime dateTime = LocalDateTime.now();
 
-        // Symptoms (cannot be empty)
+        // Symptoms
         String symptoms = getNonEmptyInput("Enter symptoms: ");
-
-        // Diagnosis (cannot be empty)
+        // Diagnosis
         String diagnosis = getNonEmptyInput("Enter diagnosis: ");
-
         // Notes
         String notes = getNonEmptyInput("Enter notes: ");
 
@@ -102,10 +108,8 @@ public class ConsultationManager {
 
         // Duration
         int durationMinutes = getValidatedInteger("Enter duration in minutes: ");
-
         // Fee
         double consultationFee = getValidatedDouble("Enter consultation fee: ");
-
         // Status
         String status = getNonEmptyInput("Enter status: ");
 
@@ -132,7 +136,7 @@ public class ConsultationManager {
     }
 
     public Consultation getConsultation(int userIndex) {
-        int index = userIndex - 1; 
+        int index = userIndex - 1;
         return (index >= 0 && index < consultationList.size()) ? consultationList.get(index) : null;
     }
 
@@ -144,7 +148,7 @@ public class ConsultationManager {
         }
 
         int userIndex = consultUI.inputConsultationIndex();
-        int index = userIndex - 1; 
+        int index = userIndex - 1;
         if (index >= 0 && index < consultationList.size()) {
             Consultation existing = consultationList.get(index);
 
@@ -170,7 +174,7 @@ public class ConsultationManager {
         }
 
         int userIndex = consultUI.inputConsultationIndex();
-        int index = userIndex - 1; 
+        int index = userIndex - 1;
         if (index >= 0 && index < consultationList.size()) {
             Consultation removed = consultationList.remove(index);
             System.out.println("✅ Deleted consultation: " + removed.getConsultationId());
@@ -190,7 +194,6 @@ public class ConsultationManager {
         }
     }
 
-    // overloaded version (allow 0 if creating new entry)
     private int getValidatedIndex(String prompt, int maxSize, boolean allowZero) {
         int index;
         while (true) {
