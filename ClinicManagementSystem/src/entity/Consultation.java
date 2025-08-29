@@ -164,7 +164,8 @@ public int getDurationMinutes() {
         String pid = patient != null ? patient.getPatientID() + " - " + patient.getName() : "-";
         String did = doctor != null ? doctor.getDoctorId() + " - " + doctor.getName() : "-";
         String when = consultationDateTime != null ? consultationDateTime.toString() : "-";
-        return String.format("Consultation[%s] @ %s | Patient: %s | Doctor: %s | Status: %s | Fee: %.2f",
-                consultationId, when, pid, did, status, consultationFee);
+        String next = nextAppointment != null ? nextAppointment.toString() : "-";
+        return String.format("Consultation[%s] @ %s | Patient: %s | Doctor: %s | Status: %s | Fee: %.2f | Symptoms %s | Notes %s | Next Appointment %s",
+                consultationId, when, pid, did, status, consultationFee, symptoms, notes, next);
     }
 }
