@@ -34,7 +34,7 @@ public class ClinicUI {
         // Seed patients
         for (Patient p : data.getPatients()) patientCtrl.addPatient(p);
         // Seed treatments
-        for (MedicalTreatment t : data.getTreatments()) treatCtrl.addTreatment(t);
+        for (MedicalTreatment t : data.getTreatments()) treatCtrl.addTreatment(t, true);
 
         // ✅ Seed consultations with shared doctor/patient controllers
         this.consultMgr = new ConsultationManager(

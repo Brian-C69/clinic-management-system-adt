@@ -11,9 +11,15 @@ public class TreatmentManager {
     public TreatmentManager(ListInterface<MedicalTreatment> store) { this.treatmentList = store; }
 
     public void addTreatment(MedicalTreatment t) {
+        addTreatment(t, false); // default is not silent
+    }
+
+    public void addTreatment(MedicalTreatment t, boolean silent) {
         if (t == null) return;
         treatmentList.add(t);
-        System.out.println("✅ Treatment added.");
+        if (!silent) {
+            System.out.println("✅ Treatment added.");
+        }
     }
 
     public void displayAllTreatments() {
