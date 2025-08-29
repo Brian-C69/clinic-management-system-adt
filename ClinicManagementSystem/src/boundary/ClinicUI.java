@@ -195,9 +195,4 @@ public class ClinicUI {
             catch (NumberFormatException e) { System.out.print("Enter a number: "); }
         }
     }
-
-    // Run directly if you want ClinicUI to be the entry point
-    public static void main(String[] args) {
-        new ClinicUI().run();
-    }
 }
