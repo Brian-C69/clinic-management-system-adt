@@ -4,6 +4,8 @@ package boundary;
 import entity.MedicalTreatment;
 import entity.Patient;
 import entity.Doctor;
+import control.MaintainDoctor;
+import control.MaintainPatient;
 
 import java.time.LocalDate;
 import java.util.Scanner;
@@ -98,5 +100,44 @@ public class MedicalTreatmentUI {
         }
 
         return new MedicalTreatment(medicine, dosage, duration, instructions, startDate, patient, doctor);
+    }
+
+    // ---------------- Shared Selectors ----------------
+    public Patient selectPatient(MaintainPatient patientCtrl) {
+        System.out.println("\n--- Select Patient ---");
+        for (int i = 0; i < patientCtrl.getSize(); i++) {
+            Patient p = patientCtrl.getPatient(i);
+            System.out.printf("%d. %s (%s)%n", i + 1, p.getName(), p.getPatientID());
+        }
+        System.out.print("Enter patient index (starting from 1, 0 to cancel): ");
+        int ix = readIntSafe();
+        if (ix == 0) return null;
+        Patient p = patientCtrl.getPatient(ix - 1);
+        if (p == null) System.out.println("❌ Invalid patient index.");
+        return p;
+    }
+
+    public Doctor selectDoctor(MaintainDoctor doctorCtrl) {
+        System.out.println("\n--- Select Doctor ---");
+        for (int i = 0; i < doctorCtrl.getSize(); i++) {
+            Doctor d = doctorCtrl.getDoctor(i);
+            System.out.printf("%d. %s (%s)%n", i + 1, d.getName(), d.getDoctorId());
+        }
+        System.out.print("Enter doctor index (starting from 1, 0 to cancel): ");
+        int ix = readIntSafe();
+        if (ix == 0) return null;
+        Doctor d = doctorCtrl.getDoctor(ix - 1);
+        if (d == null) System.out.println("❌ Invalid doctor index.");
+        return d;
+    }
+
+    private int readIntSafe() {
+        while (true) {
+            String s = scanner.nextLine().trim();
+            try { return Integer.parseInt(s); }
+            catch (NumberFormatException e) {
+                System.out.print("Enter a number: ");
+            }
+        }
     }
 }

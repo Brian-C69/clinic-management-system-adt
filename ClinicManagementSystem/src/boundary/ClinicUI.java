@@ -33,7 +33,7 @@ public class ClinicUI {
         for (Doctor d : data.getDoctors()) doctorCtrl.addDoctor(d);
         // Seed patients
         for (Patient p : data.getPatients()) patientCtrl.addPatient(p);
-        // Seed treatments
+        // Seed treatments (silent mode)
         for (MedicalTreatment t : data.getTreatments()) treatCtrl.addTreatment(t, true);
 
         // ✅ Seed consultations with shared doctor/patient controllers
@@ -46,7 +46,7 @@ public class ClinicUI {
             sc
         );
 
-        System.out.println("✔ Sample data loaded: " 
+        System.out.println("\u2714 Sample data loaded: " 
             + data.getDoctors().size() + " doctors, "
             + data.getPatients().size() + " patients, "
             + data.getConsultations().size() + " consultations, "
@@ -73,7 +73,7 @@ public class ClinicUI {
                     System.out.println("Exiting Clinic System...");
                     return;
                 }
-                default -> System.out.println("❌ Invalid option.");
+                default -> System.out.println("\u274C Invalid option.");
             }
         }
     }
@@ -97,21 +97,21 @@ public class ClinicUI {
                 case 3 -> updateTreatmentFlow();
                 case 4 -> deleteTreatmentFlow();
                 case 0 -> System.out.println("Returning to main menu...");
-                default -> System.out.println("❌ Invalid option.");
+                default -> System.out.println("\u274C Invalid option.");
             }
         } while (choice != 0);
     }
 
     private void addTreatmentFlow() {
         if (patientCtrl.getSize() == 0 || doctorCtrl.getSize() == 0) {
-            System.out.println("⚠ Need at least 1 patient and 1 doctor before adding treatment.");
+            System.out.println("\u26A0 Need at least 1 patient and 1 doctor before adding treatment.");
             return;
         }
 
-        Patient patient = pickPatient();
+        Patient patient = treatUI.selectPatient(patientCtrl);
         if (patient == null) return;
 
-        Doctor doctor = pickDoctor();
+        Doctor doctor = treatUI.selectDoctor(doctorCtrl);
         if (doctor == null) return;
 
         MedicalTreatment t = treatUI.createTreatment(patient, doctor);
@@ -129,13 +129,13 @@ public class ClinicUI {
 
         MedicalTreatment old = treatCtrl.getTreatment(idx);
         if (old == null) {
-            System.out.println("❌ Invalid index.");
+            System.out.println("\u274C Invalid index.");
             return;
         }
 
         MedicalTreatment updated = treatUI.updateTreatment(old, old.getPatient(), old.getDoctor());
         boolean ok = treatCtrl.updateTreatment(idx, updated);
-        System.out.println(ok ? "✅ Treatment updated." : "❌ Update failed.");
+        System.out.println(ok ? "\u2705 Treatment updated." : "\u274C Update failed.");
     }
 
     private void deleteTreatmentFlow() {
@@ -148,37 +148,8 @@ public class ClinicUI {
         int idx = readIntSafe() - 1;
 
         MedicalTreatment removed = treatCtrl.deleteTreatment(idx);
-        if (removed != null) System.out.println("✅ Treatment deleted.");
-        else System.out.println("❌ Deletion failed.");
-    }
-
-    // ---------- Selection Helpers ----------
-    private Patient pickPatient() {
-        System.out.println("\n--- Select Patient ---");
-        for (int i = 0; i < patientCtrl.getSize(); i++) {
-            Patient p = patientCtrl.getPatient(i);
-            System.out.printf("%d. %s (%s)%n", i + 1, p.getName(), p.getPatientID());
-        }
-        System.out.print("Enter patient index (starting from 1, 0 to cancel): ");
-        int ix = readIntSafe();
-        if (ix == 0) return null;
-        Patient p = patientCtrl.getPatient(ix - 1);
-        if (p == null) System.out.println("❌ Invalid patient index.");
-        return p;
-    }
-
-    private Doctor pickDoctor() {
-        System.out.println("\n--- Select Doctor ---");
-        for (int i = 0; i < doctorCtrl.getSize(); i++) {
-            Doctor d = doctorCtrl.getDoctor(i);
-            System.out.printf("%d. %s (%s)%n", i + 1, d.getName(), d.getDoctorId());
-        }
-        System.out.print("Enter doctor index (starting from 1, 0 to cancel): ");
-        int ix = readIntSafe();
-        if (ix == 0) return null;
-        Doctor d = doctorCtrl.getDoctor(ix - 1);
-        if (d == null) System.out.println("❌ Invalid doctor index.");
-        return d;
+        if (removed != null) System.out.println("\u2705 Treatment deleted.");
+        else System.out.println("\u274C Deletion failed.");
     }
 
     private int readIntSafe() {
