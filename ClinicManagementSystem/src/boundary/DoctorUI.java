@@ -15,9 +15,10 @@ public class DoctorUI {
     private Scanner sc = new Scanner(System.in);
     private MaintainDoctor doctorCtrl;
 
-    public DoctorUI(MaintainDoctor doctorCtrl) {
-        this.doctorCtrl = doctorCtrl;
-    }
+    public DoctorUI(MaintainDoctor doctorCtrl, Scanner sc) {
+    this.doctorCtrl = doctorCtrl;
+    this.sc = sc;
+}
 
     public MaintainDoctor getController() {
         return doctorCtrl;

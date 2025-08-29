@@ -14,6 +14,7 @@ import entity.Patient;
 public class ConsultationUI {
 
     private final Scanner sc = new Scanner(System.in);
+    
 
     // ---------- Menu ----------
     public int getMenuChoice() {
@@ -32,6 +33,8 @@ public class ConsultationUI {
         System.out.print("Enter consultation index: ");
         return readInt();
     }
+    
+    
 
     // ---------- Manual Creation ----------
     public Consultation inputConsultationDetails(Patient patient, Doctor doctor) {

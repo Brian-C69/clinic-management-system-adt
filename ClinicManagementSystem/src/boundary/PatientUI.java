@@ -14,10 +14,10 @@ public class PatientUI {
     private Scanner sc = new Scanner(System.in);
     private MaintainPatient patientCtrl;
 
-    public PatientUI(MaintainPatient patientCtrl) {
-        this.patientCtrl = patientCtrl;
-    }
-
+    public PatientUI(MaintainPatient patientCtrl, Scanner sc) {
+    this.patientCtrl = patientCtrl;
+    this.sc = sc;
+}
     public MaintainPatient getController() {
         return patientCtrl;
     }

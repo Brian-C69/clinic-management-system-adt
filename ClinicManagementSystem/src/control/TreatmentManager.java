@@ -6,24 +6,25 @@ import boundary.ClinicUI;
 import entity.MedicalTreatment;
 
 public class TreatmentManager {
-    private ListInterface<MedicalTreatment> treatmentList;
+    private final ListInterface<MedicalTreatment> treatmentList;
 
+    // Constructors
     public TreatmentManager() {
-        this.treatmentList = new LinkedList<>();
+        this(new LinkedList<>());
     }
 
     public TreatmentManager(ListInterface<MedicalTreatment> store) {
         this.treatmentList = store != null ? store : new LinkedList<>();
     }
 
-    // Add treatment with optional silent mode
-    public void addTreatment(MedicalTreatment t) {
-        addTreatment(t, false);
+    // Add treatment (with optional silent mode)
+    public void addTreatment(MedicalTreatment treatment) {
+        addTreatment(treatment, false);
     }
 
-    public void addTreatment(MedicalTreatment t, boolean silent) {
-        if (t == null) return;
-        treatmentList.add(t);
+    public void addTreatment(MedicalTreatment treatment, boolean silent) {
+        if (treatment == null) return;
+        treatmentList.add(treatment);
         if (!silent) {
             System.out.println("✅ Treatment added.");
         }
@@ -37,11 +38,11 @@ public class TreatmentManager {
             return;
         }
         for (int i = 0; i < treatmentList.size(); i++) {
-            System.out.println((i + 1) + " -> " + treatmentList.get(i));
+            System.out.printf("%2d -> %s%n", i + 1, treatmentList.get(i));
         }
     }
 
-    // Retrieve a treatment by index
+    // Get treatment by index
     public MedicalTreatment getTreatment(int index) {
         if (index >= 0 && index < treatmentList.size()) {
             return treatmentList.get(index);
@@ -49,7 +50,7 @@ public class TreatmentManager {
         return null;
     }
 
-    // Update an existing treatment
+    // Update treatment at index
     public boolean updateTreatment(int index, MedicalTreatment updated) {
         if (updated == null || index < 0 || index >= treatmentList.size()) {
             return false;
@@ -57,7 +58,7 @@ public class TreatmentManager {
         return treatmentList.replace(index, updated);
     }
 
-    // Delete a treatment by index
+    // Delete treatment at index
     public MedicalTreatment deleteTreatment(int index) {
         if (index < 0 || index >= treatmentList.size()) {
             return null;
@@ -65,7 +66,7 @@ public class TreatmentManager {
         return treatmentList.remove(index);
     }
 
-    // Return number of treatments
+    // Get total count
     public int getTreatmentCount() {
         return treatmentList.size();
     }
