@@ -607,30 +607,4 @@ public class ClinicInitializer {
 
         return data;
     }
-
-    // Simple test harness (can remove later lol)
-    public static void main(String[] args) {
-        ClinicInitializer init = new ClinicInitializer();
-        ClinicData data = init.initializeClinic();
-
-        System.out.println("=== Doctors ===");
-        for (Doctor d : data.getDoctors()) {
-            System.out.println(d);
-        }
-
-        System.out.println("\n=== Patients ===");
-        for (Patient p : data.getPatients()) {
-            System.out.println(p);
-        }
-
-        System.out.println("\n=== Consultations ===");
-        for (Consultation c : data.getConsultations()) {
-            System.out.println(c);
-        }
-
-        System.out.println("\n=== Treatments ===");
-        for (MedicalTreatment t : data.getTreatments()) {
-            System.out.println(t);
-        }
-    }
 }
