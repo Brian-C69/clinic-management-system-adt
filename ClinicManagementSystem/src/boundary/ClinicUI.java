@@ -36,15 +36,21 @@ public class ClinicUI {
         ClinicData data = init.initializeClinic();
 
         // Seed doctors & patients into shared controllers
-        for (Doctor d : data.getDoctors())  doctorCtrl.addDoctor(d);
-        for (Patient p : data.getPatients()) patientCtrl.addPatient(p);
+        for (Doctor d : data.getDoctors()) {
+            doctorCtrl.addDoctor(d);
+        }
+        for (Patient p : data.getPatients()) {
+            patientCtrl.addPatient(p);
+        }
 
         // Seed treatments into shared manager
-        for (MedicalTreatment t : data.getTreatments()) treatCtrl.addTreatment(t);
+        for (MedicalTreatment t : data.getTreatments()) {
+            treatCtrl.addTreatment(t, true);
+        }
 
         // Build ConsultationManager with shared controllers, shared consultation list, and same Scanner
         consultMgr = new ConsultationManager(
-                data.getConsultations(), // shared list from initializer
+                data.getConsultations(),
                 patientCtrl,
                 patientUI,
                 doctorCtrl,
@@ -71,10 +77,10 @@ public class ClinicUI {
 
             int choice = readIntSafe();
             switch (choice) {
-                case 1 -> doctorUI.runDoctorMaintenance();            // has its own loop
-                case 2 -> patientUI.runPatientMaintenance();          // has its own loop
-                case 3 -> consultMgr.runConsultationMaintenance();    // has its own loop
-                case 4 -> treatUI.runTreatmentMaintenance(            // 🔸 delegate to MedicalTreatmentUI
+                case 1 -> doctorUI.runDoctorMaintenance();
+                case 2 -> patientUI.runPatientMaintenance();
+                case 3 -> consultMgr.runConsultationMaintenance();
+                case 4 -> treatUI.runTreatmentMaintenance(
                             treatCtrl, patientCtrl, doctorCtrl, sc);
                 case 0 -> {
                     System.out.println("Exiting Clinic System...");
@@ -89,8 +95,11 @@ public class ClinicUI {
     private int readIntSafe() {
         while (true) {
             String s = sc.nextLine().trim();
-            try { return Integer.parseInt(s); }
-            catch (NumberFormatException e) { System.out.print("Enter a number: "); }
+            try {
+                return Integer.parseInt(s);
+            } catch (NumberFormatException e) {
+                System.out.print("Enter a number: ");
+            }
         }
     }
 
