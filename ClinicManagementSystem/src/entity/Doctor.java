@@ -19,18 +19,21 @@ public class Doctor {
     public Doctor() {
     }
 
-    public Doctor(String doctorId, String name, LocalDate dateOfBirth, String icNumber, String mmcNumber, String specialization, String email, String gender, ListInterface<String> dutySchedule, boolean isAvailable, ListInterface<Consultation> consultations, String status) {
-        this.doctorId = doctorId;
-        this.name = name;
-        this.mmcNumber = mmcNumber;
-        this.specialization = specialization;
-        this.email = email;
-        this.gender = gender;
-        this.dutySchedule = dutySchedule;
-        this.isAvailable = isAvailable;
-        this.consultations = consultations;
-        this.status = status;
-    }
+    public Doctor(String doctorId, String name, String mmcNumber, String specialization,
+              String email, String gender, ListInterface<String> dutySchedule,
+              boolean isAvailable, ListInterface<Consultation> consultations, String status) {
+    this.doctorId = doctorId;
+    this.name = name;
+    this.mmcNumber = mmcNumber;
+    this.specialization = specialization;
+    this.email = email;
+    this.gender = gender;
+    this.dutySchedule = dutySchedule;
+    this.isAvailable = isAvailable;
+    this.consultations = consultations;
+    this.status = status;
+}
+
 
     public String getDoctorId() {
         return doctorId;
@@ -114,8 +117,12 @@ public class Doctor {
 
     @Override
     public String toString() {
-        return "Doctor{" + "doctorId=" + doctorId + ", name=" + name + ", mmcNumber=" + mmcNumber + ", specialization=" + specialization + ", email=" + email + ", gender=" + gender + ", dutySchedule=" + dutySchedule + ", isAvailable=" + isAvailable + ", consultations=" + consultations + ", status=" + status + '}';
-    }
+    int dutyCount = dutySchedule != null ? dutySchedule.size() : 0;
+    int consCount = consultations != null ? consultations.size() : 0;
+    return String.format("Doctor[%s] %s | %s | MMC:%s | Email:%s | Available:%s | Duties:%d | Consultations:%d | Status:%s",
+            doctorId, name, specialization, mmcNumber, email, isAvailable, dutyCount, consCount, status);
+}
+
     
     
 }

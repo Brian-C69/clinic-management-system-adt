@@ -1,240 +1,203 @@
-//package boundary;
-//
-//import control.*;
-//import entity.*;
-//import adt.*;
-//
-//import java.time.LocalDate;
-//import java.time.LocalDateTime;
-//import java.util.Scanner;
-//
-//public class ClinicUI {
-//
-//    private MaintainDoctor doctorCtrl = new MaintainDoctor();
-//    private MaintainPatient patientCtrl = new MaintainPatient();
-////    private ConsultationManager consultCtrl = new ConsultationManager();
-//    private TreatmentManager treatCtrl = new TreatmentManager();
-//
-//    private DoctorUI doctorUI = new DoctorUI();
-//    private PatientUI patientUI = new PatientUI();
-//    private ConsultationUI consultUI = new ConsultationUI();
-//    private MedicalTreatmentUI treatUI = new MedicalTreatmentUI();
-//
-//    private Scanner scanner = new Scanner(System.in);
-//
-//    public void run() {
-//        int choice;
-//        do {
-//            System.out.println("\n===== Clinic Management System =====");
-//            System.out.println("1. Doctor Management");
-//            System.out.println("2. Patient Management");
-//            System.out.println("3. Consultation Management");
-//            System.out.println("4. Medical Treatment Management");
-//            System.out.println("0. Exit");
-//            System.out.print("Enter choice: ");
-//            choice = scanner.nextInt();
-//            scanner.nextLine();
-//
-//            switch (choice) {
-//                case 1 -> doctorMenu();
-//                case 2 -> patientMenu();
-////                case 3 -> consultationMenu();
-//                case 4 -> treatmentMenu();
-//            }
-//        } while (choice != 0);
-//
-//        System.out.println("Exiting Clinic System...");
-//    }
-//
-//    // ---------------- Doctor Menu ----------------
-//    private void doctorMenu() {
-//        int choice;
-//        do {
-//            choice = doctorUI.getMenuChoice();
-//            switch (choice) {
-//                case 1 -> doctorCtrl.displayAllDoctors();
-//                case 2 -> {
-//                    Doctor d = doctorUI.inputDoctorDetails();
-//                    doctorCtrl.addDoctor(d);
-//                }
-//                case 3 -> {
-//                    int index = doctorUI.inputDoctorIndex();
-//                    Doctor updated = doctorUI.inputDoctorDetails();
-//                    doctorCtrl.updateExistingDoctor(index, updated);
-//                    // 🔹 Dynamic update: if doctor updated, reflect in consultations
-//                    syncDoctorUpdates();
-//                }
-//                case 4 -> {
-//                    int index = doctorUI.inputDoctorIndex();
-//                    Doctor d = doctorCtrl.getDoctor(index);
-//                    doctorCtrl.deleteDoctor(index);
-//                    // 🔹 Remove consultations tied to deleted doctor
-//                    consultCtrl.deleteConsultationsByDoctor(d);
-//                }
-//            }
-//        } while (choice != 0);
-//    }
-//
-//    // ---------------- Patient Menu ----------------
-//    private void patientMenu() {
-//        int choice;
-//        do {
-//            choice = patientUI.getMenuChoice();
-//            switch (choice) {
-//                case 1 -> patientCtrl.displayAllPatients();
-//                case 2 -> {
-//                    Patient p = patientUI.inputPatientDetails();
-//                    patientCtrl.addPatient(p);
-//                }
-//                case 3 -> {
-//                    int index = patientUI.inputPatientIndex();
-//                    Patient updated = patientUI.inputPatientDetails();
-//                    patientCtrl.updateExistingPatient(index, updated);
-//                }
-//                case 4 -> {
-//                    int index = patientUI.inputPatientIndex();
-//                    Patient p = patientCtrl.getPatient(index);
-//                    patientCtrl.deletePatient(index);
-//                    // 🔹 Remove consultations tied to deleted patient
-//                    consultCtrl.deleteConsultationsByPatient(p);
-//                }
-//            }
-//        } while (choice != 0);
-//    }
-//
-//    // ---------------- Consultation Menu ----------------
-////    private void consultationMenu() {
-////        int choice;
-////        do {
-////            choice = consultUI.getMenuChoice();
-////            switch (choice) {
-////                case 1 -> consultCtrl.displayAllConsultations();
-////                case 2 -> {
-////                    // Select patient & doctor dynamically
-////                    patientCtrl.displayAllPatients();
-////                    int pIndex = patientUI.inputPatientIndex();
-////                    Patient p = patientCtrl.getPatient(pIndex);
-////
-////                    doctorCtrl.displayAllDoctors();
-////                    int dIndex = doctorUI.inputDoctorIndex();
-////                    Doctor d = doctorCtrl.getDoctor(dIndex);
-////
-////                    Consultation c = new Consultation(
-////                            consultUI.inputCo.jnsultationId(),
-////                            consultUI.inputConsultationDateTime(),
-////                            p, d,
-////                            consultUI.inputSymptoms(),
-////                            consultUI.inputDiagnosis(),
-////                            new LinkedList<>(),
-////                            consultUI.inputNotes(),
-////                            consultUI.inputNextAppointment(),
-////                            true,
-////                            consultUI.inputDurationMinutes(),
-////                            consultUI.inputConsultationFee(),
-////                            consultUI.inputStatus()
-////                    );
-////
-////                    consultCtrl.addConsultation(c);
-////                    // 🔹 Update links in doctor and patient
-////                    d.getConsultations().add(c);
-////                }
-////                case 3 -> {
-////                    int index = consultUI.inputConsultationIndex();
-////                    Consultation updated = consultCtrl.getConsultation(index);
-////                    if (updated != null) {
-////                        updated.setSymptoms(consultUI.inputSymptoms());
-////                        updated.setDiagnosis(consultUI.inputDiagnosis());
-////                        updated.setNotes(consultUI.inputNotes());
-////                        updated.setNextAppointment(consultUI.inputNextAppointment());
-////                        updated.setDurationMinutes(consultUI.inputDurationMinutes());
-////                        updated.setConsultationFee(consultUI.inputConsultationFee());
-////                        updated.setStatus(consultUI.inputStatus());
-////                    }
-////                }
-////                case 4 -> {
-////                    int index = consultUI.inputConsultationIndex();
-////                    consultCtrl.deleteConsultation(index);
-////                }
-////            }
-////        } while (choice != 0);
-////    }
-//
-//    // ---------------- Treatment Menu ----------------
-//    // ---------------- Treatment Menu ----------------
-//private void treatmentMenu() {
-//    int choice;
-//    do {
-//        choice = treatUI.getMenuChoice();
-//        switch (choice) {
-//            case 1 -> treatCtrl.displayAllTreatments();
-//            case 2 -> {
-//                // Link treatment to medicine
-//                treatCtrl.displayAllMedicines();
-//                int mIndex = treatUI.inputMedicineIndex();
-//                Medicine m = treatCtrl.getMedicine(mIndex);
-//
-//                MedicalTreatment t = new MedicalTreatment(
-//                        m,
-//                        treatUI.inputDosage(),
-//                        treatUI.inputDuration(),
-//                        treatUI.inputInstructions(),
-//                        treatUI.inputStartDate(),
-//                        null, null // Later: link to patient/doctor if needed
-//                );
-//                treatCtrl.addTreatment(t);
-//            }
-//            case 3 -> {
-//                int index = treatUI.inputTreatmentIndex();
-//                MedicalTreatment updated = treatCtrl.getTreatment(index);
-//                if (updated != null) {
-//                    updated.setDosage(treatUI.inputDosage());
-//                    updated.setDuration(treatUI.inputDuration());
-//                    updated.setInstructions(treatUI.inputInstructions());
-//                    updated.setStartDate(treatUI.inputStartDate());
-//                }
-//            }
-//            case 4 -> {
-//                int index = treatUI.inputTreatmentIndex();
-//                treatCtrl.deleteTreatment(index);
-//            }
-//            case 5 -> medicineMenu(); // 🔹 New branch for medicine management
-//        }
-//    } while (choice != 0);
-//}
-//
-//// ---------------- Medicine Sub-Menu ----------------
-//private void medicineMenu() {
-//    int choice;
-//    do {
-//        choice = treatUI.getMedicineMenuChoice();
-//        switch (choice) {
-//            case 1 -> treatCtrl.displayAllMedicines();
-//            case 2 -> {
-//                Medicine m = treatUI.inputMedicineDetails();
-//                treatCtrl.addMedicine(m);
-//            }
-//            case 3 -> {
-//                int index = treatUI.inputMedicineIndex();
-//                Medicine updated = treatUI.inputMedicineDetails();
-//                treatCtrl.updateMedicine(index, updated);
-//            }
-//            case 4 -> {
-//                int index = treatUI.inputMedicineIndex();
-//                treatCtrl.deleteMedicine(index);
-//            }
-//        }
-//    } while (choice != 0);
-//}
-//
-//    // ---------------- Helper to sync doctor edits ----------------
-//    private void syncDoctorUpdates() {
-//        for (int i = 0; i < consultCtrl.getSize(); i++) {
-//            Consultation c = consultCtrl.getConsultation(i);
-//            Doctor d = c.getDoctor();
-//            Doctor refreshed = doctorCtrl.findDoctorById(d.getDoctorId());
-//            if (refreshed != null) {
-//                c.setDoctor(refreshed);
-//            }
-//        }
-//    }
-//}
+// File: boundary/ClinicUI.java
+package boundary;
+
+import control.*;
+import entity.*;
+import adt.*;
+import dao.ClinicInitializer;   // <-- add this import
+
+import java.util.Scanner;
+
+public class ClinicUI {
+
+    // Shared controllers (single source of truth for doctor/patient/treatment)
+    private final MaintainDoctor doctorCtrl = new MaintainDoctor();
+    private final MaintainPatient patientCtrl = new MaintainPatient();
+    private final TreatmentManager treatCtrl = new TreatmentManager();
+
+    // UIs
+    private final DoctorUI doctorUI = new DoctorUI(doctorCtrl);
+    private final PatientUI patientUI = new PatientUI(patientCtrl);
+    private final ConsultationUI consultUI = new ConsultationUI(); // not used directly here but retained if needed
+    // ConsultationManager currently uses its own internal lists
+    private final ConsultationManager consultMgr = new ConsultationManager();
+
+    private final MedicalTreatmentUI treatUI = new MedicalTreatmentUI();
+    private final Scanner sc = new Scanner(System.in);
+
+    // ---------------- boot with seed data ----------------
+    public ClinicUI() {
+        seedData();
+    }
+
+    private void seedData() {
+        ClinicInitializer init = new ClinicInitializer();
+        ClinicData data = init.initializeClinic();
+
+        // Seed doctors
+        for (Doctor d : data.getDoctors()) {
+            doctorCtrl.addDoctor(d);
+        }
+        // Seed patients
+        for (Patient p : data.getPatients()) {
+            patientCtrl.addPatient(p);
+        }
+        // Seed treatments
+        for (MedicalTreatment t : data.getTreatments()) {
+            treatCtrl.addTreatment(t);
+        }
+
+        // Note: ConsultationManager holds its own internal patient/doctor lists,
+        // so we’re not seeding consultations there. If you want a single source
+        // of truth for consultations as well, refactor ConsultationManager to
+        // accept MaintainDoctor/MaintainPatient (then we can pass/link data).
+        System.out.println("✔ Sample data loaded: " 
+                + data.getDoctors().size() + " doctors, "
+                + data.getPatients().size() + " patients, "
+                + data.getConsultations().size() + " consultations, "
+                + data.getTreatments().size() + " treatments.");
+    }
+
+    public void run() {
+        while (true) {
+            System.out.println("\n===== Clinic Management System =====");
+            System.out.println("1. Doctor Management");
+            System.out.println("2. Patient Management");
+            System.out.println("3. Consultation Management");
+            System.out.println("4. Medical Treatment Management");
+            System.out.println("0. Exit");
+            System.out.print("Enter choice: ");
+
+            int choice = readIntSafe();
+            switch (choice) {
+                case 1 -> doctorUI.runDoctorMaintenance();         // has its own loop
+                case 2 -> patientUI.runPatientMaintenance();       // has its own loop
+                case 3 -> consultMgr.runConsultationMaintenance(); // separate data store (see note above)
+                case 4 -> treatmentMenu();
+                case 0 -> {
+                    System.out.println("Exiting Clinic System...");
+                    return;
+                }
+                default -> System.out.println("❌ Invalid option.");
+            }
+        }
+    }
+
+    // ---------------- Treatment Menu ----------------
+    private void treatmentMenu() {
+        int choice;
+        do {
+            System.out.println("\n===== Medical Treatment Management =====");
+            System.out.println("1. List all treatments");
+            System.out.println("2. Add treatment");
+            System.out.println("3. Update treatment");
+            System.out.println("4. Delete treatment");
+            System.out.println("0. Back");
+            System.out.print("Enter choice: ");
+            choice = readIntSafe();
+
+            switch (choice) {
+                case 1 -> treatCtrl.displayAllTreatments();
+                case 2 -> addTreatmentFlow();
+                case 3 -> updateTreatmentFlow();
+                case 4 -> deleteTreatmentFlow();
+                case 0 -> System.out.println("Returning to main menu...");
+                default -> System.out.println("❌ Invalid option.");
+            }
+        } while (choice != 0);
+    }
+
+    // ---------- Treatment flows ----------
+    private void addTreatmentFlow() {
+        if (patientCtrl.getSize() == 0 || doctorCtrl.getSize() == 0) {
+            System.out.println("⚠ Need at least 1 patient and 1 doctor before adding treatment.");
+            return;
+        }
+
+        Patient patient = pickPatient();
+        if (patient == null) return;
+
+        Doctor doctor = pickDoctor();
+        if (doctor == null) return;
+
+        MedicalTreatment t = treatUI.createTreatment(patient, doctor);
+        treatCtrl.addTreatment(t);
+    }
+
+    private void updateTreatmentFlow() {
+        if (treatCtrl.getTreatmentCount() == 0) {
+            System.out.println("No treatments to update.");
+            return;
+        }
+        treatCtrl.displayAllTreatments();
+        System.out.print("Enter treatment index to update (starting from 1): ");
+        int idx = readIntSafe() - 1;
+
+        MedicalTreatment old = treatCtrl.getTreatment(idx);
+        if (old == null) {
+            System.out.println("❌ Invalid index.");
+            return;
+        }
+
+        MedicalTreatment updated = treatUI.updateTreatment(old, old.getPatient(), old.getDoctor());
+        boolean ok = treatCtrl.updateTreatment(idx, updated);
+        System.out.println(ok ? "✅ Treatment updated." : "❌ Update failed.");
+    }
+
+    private void deleteTreatmentFlow() {
+        if (treatCtrl.getTreatmentCount() == 0) {
+            System.out.println("No treatments to delete.");
+            return;
+        }
+        treatCtrl.displayAllTreatments();
+        System.out.print("Enter treatment index to delete (starting from 1): ");
+        int idx = readIntSafe() - 1;
+
+        MedicalTreatment removed = treatCtrl.deleteTreatment(idx);
+        if (removed != null) System.out.println("✅ Treatment deleted.");
+        else System.out.println("❌ Deletion failed.");
+    }
+
+    // ---------- Selection helpers (1-based display) ----------
+    private Patient pickPatient() {
+        System.out.println("\n--- Select Patient ---");
+        for (int i = 0; i < patientCtrl.getSize(); i++) {
+            Patient p = patientCtrl.getPatient(i);
+            System.out.printf("%d. %s (%s)%n", i + 1, p.getName(), p.getPatientID());
+        }
+        System.out.print("Enter patient index (starting from 1, 0 to cancel): ");
+        int ix = readIntSafe();
+        if (ix == 0) return null;
+        Patient p = patientCtrl.getPatient(ix - 1);
+        if (p == null) System.out.println("❌ Invalid patient index.");
+        return p;
+    }
+
+    private Doctor pickDoctor() {
+        System.out.println("\n--- Select Doctor ---");
+        for (int i = 0; i < doctorCtrl.getSize(); i++) {
+            Doctor d = doctorCtrl.getDoctor(i);
+            System.out.printf("%d. %s (%s)%n", i + 1, d.getName(), d.getDoctorId());
+        }
+        System.out.print("Enter doctor index (starting from 1, 0 to cancel): ");
+        int ix = readIntSafe();
+        if (ix == 0) return null;
+        Doctor d = doctorCtrl.getDoctor(ix - 1);
+        if (d == null) System.out.println("❌ Invalid doctor index.");
+        return d;
+    }
+
+    // ---------- Input helper ----------
+    private int readIntSafe() {
+        while (true) {
+            String s = sc.nextLine().trim();
+            try { return Integer.parseInt(s); }
+            catch (NumberFormatException e) { System.out.print("Enter a number: "); }
+        }
+    }
+
+    // Run directly if you want ClinicUI to be the entry point
+    public static void main(String[] args) {
+        new ClinicUI().run();
+    }
+}

@@ -144,8 +144,13 @@ public class Consultation {
 
     @Override
     public String toString() {
-        return "Consultation{" + "consultationId=" + consultationId + ", consultationDateTime=" + consultationDateTime + ", patient=" + patient + ", doctor=" + doctor + ", symptoms=" + symptoms + ", diagnosis=" + diagnosis + ", treatments=" + treatments + ", notes=" + notes + ", nextAppointment=" + nextAppointment + ", isFollowUp=" + isFollowUp + ", durationMinutes=" + durationMinutes + ", consultationFee=" + consultationFee + ", status=" + status + '}';
-    }
+    String pid = patient != null ? patient.getPatientID() + " - " + patient.getName() : "-";
+    String did = doctor != null ? doctor.getDoctorId() + " - " + doctor.getName() : "-";
+    String when = consultationDateTime != null ? consultationDateTime.toString() : "-";
+    return String.format("Consultation[%s] @ %s | Patient: %s | Doctor: %s | Status: %s | Fee: %.2f",
+            consultationId, when, pid, did, status, consultationFee);
+}
+
     
     
 }

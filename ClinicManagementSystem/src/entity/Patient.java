@@ -23,7 +23,7 @@ public class Patient {
     }
 
     public Patient(String patientID, String name, String icNumber, LocalDate dateOfBirth, String sex, String contactNumber, String allergyHistory, LocalDate dateOfRegistration, LocalDate lastVisitDate, boolean isActive, String queueNumber) {
-        this.name = patientID;
+        this.patientID = patientID;
         this.name = name;
         this.icNumber = icNumber;
         this.dateOfBirth = dateOfBirth;

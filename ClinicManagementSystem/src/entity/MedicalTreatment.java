@@ -15,9 +15,12 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
 
     @Override
     public int compareTo(MedicalTreatment other) {
-        return this.getStartDate().compareTo(other.getStartDate());
-    }
-    
+    if (this.startDate == null && other.startDate == null) return 0;
+    if (this.startDate == null) return -1;
+    if (other.startDate == null) return 1;
+    return this.startDate.compareTo(other.startDate);
+}
+
 
     
     public MedicalTreatment() {
@@ -91,8 +94,12 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
 
     @Override
     public String toString() {
-        return "MedicalTreatment{" + "medicine=" + medicine + ", dosage=" + dosage + ", duration=" + duration + ", instructions=" + instructions + ", startDate=" + startDate + ", patient=" + patient + ", doctor=" + doctor + '}';
-    }
+    String pn = patient != null ? patient.getName() : "-";
+    String dn = doctor != null ? doctor.getName() : "-";
+    return String.format("Treatment[%s %s] start=%s | patient=%s | doctor=%s",
+            medicine, dosage, startDate, pn, dn);
+}
+
     
     
 }
