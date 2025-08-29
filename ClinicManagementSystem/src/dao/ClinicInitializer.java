@@ -24,11 +24,13 @@ public class ClinicInitializer {
         d1.setIsAvailable(true);
         d1.setConsultations(new LinkedList<>());
         d1.setStatus("Active");
+        
 
         d1.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 0),
                 LocalDateTime.of(2025, 8, 30, 12, 0)));
         d1.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 0),
                 LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d1);
 
         Doctor d2 = new Doctor();
         d2.setName("Dr. Mah Ling");
@@ -45,6 +47,7 @@ public class ClinicInitializer {
                 LocalDateTime.of(2025, 8, 30, 12, 0)));
         d2.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 14, 0),
                 LocalDateTime.of(2025, 8, 30, 18, 0)));
+        doctors.add(d2);
 
         Doctor d3 = new Doctor();
         d3.setName("Dr. John Lim");
@@ -61,6 +64,7 @@ public class ClinicInitializer {
                 LocalDateTime.of(2025, 8, 30, 13, 0)));
         d3.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 15, 0),
                 LocalDateTime.of(2025, 8, 30, 19, 0)));
+        doctors.add(d3);
 
         Doctor d4 = new Doctor();
         d4.setName("Dr. Sarah Ng");
@@ -77,6 +81,7 @@ public class ClinicInitializer {
                 LocalDateTime.of(2025, 8, 30, 12, 30)));
         d4.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 30),
                 LocalDateTime.of(2025, 8, 30, 17, 30)));
+        doctors.add(d4);
 
         Doctor d5 = new Doctor();
         d5.setName("Dr. Michael Chew");
@@ -93,12 +98,247 @@ public class ClinicInitializer {
                 LocalDateTime.of(2025, 8, 30, 11, 30)));
         d5.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 12, 30),
                 LocalDateTime.of(2025, 8, 30, 16, 30)));
-
-        doctors.add(d1);
-        doctors.add(d2);
-        doctors.add(d3);
-        doctors.add(d4);
         doctors.add(d5);
+
+        Doctor d6 = new Doctor();
+        d6.setName("Dr. Sarah Lim");
+        d6.setMmcNumber("MMC1006");
+        d6.setSpecialization("Neurology");
+        d6.setEmail("sarah.lim@clinic.com");
+        d6.setGender("F");
+        d6.setDutySchedule(new LinkedList<>());
+        d6.setIsAvailable(true);
+        d6.setConsultations(new LinkedList<>());
+        d6.setStatus("Active");
+        d6.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)));
+        d6.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 0),
+                LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d6);
+
+        Doctor d7 = new Doctor();
+        d7.setName("Dr. Jason Tan");
+        d7.setMmcNumber("MMC1007");
+        d7.setSpecialization("Pediatrics");
+        d7.setEmail("jason.tan@clinic.com");
+        d7.setGender("M");
+        d7.setDutySchedule(new LinkedList<>());
+        d7.setIsAvailable(true);
+        d7.setConsultations(new LinkedList<>());
+        d7.setStatus("Active");
+        d7.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 8, 30),
+                LocalDateTime.of(2025, 8, 30, 12, 30)));
+        d7.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 30),
+                LocalDateTime.of(2025, 8, 30, 16, 30)));
+        doctors.add(d7);
+
+        Doctor d8 = new Doctor();
+        d8.setName("Dr. Emily Wong");
+        d8.setMmcNumber("MMC1008");
+        d8.setSpecialization("Dermatology");
+        d8.setEmail("emily.wong@clinic.com");
+        d8.setGender("F");
+        d8.setDutySchedule(new LinkedList<>());
+        d8.setIsAvailable(true);
+        d8.setConsultations(new LinkedList<>());
+        d8.setStatus("Active");
+        d8.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 30),
+                LocalDateTime.of(2025, 8, 30, 12, 30)));
+        d8.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 14, 0),
+                LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d8);
+
+        Doctor d9 = new Doctor();
+        d9.setName("Dr. Kevin Lee");
+        d9.setMmcNumber("MMC1009");
+        d9.setSpecialization("Gastroenterology");
+        d9.setEmail("kevin.lee@clinic.com");
+        d9.setGender("M");
+        d9.setDutySchedule(new LinkedList<>());
+        d9.setIsAvailable(true);
+        d9.setConsultations(new LinkedList<>());
+        d9.setStatus("Active");
+        d9.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 8, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)));
+        d9.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 0),
+                LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d9);
+
+        Doctor d10 = new Doctor();
+        d10.setName("Dr. Rachel Ong");
+        d10.setMmcNumber("MMC1010");
+        d10.setSpecialization("Ophthalmology");
+        d10.setEmail("rachel.ong@clinic.com");
+        d10.setGender("F");
+        d10.setDutySchedule(new LinkedList<>());
+        d10.setIsAvailable(true);
+        d10.setConsultations(new LinkedList<>());
+        d10.setStatus("Active");
+        d10.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)));
+        d10.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 0),
+                LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d10);
+
+        Doctor d11 = new Doctor();
+        d11.setName("Dr. Daniel Chua");
+        d11.setMmcNumber("MMC1011");
+        d11.setSpecialization("Orthopedics");
+        d11.setEmail("daniel.chua@clinic.com");
+        d11.setGender("M");
+        d11.setDutySchedule(new LinkedList<>());
+        d11.setIsAvailable(true);
+        d11.setConsultations(new LinkedList<>());
+        d11.setStatus("Active");
+        d11.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 8, 30),
+                LocalDateTime.of(2025, 8, 30, 12, 30)));
+        d11.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 30),
+                LocalDateTime.of(2025, 8, 30, 16, 30)));
+        doctors.add(d11);
+
+        Doctor d12 = new Doctor();
+        d12.setName("Dr. Fiona Tan");
+        d12.setMmcNumber("MMC1012");
+        d12.setSpecialization("Cardiology");
+        d12.setEmail("fiona.tan@clinic.com");
+        d12.setGender("F");
+        d12.setDutySchedule(new LinkedList<>());
+        d12.setIsAvailable(true);
+        d12.setConsultations(new LinkedList<>());
+        d12.setStatus("Active");
+        d12.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)));
+        d12.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 14, 0),
+                LocalDateTime.of(2025, 8, 30, 18, 0)));
+        doctors.add(d12);
+
+        Doctor d13 = new Doctor();
+        d13.setName("Dr. Benjamin Ng");
+        d13.setMmcNumber("MMC1013");
+        d13.setSpecialization("Neurology");
+        d13.setEmail("benjamin.ng@clinic.com");
+        d13.setGender("M");
+        d13.setDutySchedule(new LinkedList<>());
+        d13.setIsAvailable(true);
+        d13.setConsultations(new LinkedList<>());
+        d13.setStatus("Active");
+        d13.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 8, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)));
+        d13.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 0),
+                LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d13);
+
+        Doctor d14 = new Doctor();
+        d14.setName("Dr. Stephanie Lim");
+        d14.setMmcNumber("MMC1014");
+        d14.setSpecialization("Pediatrics");
+        d14.setEmail("stephanie.lim@clinic.com");
+        d14.setGender("F");
+        d14.setDutySchedule(new LinkedList<>());
+        d14.setIsAvailable(true);
+        d14.setConsultations(new LinkedList<>());
+        d14.setStatus("Active");
+        d14.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 30),
+                LocalDateTime.of(2025, 8, 30, 12, 30)));
+        d14.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 30),
+                LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d14);
+
+        Doctor d15 = new Doctor();
+        d15.setName("Dr. Samuel Goh");
+        d15.setMmcNumber("MMC1015");
+        d15.setSpecialization("Dermatology");
+        d15.setEmail("samuel.goh@clinic.com");
+        d15.setGender("M");
+        d15.setDutySchedule(new LinkedList<>());
+        d15.setIsAvailable(true);
+        d15.setConsultations(new LinkedList<>());
+        d15.setStatus("Active");
+        d15.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 8, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)));
+        d15.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 0),
+                LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d15);
+
+        Doctor d16 = new Doctor();
+        d16.setName("Dr. Olivia Tan");
+        d16.setMmcNumber("MMC1016");
+        d16.setSpecialization("Ophthalmology");
+        d16.setEmail("olivia.tan@clinic.com");
+        d16.setGender("F");
+        d16.setDutySchedule(new LinkedList<>());
+        d16.setIsAvailable(true);
+        d16.setConsultations(new LinkedList<>());
+        d16.setStatus("Active");
+        d16.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)));
+        d16.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 14, 0),
+                LocalDateTime.of(2025, 8, 30, 18, 0)));
+        doctors.add(d16);
+
+        Doctor d17 = new Doctor();
+        d17.setName("Dr. Ryan Chua");
+        d17.setMmcNumber("MMC1017");
+        d17.setSpecialization("Orthopedics");
+        d17.setEmail("ryan.chua@clinic.com");
+        d17.setGender("M");
+        d17.setDutySchedule(new LinkedList<>());
+        d17.setIsAvailable(true);
+        d17.setConsultations(new LinkedList<>());
+        d17.setStatus("Active");
+        d17.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 8, 30),
+                LocalDateTime.of(2025, 8, 30, 12, 30)));
+        d17.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 30),
+                LocalDateTime.of(2025, 8, 30, 16, 30)));
+        doctors.add(d17);
+
+        Doctor d18 = new Doctor();
+        d18.setName("Dr. Grace Ng");
+        d18.setMmcNumber("MMC1018");
+        d18.setSpecialization("Cardiology");
+        d18.setEmail("grace.ng@clinic.com");
+        d18.setGender("F");
+        d18.setDutySchedule(new LinkedList<>());
+        d18.setIsAvailable(true);
+        d18.setConsultations(new LinkedList<>());
+        d18.setStatus("Active");
+        d18.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)));
+        d18.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 0),
+                LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d18);
+
+        Doctor d19 = new Doctor();
+        d19.setName("Dr. Adrian Lee");
+        d19.setMmcNumber("MMC1019");
+        d19.setSpecialization("Neurology");
+        d19.setEmail("adrian.lee@clinic.com");
+        d19.setGender("M");
+        d19.setDutySchedule(new LinkedList<>());
+        d19.setIsAvailable(true);
+        d19.setConsultations(new LinkedList<>());
+        d19.setStatus("Active");
+        d19.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 8, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)));
+        d19.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 13, 0),
+                LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d19);
+
+        Doctor d20 = new Doctor();
+        d20.setName("Dr. Vanessa Koh");
+        d20.setMmcNumber("MMC1020");
+        d20.setSpecialization("Pediatrics");
+        d20.setEmail("vanessa.koh@clinic.com");
+        d20.setGender("F");
+        d20.setDutySchedule(new LinkedList<>());
+        d20.setIsAvailable(true);
+        d20.setConsultations(new LinkedList<>());
+        d20.setStatus("Active");
+        d20.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)));
+        d20.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 14, 0),
+                LocalDateTime.of(2025, 8, 30, 17, 0)));
+        doctors.add(d20);
 
         data.setDoctors(doctors);
 
