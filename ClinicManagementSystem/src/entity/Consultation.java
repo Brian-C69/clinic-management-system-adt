@@ -1,12 +1,13 @@
 // File: entity/Consultation.java
 package entity;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import adt.*; 
+import adt.*;
 
 public class Consultation {
     private String consultationId;
-    private LocalDateTime consultationDateTime;
+    private LocalDateTime consultationDateTime; // Start time
     private Patient patient;
     private Doctor doctor;
     private String symptoms;
@@ -15,14 +16,17 @@ public class Consultation {
     private String notes;
     private LocalDate nextAppointment;
     private boolean isFollowUp;
-    private int durationMinutes;
+    private int durationMinutes; // in minutes
     private double consultationFee;
     private String status;
 
     public Consultation() {
     }
 
-    public Consultation(String consultationId, LocalDateTime consultationDateTime, Patient patient, Doctor doctor, String symptoms, String diagnosis, ListInterface<MedicalTreatment> treatments, String notes, LocalDate nextAppointment, boolean isFollowUp, int durationMinutes, double consultationFee, String status) {
+    public Consultation(String consultationId, LocalDateTime consultationDateTime, Patient patient, Doctor doctor,
+            String symptoms, String diagnosis, ListInterface<MedicalTreatment> treatments, String notes,
+            LocalDate nextAppointment, boolean isFollowUp, int durationMinutes, double consultationFee,
+            String status) {
         this.consultationId = consultationId;
         this.consultationDateTime = consultationDateTime;
         this.patient = patient;
@@ -38,6 +42,19 @@ public class Consultation {
         this.status = status;
     }
 
+    // ===== NEW METHODS =====
+    public LocalDateTime getStartTime() {
+        return consultationDateTime;
+    }
+
+    public LocalDateTime getEndTime() {
+        if (consultationDateTime != null && durationMinutes > 0) {
+            return consultationDateTime.plusMinutes(durationMinutes);
+        }
+        return consultationDateTime; // fallback: same as start time
+    }
+
+    // ===== Existing Getters/Setters =====
     public String getConsultationId() {
         return consultationId;
     }
@@ -144,14 +161,10 @@ public class Consultation {
 
     @Override
     public String toString() {
-    String pid = patient != null ? patient.getPatientID() + " - " + patient.getName() : "-";
-    String did = doctor != null ? doctor.getDoctorId() + " - " + doctor.getName() : "-";
-    String when = consultationDateTime != null ? consultationDateTime.toString() : "-";
-    return String.format("Consultation[%s] @ %s | Patient: %s | Doctor: %s | Status: %s | Fee: %.2f",
-            consultationId, when, pid, did, status, consultationFee);
+        String pid = patient != null ? patient.getPatientID() + " - " + patient.getName() : "-";
+        String did = doctor != null ? doctor.getDoctorId() + " - " + doctor.getName() : "-";
+        String when = consultationDateTime != null ? consultationDateTime.toString() : "-";
+        return String.format("Consultation[%s] @ %s | Patient: %s | Doctor: %s | Status: %s | Fee: %.2f",
+                consultationId, when, pid, did, status, consultationFee);
+    }
 }
-
-    
-    
-}
-

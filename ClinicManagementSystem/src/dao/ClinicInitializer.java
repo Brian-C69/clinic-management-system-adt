@@ -13,12 +13,52 @@ public class ClinicInitializer {
 
         // ----- Doctors -----
         ListInterface<Doctor> doctors = new LinkedList<>();
-        Doctor d1 = new Doctor("D001", "Dr. Alice", "MMC1001", "Cardiology",
-                "alice@clinic.com", "F", new LinkedList<>(), true, new LinkedList<>(), "Active");
-        Doctor d2 = new Doctor("D002", "Dr. Bob", "MMC1002", "Dermatology",
-                "bob@clinic.com", "M", new LinkedList<>(), true, new LinkedList<>(), "Active");
+
+        Doctor d1 = new Doctor();
+        d1.setName("Dr. Alice");
+        d1.setMmcNumber("MMC1001");
+        d1.setSpecialization("Cardiology");
+        d1.setEmail("alice@clinic.com");
+        d1.setGender("F");
+        d1.setDutySchedule(new LinkedList<>());
+        d1.setIsAvailable(true);
+        d1.setConsultations(new LinkedList<>());
+        d1.setStatus("Active");
+
+// Add duty slots
+        d1.getDutySchedule().add(new Doctor.DutySlot(
+                LocalDateTime.of(2025, 8, 30, 9, 0),
+                LocalDateTime.of(2025, 8, 30, 12, 0)
+        ));
+        d1.getDutySchedule().add(new Doctor.DutySlot(
+                LocalDateTime.of(2025, 8, 30, 14, 0),
+                LocalDateTime.of(2025, 8, 30, 18, 0)
+        ));
+        
+         Doctor d2 = new Doctor();
+        d2.setName("Dr. Mah");
+        d2.setMmcNumber("MMC0025");
+        d2.setSpecialization("Gastro");
+        d2.setEmail("Mah@clinic.com");
+        d2.setGender("F");
+        d2.setDutySchedule(new LinkedList<>());
+        d2.setIsAvailable(true);
+        d2.setConsultations(new LinkedList<>());
+        d2.setStatus("Active");
+
+// Add duty slots
+        d2.getDutySchedule().add(new Doctor.DutySlot(
+                LocalDateTime.of(2025, 8, 30, 9, 0),
+                LocalDateTime.of(2025, 8, 30, 15, 0)
+        ));
+        d2.getDutySchedule().add(new Doctor.DutySlot(
+                LocalDateTime.of(2025, 8, 30, 12, 0),
+                LocalDateTime.of(2025, 8, 30, 17, 0)
+        ));
+
         doctors.add(d1);
         doctors.add(d2);
+
         data.setDoctors(doctors);
 
         // ----- Patients -----
@@ -39,33 +79,33 @@ public class ClinicInitializer {
                 p1, d1, "Chest pain", "Mild angina",
                 new LinkedList<>(), "Needs further tests",
                 LocalDate.of(2023, 8, 15), true, 30, 100.0, "Completed");
-        Consultation c2 = new Consultation("C002", LocalDateTime.of(2023, 8, 2, 14, 0),
-                p2, d2, "Skin rash", "Eczema",
-                new LinkedList<>(), "Prescribed cream",
-                null, false, 20, 60.0, "Completed");
+//        Consultation c2 = new Consultation("C002", LocalDateTime.of(2023, 8, 2, 14, 0),
+//                p2, d2, "Skin rash", "Eczema",
+//                new LinkedList<>(), "Prescribed cream",
+//                null, false, 20, 60.0, "Completed");
         consultations.add(c1);
-        consultations.add(c2);
+//        consultations.add(c2);
         data.setConsultations(consultations);
 
         // Link consultations to doctors
         d1.setConsultations(new LinkedList<>());
         d1.getConsultations().add(c1);
-        d2.setConsultations(new LinkedList<>());
-        d2.getConsultations().add(c2);
+//        d2.setConsultations(new LinkedList<>());
+//        d2.getConsultations().add(c2);
 
         // ----- Treatments -----
         ListInterface<MedicalTreatment> treatments = new LinkedList<>();
         MedicalTreatment t1 = new MedicalTreatment("Paracetamol", "500mg", "5 days",
                 "Take after meals", LocalDate.of(2023, 8, 1), p1, d1);
-        MedicalTreatment t2 = new MedicalTreatment("Antihistamine", "10mg", "7 days",
-                "Before sleep", LocalDate.of(2023, 8, 2), p2, d2);
+//        MedicalTreatment t2 = new MedicalTreatment("Antihistamine", "10mg", "7 days",
+//                "Before sleep", LocalDate.of(2023, 8, 2), p2, d2);
         treatments.add(t1);
-        treatments.add(t2);
+//        treatments.add(t2);
         data.setTreatments(treatments);
 
         // Attach treatments to consultations
         c1.getTreatments().add(t1);
-        c2.getTreatments().add(t2);
+//        c2.getTreatments().add(t2);
 
         return data;
     }
