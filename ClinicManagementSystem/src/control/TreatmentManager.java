@@ -1,15 +1,17 @@
-// File: control/TreatmentManager.java
 package control;
 
-import adt.ListInterface;
 import adt.LinkedList;
+import adt.ListInterface;
 import entity.MedicalTreatment;
 
 public class TreatmentManager {
-    private ListInterface<MedicalTreatment> treatmentList = new LinkedList<>();
+    private ListInterface<MedicalTreatment> treatmentList;
 
-    // ---------------- Treatment Management ----------------
+    public TreatmentManager() { this.treatmentList = new LinkedList<>(); }
+    public TreatmentManager(ListInterface<MedicalTreatment> store) { this.treatmentList = store; }
+
     public void addTreatment(MedicalTreatment t) {
+        if (t == null) return;
         treatmentList.add(t);
         System.out.println("✅ Treatment added.");
     }
@@ -17,7 +19,7 @@ public class TreatmentManager {
     public void displayAllTreatments() {
         System.out.println("\n--- Treatment Records ---");
         for (int i = 0; i < treatmentList.size(); i++) {
-            System.out.println(i + " -> " + treatmentList.get(i));
+            System.out.println((i + 1) + " -> " + treatmentList.get(i));
         }
     }
 

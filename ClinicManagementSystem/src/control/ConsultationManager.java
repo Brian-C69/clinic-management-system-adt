@@ -1,8 +1,7 @@
-// File: control/ConsultationManager.java
 package control;
 
-import adt.LinkedList;
 import adt.ListInterface;
+import adt.LinkedList;
 import boundary.ConsultationUI;
 import boundary.PatientUI;
 import boundary.DoctorUI;
@@ -13,18 +12,34 @@ import java.time.LocalDateTime;
 import java.util.Scanner;
 
 public class ConsultationManager {
-    private ListInterface<Consultation> consultationList = new LinkedList<>();
-    private ConsultationUI consultUI = new ConsultationUI();
+    private final ListInterface<Consultation> consultationList;
+    private final MaintainPatient patientCtrl;
+    private final PatientUI patientUI;
+    private final MaintainDoctor doctorCtrl;
+    private final DoctorUI doctorUI;
+    private final ConsultationUI consultUI = new ConsultationUI();
+    private final Scanner sc;
 
-    private MaintainPatient patientCtrl = new MaintainPatient();
-    private PatientUI patientUI = new PatientUI(patientCtrl);
+    public ConsultationManager(ListInterface<Consultation> consultStore,
+                               MaintainPatient patientCtrl,
+                               PatientUI patientUI,
+                               MaintainDoctor doctorCtrl,
+                               DoctorUI doctorUI,
+                               Scanner sc) {
+        this.consultationList = consultStore != null ? consultStore : new LinkedList<>();
+        this.patientCtrl = patientCtrl;
+        this.patientUI = patientUI;
+        this.doctorCtrl = doctorCtrl;
+        this.doctorUI = doctorUI;
+        this.sc = sc;
+    }
 
-    private MaintainDoctor doctorCtrl = new MaintainDoctor();
-    private DoctorUI doctorUI = new DoctorUI(doctorCtrl);
+    // simple constructor for standalone testing if needed
+    public ConsultationManager() {
+        this(new LinkedList<>(), new MaintainPatient(), new PatientUI(new MaintainPatient()),
+             new MaintainDoctor(), new DoctorUI(new MaintainDoctor()), new Scanner(System.in));
+    }
 
-    private Scanner sc = new Scanner(System.in);
-
-    // ================= Main Menu Loop =================
     public void runConsultationMaintenance() {
         int choice;
         do {
@@ -40,94 +55,57 @@ public class ConsultationManager {
         } while (choice != 0);
     }
 
-    // CREATE
     public void addConsultation() {
-        // ========== Select or Register Patient ==========
+        // select or create patient
         System.out.println("\n--- Select Patient ---");
-        if (patientCtrl.getSize() > 0) {
-            patientUI.displayAllPatients();
-        } else {
-            System.out.println("⚠ No patients registered yet.");
-        }
-
+        patientUI.displayAllPatients();
         System.out.print("Enter patient index (0 to register new): ");
         int pChoice = getValidatedIndex("", patientCtrl.getSize(), true);
 
-        Patient selectedPatient;
-        if (pChoice == 0) {
-            System.out.println("\n--- Register New Patient ---");
-            selectedPatient = patientUI.inputPatientDetails();
-            patientCtrl.addPatient(selectedPatient);
-        } else {
-            selectedPatient = patientCtrl.getPatient(pChoice - 1);
-        }
+        Patient patient = (pChoice == 0) ? createAndAddPatient() : patientCtrl.getPatient(pChoice - 1);
+        if (patient == null) { System.out.println("❌ No patient selected."); return; }
 
-        // ========== Select or Register Doctor ==========
+        // select or create doctor
         System.out.println("\n--- Select Doctor ---");
-        if (doctorCtrl.getSize() > 0) {
-            doctorUI.displayAllDoctors();
-        } else {
-            System.out.println("⚠ No doctors registered yet.");
-        }
-
+        doctorUI.displayAllDoctors();
         System.out.print("Enter doctor index (0 to register new): ");
         int dChoice = getValidatedIndex("", doctorCtrl.getSize(), true);
 
-        Doctor selectedDoctor;
-        if (dChoice == 0) {
-            System.out.println("\n--- Register New Doctor ---");
-            selectedDoctor = doctorUI.inputDoctorDetails();
-            doctorCtrl.addDoctor(selectedDoctor);
-        } else {
-            selectedDoctor = doctorCtrl.getDoctor(dChoice - 1);
-        }
+        Doctor doctor = (dChoice == 0) ? createAndAddDoctor() : doctorCtrl.getDoctor(dChoice - 1);
+        if (doctor == null) { System.out.println("❌ No doctor selected."); return; }
 
-        // Consultation ID validation
+        // id
         String consultationId;
         while (true) {
             System.out.print("Enter Consultation ID (format: C001): ");
             consultationId = sc.nextLine().trim();
-            if (consultationId.matches("^C\\d{3}$")) break;
-            System.out.println("❌ Invalid format! ID must start with 'C' followed by 3 digits (e.g., C001).");
+            if (consultationId.matches("^C\\d{3}$") && findById(consultationId) == null) break;
+            System.out.println("❌ Invalid/duplicate ID. Try e.g., C001.");
         }
 
-        // DateTime
         LocalDateTime dateTime = LocalDateTime.now();
+        String symptoms = getNonEmpty("Enter symptoms: ");
+        String diagnosis = getNonEmpty("Enter diagnosis: ");
+        String notes = getNonEmpty("Enter notes: ");
 
-        // Symptoms
-        String symptoms = getNonEmptyInput("Enter symptoms: ");
-        // Diagnosis
-        String diagnosis = getNonEmptyInput("Enter diagnosis: ");
-        // Notes
-        String notes = getNonEmptyInput("Enter notes: ");
+        LocalDate nextAppointment = readDateOptional("Enter next appointment (yyyy-mm-dd, empty for none): ");
 
-        // Next appointment
-        System.out.print("Enter next appointment date (yyyy-mm-dd, leave empty if none): ");
-        String nextApptStr = sc.nextLine().trim();
-        LocalDate nextAppointment = nextApptStr.isEmpty() ? null : LocalDate.parse(nextApptStr);
+        boolean isFollowUp = askYesNo("Is follow up? (y/n): ");
+        int duration = readInt("Enter duration (minutes): ");
+        double fee = readDouble("Enter consultation fee: ");
+        String status = getNonEmpty("Enter status: ");
 
-        // Duration
-        int durationMinutes = getValidatedInteger("Enter duration in minutes: ");
-        // Fee
-        double consultationFee = getValidatedDouble("Enter consultation fee: ");
-        // Status
-        String status = getNonEmptyInput("Enter status: ");
-
-        Consultation c = new Consultation(
-                consultationId, dateTime, selectedPatient, selectedDoctor,
+        Consultation c = new Consultation(consultationId, dateTime, patient, doctor,
                 symptoms, diagnosis, new LinkedList<>(), notes,
-                nextAppointment, false, durationMinutes, consultationFee, status
-        );
+                nextAppointment, isFollowUp, duration, fee, status);
 
         consultationList.add(c);
-        System.out.println("✅ Consultation added successfully!");
+        System.out.println("✅ Consultation added.");
     }
 
-    // READ
     public void displayAllConsultations() {
-        if (consultationList.size() == 0) {
-            System.out.println("No consultations found.");
-        } else {
+        if (consultationList.size() == 0) System.out.println("No consultations found.");
+        else {
             System.out.println("\n--- All Consultations ---");
             for (int i = 0; i < consultationList.size(); i++) {
                 System.out.println((i + 1) + " -> " + consultationList.get(i));
@@ -135,64 +113,38 @@ public class ConsultationManager {
         }
     }
 
-    public Consultation getConsultation(int userIndex) {
-        int index = userIndex - 1;
-        return (index >= 0 && index < consultationList.size()) ? consultationList.get(index) : null;
-    }
-
-    // UPDATE
     public void updateConsultation() {
-        if (consultationList.size() == 0) {
-            System.out.println("No consultations available to update.");
-            return;
-        }
-
-        int userIndex = consultUI.inputConsultationIndex();
-        int index = userIndex - 1;
-        if (index >= 0 && index < consultationList.size()) {
-            Consultation existing = consultationList.get(index);
-
-            // Only editable fields
-            existing.setSymptoms(getNonEmptyInput("Enter new symptoms: "));
-            existing.setDiagnosis(getNonEmptyInput("Enter new diagnosis: "));
-            existing.setNotes(getNonEmptyInput("Enter new notes: "));
-            existing.setDurationMinutes(getValidatedInteger("Enter new duration (minutes): "));
-            existing.setConsultationFee(getValidatedDouble("Enter new consultation fee: "));
-            existing.setStatus(getNonEmptyInput("Enter new status: "));
-
-            System.out.println("✅ Consultation updated.");
-        } else {
-            System.out.println("Invalid consultation index.");
-        }
+        if (consultationList.size() == 0) { System.out.println("No consultations available."); return; }
+        int idx = consultUI.inputConsultationIndex() - 1;
+        if (idx < 0 || idx >= consultationList.size()) { System.out.println("Invalid index."); return; }
+        Consultation c = consultationList.get(idx);
+        c.setSymptoms(getNonEmpty("Enter new symptoms: "));
+        c.setDiagnosis(getNonEmpty("Enter new diagnosis: "));
+        c.setNotes(getNonEmpty("Enter new notes: "));
+        c.setDurationMinutes(readInt("Enter new duration (minutes): "));
+        c.setConsultationFee(readDouble("Enter new consultation fee: "));
+        c.setStatus(getNonEmpty("Enter new status: "));
+        System.out.println("✅ Consultation updated.");
     }
 
-    // DELETE
     public void deleteConsultation() {
-        if (consultationList.size() == 0) {
-            System.out.println("No consultations available to delete.");
-            return;
-        }
-
-        int userIndex = consultUI.inputConsultationIndex();
-        int index = userIndex - 1;
-        if (index >= 0 && index < consultationList.size()) {
-            Consultation removed = consultationList.remove(index);
-            System.out.println("✅ Deleted consultation: " + removed.getConsultationId());
-        } else {
-            System.out.println("Invalid consultation index.");
-        }
+        if (consultationList.size() == 0) { System.out.println("No consultations available."); return; }
+        int idx = consultUI.inputConsultationIndex() - 1;
+        if (idx < 0 || idx >= consultationList.size()) { System.out.println("Invalid index."); return; }
+        Consultation removed = consultationList.remove(idx);
+        System.out.println("✅ Deleted consultation: " + removed.getConsultationId());
     }
 
-    // ================= Validation Helpers =================
-    private String getNonEmptyInput(String prompt) {
-        String input;
-        while (true) {
-            System.out.print(prompt);
-            input = sc.nextLine().trim();
-            if (!input.isEmpty()) return input;
-            System.out.println("❌ Input cannot be empty!");
+    // helpers
+    private Consultation findById(String id) {
+        for (int i = 0; i < consultationList.size(); i++) {
+            Consultation c = consultationList.get(i);
+            if (c.getConsultationId().equalsIgnoreCase(id)) return c;
         }
+        return null;
     }
+    private Patient createAndAddPatient() { Patient p = patientUI.inputPatientDetails(); patientCtrl.addPatient(p); return p; }
+    private Doctor createAndAddDoctor() { Doctor d = doctorUI.inputDoctorDetails(); doctorCtrl.addDoctor(d); return d; }
 
     private int getValidatedIndex(String prompt, int maxSize, boolean allowZero) {
         int index;
@@ -200,41 +152,49 @@ public class ConsultationManager {
             try {
                 if (!prompt.isEmpty()) System.out.print(prompt);
                 index = Integer.parseInt(sc.nextLine().trim());
-                if ((allowZero && index == 0) || (index >= 1 && index <= maxSize)) {
-                    return index;
-                }
-                System.out.println("❌ Invalid choice! Please enter between 1 and " + maxSize + (allowZero ? " or 0 for new" : ""));
-            } catch (NumberFormatException e) {
-                System.out.println("❌ Invalid input! Please enter a number.");
-            }
+                if ((allowZero && index == 0) || (index >= 1 && index <= maxSize)) return index;
+                System.out.println("❌ Enter 1.." + maxSize + (allowZero ? " or 0" : ""));
+            } catch (NumberFormatException e) { System.out.println("❌ Invalid number."); }
         }
     }
-
-    private int getValidatedInteger(String prompt) {
+    private String getNonEmpty(String prompt) {
         while (true) {
-            try {
-                System.out.print(prompt);
-                return Integer.parseInt(sc.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("❌ Please enter a valid integer.");
-            }
+            System.out.print(prompt);
+            String s = sc.nextLine().trim();
+            if (!s.isEmpty()) return s;
+            System.out.println("❌ Input cannot be empty!");
         }
     }
-
-    private double getValidatedDouble(String prompt) {
+    private boolean askYesNo(String prompt) {
         while (true) {
-            try {
-                System.out.print(prompt);
-                return Double.parseDouble(sc.nextLine().trim());
-            } catch (NumberFormatException e) {
-                System.out.println("❌ Please enter a valid number.");
-            }
+            System.out.print(prompt);
+            String s = sc.nextLine().trim().toLowerCase();
+            if (s.matches("y|yes|1|true|t")) return true;
+            if (s.matches("n|no|0|false|f")) return false;
+            System.out.println("Please answer y/n.");
         }
     }
-
-    // ================= Testing =================
-    public static void main(String[] args) {
-        ConsultationManager consultCtrl = new ConsultationManager();
-        consultCtrl.runConsultationMaintenance();
+    private int readInt(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try { return Integer.parseInt(sc.nextLine().trim()); }
+            catch (NumberFormatException e) { System.out.println("❌ Enter an integer."); }
+        }
+    }
+    private double readDouble(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            try { return Double.parseDouble(sc.nextLine().trim()); }
+            catch (NumberFormatException e) { System.out.println("❌ Enter a number."); }
+        }
+    }
+    private java.time.LocalDate readDateOptional(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String s = sc.nextLine().trim();
+            if (s.isEmpty()) return null;
+            try { return java.time.LocalDate.parse(s); }
+            catch (Exception e) { System.out.println("❌ Invalid date (yyyy-mm-dd)."); }
+        }
     }
 }

@@ -1,169 +1,106 @@
 package control;
 
-import adt.ListInterface;
 import adt.LinkedList;
+import adt.ListInterface;
 import entity.Patient;
-import boundary.PatientUI;
 
 public class MaintainPatient {
-
-    // Permanent patient records
-    private ListInterface<Patient> patientList = new LinkedList<>();
+    private ListInterface<Patient> patientList;
+    private ListInterface<Patient> patientQueue;
     private int queueCounter = 1;
     private int patientIdCounter = 0;
 
-    // ========= CRUD =========
-    private String generatePatientId() {
-        patientIdCounter++;
-        return String.format("P%03d", patientIdCounter);
+    public MaintainPatient() {
+        this.patientList = new LinkedList<>();
+        this.patientQueue = new LinkedList<>();
     }
+    public MaintainPatient(ListInterface<Patient> store) {
+        this.patientList = store;
+        this.patientQueue = new LinkedList<>();
+    }
+    public MaintainPatient(ListInterface<Patient> store, ListInterface<Patient> queueStore) {
+        this.patientList = store;
+        this.patientQueue = queueStore;
+    }
+
+    private String nextPatientId() { patientIdCounter++; return String.format("P%03d", patientIdCounter); }
+    private String nextQueueNo()   { return String.format("PQ%03d", queueCounter++); }
 
     public void addPatient(Patient p) {
-        // Generate a queue number
-        String queueNumber = String.format("PQ%03d", queueCounter++);
-        p.setQueueNumber(queueNumber);
-
-        // Auto generate patient id
-        p.setPatientID(generatePatientId());
+        if (p == null) return;
+        if (p.getPatientID() == null || p.getPatientID().isEmpty()) p.setPatientID(nextPatientId());
+        if (p.getQueueNumber() == null || p.getQueueNumber().isEmpty()) p.setQueueNumber(nextQueueNo());
         patientList.add(p);
+        patientQueue.add(p);
     }
 
-    public boolean replacePatient(int index, Patient newPatient) {
-        return patientList.replace(index, newPatient);
-    }
-
-    public boolean updateExistingPatient(int index, Patient patientNewData) {
-        if (index >= 0 && index < patientList.size()) {
-            Patient existingPatient = patientList.get(index);
-
-            if (patientNewData.getName() != null) existingPatient.setName(patientNewData.getName());
-            if (patientNewData.getIcNumber() != null) existingPatient.setIcNumber(patientNewData.getIcNumber());
-            if (patientNewData.getDateOfBirth() != null) existingPatient.setDateOfBirth(patientNewData.getDateOfBirth());
-            if (patientNewData.getSex() != null) existingPatient.setSex(patientNewData.getSex());
-            if (patientNewData.getContactNumber() != null) existingPatient.setContactNumber(patientNewData.getContactNumber());
-            if (patientNewData.getAllergyHistory() != null) existingPatient.setAllergyHistory(patientNewData.getAllergyHistory());
-            if (patientNewData.getDateOfRegistration() != null) existingPatient.setDateOfRegistration(patientNewData.getDateOfRegistration());
-            if (patientNewData.getLastVisitDate() != null) existingPatient.setLastVisitDate(patientNewData.getLastVisitDate());
-
-            // always overwrite isActive
-            existingPatient.setIsActive(patientNewData.isActive());
-            return true;
-        }
-        return false;
+    public boolean updateExistingPatient(int index, Patient nd) {
+        if (index < 0 || index >= patientList.size() || nd == null) return false;
+        Patient ex = patientList.get(index);
+        if (nd.getName() != null) ex.setName(nd.getName());
+        if (nd.getIcNumber() != null) ex.setIcNumber(nd.getIcNumber());
+        if (nd.getDateOfBirth() != null) ex.setDateOfBirth(nd.getDateOfBirth());
+        if (nd.getSex() != null) ex.setSex(nd.getSex());
+        if (nd.getContactNumber() != null) ex.setContactNumber(nd.getContactNumber());
+        if (nd.getAllergyHistory() != null) ex.setAllergyHistory(nd.getAllergyHistory());
+        if (nd.getDateOfRegistration() != null) ex.setDateOfRegistration(nd.getDateOfRegistration());
+        if (nd.getLastVisitDate() != null) ex.setLastVisitDate(nd.getLastVisitDate());
+        ex.setIsActive(nd.isActive());
+        return true;
     }
 
     public Patient deletePatient(int index) {
-        if (index >= 0 && index < patientList.size()) {
-            return patientList.remove(index);
+        if (index < 0 || index >= patientList.size()) return null;
+        Patient removed = patientList.remove(index);
+        // also remove from queue if present
+        for (int i = 0; i < patientQueue.size(); i++) {
+            if (patientQueue.get(i) == removed) { patientQueue.remove(i); break; }
         }
-        return null;
+        return removed;
     }
 
-    public ListInterface<Patient> getAllPatients() {
-        return patientList;
-    }
+    public ListInterface<Patient> getAllPatients() { return patientList; }
+    public Patient getPatient(int index) { return (index >= 0 && index < patientList.size()) ? patientList.get(index) : null; }
+    public int getSize() { return patientList.size(); }
 
-    public Patient getPatient(int index) {
-        return (index >= 0 && index < patientList.size()) ? patientList.get(index) : null;
-    }
-
-    public Patient nextPatient() {
-        if (patientList.isEmpty()) {
-            return null;
-        }
-        return patientList.remove(0);
-    }
-
-    public Patient peekNextPatient() {
-        if (patientList.isEmpty()) {
-            return null;
-        }
-        return patientList.get(0);
-    }
-
+    // queue ops
+    public Patient nextPatient() { return patientQueue.isEmpty() ? null : patientQueue.remove(0); }
+    public Patient peekNextPatient() { return patientQueue.isEmpty() ? null : patientQueue.get(0); }
     public boolean cancelPatient(String queueNumber) {
-        for (int i = 0; i < patientList.size(); i++) {
-            Patient p = patientList.get(i);
-            if (p.getQueueNumber().equals(queueNumber)) {
-                patientList.remove(i);
-                return true;
-            }
+        for (int i = 0; i < patientQueue.size(); i++) {
+            Patient p = patientQueue.get(i);
+            if (p.getQueueNumber() != null && p.getQueueNumber().equals(queueNumber)) { patientQueue.remove(i); return true; }
         }
         return false;
     }
 
+    // filters/search
     public ListInterface<Patient> filterByGender(String gender) {
-        ListInterface<Patient> results = new LinkedList<>();
+        ListInterface<Patient> r = new LinkedList<>();
         for (int i = 0; i < patientList.size(); i++) {
             Patient p = patientList.get(i);
-            if (p.getSex().equalsIgnoreCase(gender)) {
-                results.add(p);
-            }
+            if (p.getSex() != null && p.getSex().equalsIgnoreCase(gender)) r.add(p);
         }
-        return results;
+        return r;
     }
-
     public ListInterface<Patient> filterByStatus(boolean active) {
-        ListInterface<Patient> results = new LinkedList<>();
+        ListInterface<Patient> r = new LinkedList<>();
         for (int i = 0; i < patientList.size(); i++) {
             Patient p = patientList.get(i);
-            if (p.isActive() == active) {
-                results.add(p);
-            }
+            if (p.isActive() == active) r.add(p);
         }
-        return results;
+        return r;
     }
-
     public ListInterface<Patient> linearSearch(int option, String keyword) {
-        ListInterface<Patient> results = new LinkedList<>();
+        ListInterface<Patient> r = new LinkedList<>();
+        String key = keyword == null ? "" : keyword.toLowerCase();
         for (int i = 0; i < patientList.size(); i++) {
             Patient p = patientList.get(i);
             switch (option) {
-                case 1 -> { // search by ID
-                    if (p.getPatientID().equalsIgnoreCase(keyword)) {
-                        results.add(p);
-                    }
-                }
-                case 2 -> { // search by name
-                    if (p.getName().equalsIgnoreCase(keyword)) {
-                        results.add(p);
-                    }
-                }
+                case 1 -> { if (p.getPatientID() != null && p.getPatientID().equalsIgnoreCase(keyword)) r.add(p); }
+                case 2 -> { if (p.getName() != null && p.getName().toLowerCase().contains(key)) r.add(p); }
             }
         }
-        return results;
-    }
-
-    public int getSize() {
-        return patientList.size();
-    }
-
-    // ========= MAIN entry =========
-    public static void main(String[] args) {
-        PatientUI ui = new PatientUI(new MaintainPatient());
-
-        // Seed data
-        Patient p1 = new Patient();
-        p1.setName("NTC");
-        p1.setIcNumber("123456-01-0001");
-        p1.setContactNumber("010-0000001");
-        p1.setSex("M");
-        p1.setAllergyHistory("None");
-        p1.setIsActive(true);
-
-        Patient p2 = new Patient();
-        p2.setName("Alice");
-        p2.setIcNumber("123456-02-0002");
-        p2.setContactNumber("010-0000002");
-        p2.setSex("F");
-        p2.setAllergyHistory("Peanut");
-        p2.setIsActive(false);
-
-        MaintainPatient ctrl = ui.getController();
-        ctrl.addPatient(p1);
-        ctrl.addPatient(p2);
-
-        // Run menu
-        ui.runPatientMaintenance();
+        return r;
     }
 }

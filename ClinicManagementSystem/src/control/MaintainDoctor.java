@@ -1,72 +1,54 @@
-// File: control/MaintainDoctor.java
 package control;
 
 import adt.LinkedList;
 import adt.ListInterface;
 import entity.Doctor;
-import boundary.DoctorUI;
 
 public class MaintainDoctor {
-    private ListInterface<Doctor> doctorList = new LinkedList<>();
+    private ListInterface<Doctor> doctorList;
 
-    // ========= CRUD =========
+    public MaintainDoctor() { this.doctorList = new LinkedList<>(); }
+    public MaintainDoctor(ListInterface<Doctor> store) { this.doctorList = store; }
+
     public void addDoctor(Doctor d) {
+        if (d == null) return;
+        if (d.getDoctorId() == null || findDoctorById(d.getDoctorId()) != null) return;
         doctorList.add(d);
     }
 
-    public boolean updateExistingDoctor(int index, Doctor doctorNewData) {
-        if (index >= 0 && index < doctorList.size()) {
-            Doctor existingDoctor = doctorList.get(index);
-
-            if (doctorNewData.getDoctorId() != null) existingDoctor.setDoctorId(doctorNewData.getDoctorId());
-            if (doctorNewData.getName() != null) existingDoctor.setName(doctorNewData.getName());
-            if (doctorNewData.getMmcNumber() != null) existingDoctor.setMmcNumber(doctorNewData.getMmcNumber());
-            if (doctorNewData.getSpecialization() != null) existingDoctor.setSpecialization(doctorNewData.getSpecialization());
-            if (doctorNewData.getEmail() != null) existingDoctor.setEmail(doctorNewData.getEmail());
-            if (doctorNewData.getGender() != null) existingDoctor.setGender(doctorNewData.getGender());
-            if (doctorNewData.getDutySchedule() != null) existingDoctor.setDutySchedule(doctorNewData.getDutySchedule());
-            existingDoctor.setIsAvailable(doctorNewData.isIsAvailable());
-            if (doctorNewData.getConsultations() != null) existingDoctor.setConsultations(doctorNewData.getConsultations());
-            if (doctorNewData.getStatus() != null) existingDoctor.setStatus(doctorNewData.getStatus());
-
-            return true;
-        }
-        return false;
+    public boolean updateExistingDoctor(int index, Doctor nd) {
+        if (index < 0 || index >= doctorList.size() || nd == null) return false;
+        Doctor ex = doctorList.get(index);
+        if (nd.getDoctorId() != null) ex.setDoctorId(nd.getDoctorId());
+        if (nd.getName() != null) ex.setName(nd.getName());
+        if (nd.getMmcNumber() != null) ex.setMmcNumber(nd.getMmcNumber());
+        if (nd.getSpecialization() != null) ex.setSpecialization(nd.getSpecialization());
+        if (nd.getEmail() != null) ex.setEmail(nd.getEmail());
+        if (nd.getGender() != null) ex.setGender(nd.getGender());
+        if (nd.getDutySchedule() != null) ex.setDutySchedule(nd.getDutySchedule());
+        ex.setIsAvailable(nd.isIsAvailable());
+        if (nd.getConsultations() != null) ex.setConsultations(nd.getConsultations());
+        if (nd.getStatus() != null) ex.setStatus(nd.getStatus());
+        return true;
     }
 
     public Doctor deleteDoctor(int index) {
-        if (index >= 0 && index < doctorList.size()) {
-            return doctorList.remove(index);
-        }
-        return null;
+        if (index < 0 || index >= doctorList.size()) return null;
+        return doctorList.remove(index);
     }
 
     public Doctor getDoctor(int index) {
         return (index >= 0 && index < doctorList.size()) ? doctorList.get(index) : null;
     }
 
-    public Doctor findDoctorById(String doctorId) {
+    public Doctor findDoctorById(String id) {
         for (int i = 0; i < doctorList.size(); i++) {
             Doctor d = doctorList.get(i);
-            if (d.getDoctorId().equals(doctorId)) {
-                return d;
-            }
+            if (d != null && d.getDoctorId() != null && d.getDoctorId().equalsIgnoreCase(id)) return d;
         }
         return null;
     }
 
-    public ListInterface<Doctor> getAllDoctors() {
-        return doctorList;
-    }
-
-    public int getSize() {
-        return doctorList.size();
-    }
-
-    // ========= MAIN for testing =========
-    public static void main(String[] args) {
-        MaintainDoctor doctorCtrl = new MaintainDoctor();
-        DoctorUI doctorUI = new DoctorUI(doctorCtrl);
-        doctorUI.runDoctorMaintenance();
-    }
+    public ListInterface<Doctor> getAllDoctors() { return doctorList; }
+    public int getSize() { return doctorList.size(); }
 }
