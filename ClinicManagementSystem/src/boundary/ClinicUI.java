@@ -4,7 +4,7 @@ package boundary;
 import control.*;
 import entity.*;
 import adt.*;
-import dao.ClinicInitializer;   // <-- add this import
+import dao.ClinicInitializer;
 
 import java.util.Scanner;
 
@@ -14,15 +14,14 @@ public class ClinicUI {
     private final MaintainDoctor doctorCtrl = new MaintainDoctor();
     private final MaintainPatient patientCtrl = new MaintainPatient();
     private final TreatmentManager treatCtrl = new TreatmentManager();
+    private final ConsultationManager consultMgr = new ConsultationManager();
 
     // UIs
     private final DoctorUI doctorUI = new DoctorUI(doctorCtrl);
     private final PatientUI patientUI = new PatientUI(patientCtrl);
-    private final ConsultationUI consultUI = new ConsultationUI(); // not used directly here but retained if needed
-    // ConsultationManager currently uses its own internal lists
-    private final ConsultationManager consultMgr = new ConsultationManager();
-
+    private final ConsultationUI consultUI = new ConsultationUI(consultMgr, doctorCtrl, patientCtrl);
     private final MedicalTreatmentUI treatUI = new MedicalTreatmentUI();
+
     private final Scanner sc = new Scanner(System.in);
 
     // ---------------- boot with seed data ----------------
@@ -47,17 +46,14 @@ public class ClinicUI {
             treatCtrl.addTreatment(t);
         }
 
-        // Note: ConsultationManager holds its own internal patient/doctor lists,
-        // so we’re not seeding consultations there. If you want a single source
-        // of truth for consultations as well, refactor ConsultationManager to
-        // accept MaintainDoctor/MaintainPatient (then we can pass/link data).
-        System.out.println("✔ Sample data loaded: " 
+        System.out.println("✔ Sample data loaded: "
                 + data.getDoctors().size() + " doctors, "
                 + data.getPatients().size() + " patients, "
                 + data.getConsultations().size() + " consultations, "
                 + data.getTreatments().size() + " treatments.");
     }
 
+    // ---------------- Main run ----------------
     public void run() {
         while (true) {
             System.out.println("\n===== Clinic Management System =====");
@@ -70,9 +66,9 @@ public class ClinicUI {
 
             int choice = readIntSafe();
             switch (choice) {
-                case 1 -> doctorUI.runDoctorMaintenance();         // has its own loop
-                case 2 -> patientUI.runPatientMaintenance();       // has its own loop
-                case 3 -> consultMgr.runConsultationMaintenance(); // separate data store (see note above)
+                case 1 -> doctorUI.runDoctorMaintenance();
+                case 2 -> patientUI.runPatientMaintenance();
+                case 3 -> consultUI.runConsultationMaintenance();
                 case 4 -> treatmentMenu();
                 case 0 -> {
                     System.out.println("Exiting Clinic System...");
@@ -158,7 +154,7 @@ public class ClinicUI {
         else System.out.println("❌ Deletion failed.");
     }
 
-    // ---------- Selection helpers (1-based display) ----------
+    // ---------- Selection helpers ----------
     private Patient pickPatient() {
         System.out.println("\n--- Select Patient ---");
         for (int i = 0; i < patientCtrl.getSize(); i++) {
@@ -194,5 +190,10 @@ public class ClinicUI {
             try { return Integer.parseInt(s); }
             catch (NumberFormatException e) { System.out.print("Enter a number: "); }
         }
+    }
+
+    // ---------- Main ----------
+    public static void main(String[] args) {
+        new ClinicUI().run();
     }
 }

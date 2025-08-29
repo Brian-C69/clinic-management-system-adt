@@ -127,7 +127,7 @@ public class Consultation {
         this.nextAppointment = nextAppointment;
     }
 
-    public boolean isIsFollowUp() {
+    public boolean getisIsFollowUp() {
         return isFollowUp;
     }
 
@@ -135,7 +135,7 @@ public class Consultation {
         this.isFollowUp = isFollowUp;
     }
 
-    public int getDurationMinutes() {
+public int getDurationMinutes() {
         return durationMinutes;
     }
 

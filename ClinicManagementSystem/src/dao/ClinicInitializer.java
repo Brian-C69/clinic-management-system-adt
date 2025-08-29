@@ -24,7 +24,6 @@ public class ClinicInitializer {
         d1.setIsAvailable(true);
         d1.setConsultations(new LinkedList<>());
         d1.setStatus("Active");
-        
 
         d1.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 0),
                 LocalDateTime.of(2025, 8, 30, 12, 0)));
@@ -450,37 +449,161 @@ public class ClinicInitializer {
 
         // ----- Consultations -----
         ListInterface<Consultation> consultations = new LinkedList<>();
-        Consultation c1 = new Consultation("C001", LocalDateTime.of(2023, 8, 1, 10, 0),
-                p1, d1, "Chest pain", "Mild angina",
-                new LinkedList<>(), "Needs further tests",
-                LocalDate.of(2023, 8, 15), true, 30, 100.0, "Completed");
-        Consultation c2 = new Consultation("C002", LocalDateTime.of(2023, 8, 2, 14, 0),
-                p2, d2, "Skin rash", "Eczema",
-                new LinkedList<>(), "Prescribed cream",
-                null, false, 20, 60.0, "Completed");
+
+        Consultation c1 = new Consultation("C001", LocalDateTime.of(2023, 8, 1, 10, 0), p1, d1, "Chest pain", "Mild angina", new LinkedList<>(), "Needs further tests", LocalDate.of(2023, 8, 15), true, 30, 100.0, "Completed");
+        Consultation c2 = new Consultation("C002", LocalDateTime.of(2023, 8, 2, 14, 0), p2, d2, "Skin rash", "Eczema", new LinkedList<>(), "Prescribed cream", null, false, 20, 60.0, "Completed");
+        Consultation c3 = new Consultation("C003", LocalDateTime.of(2023, 8, 3, 9, 30), p3, d3, "Back pain", "Muscle strain", new LinkedList<>(), "Physiotherapy recommended", null, false, 25, 80.0, "Completed");
+        Consultation c4 = new Consultation("C004", LocalDateTime.of(2023, 8, 4, 11, 0), p4, d4, "Fever", "Viral infection", new LinkedList<>(), "Rest and hydration", null, false, 15, 50.0, "Completed");
+        Consultation c5 = new Consultation("C005", LocalDateTime.of(2023, 8, 5, 13, 0), p5, d5, "Knee pain", "Arthritis", new LinkedList<>(), "Prescribed anti-inflammatory", null, false, 30, 120.0, "Completed");
+        Consultation c6 = new Consultation("C006", LocalDateTime.of(2023, 8, 6, 14, 30), p6, d6, "Headache", "Migraine", new LinkedList<>(), "Prescribed painkillers", null, false, 20, 70.0, "Completed");
+        Consultation c7 = new Consultation("C007", LocalDateTime.of(2023, 8, 7, 10, 0), p7, d7, "Cough", "Bronchitis", new LinkedList<>(), "Antibiotics prescribed", null, false, 25, 90.0, "Completed");
+        Consultation c8 = new Consultation("C008", LocalDateTime.of(2023, 8, 8, 15, 0), p8, d8, "Rash", "Allergy", new LinkedList<>(), "Antihistamines prescribed", null, false, 20, 60.0, "Completed");
+        Consultation c9 = new Consultation("C009", LocalDateTime.of(2023, 8, 9, 9, 0), p9, d9, "Eye redness", "Conjunctivitis", new LinkedList<>(), "Eye drops prescribed", null, false, 15, 50.0, "Completed");
+        Consultation c10 = new Consultation("C010", LocalDateTime.of(2023, 8, 10, 11, 30), p10, d10, "Ear pain", "Otitis media", new LinkedList<>(), "Antibiotic drops prescribed", null, false, 20, 75.0, "Completed");
+        Consultation c11 = new Consultation("C011", LocalDateTime.of(2023, 8, 11, 10, 15), p11, d11, "Ankle sprain", "Ligament injury", new LinkedList<>(), "Rest and bandage", null, false, 30, 100.0, "Completed");
+        Consultation c12 = new Consultation("C012", LocalDateTime.of(2023, 8, 12, 14, 45), p12, d12, "Palpitations", "Arrhythmia", new LinkedList<>(), "EKG and follow-up", null, false, 25, 110.0, "Completed");
+        Consultation c13 = new Consultation("C013", LocalDateTime.of(2023, 8, 13, 9, 30), p13, d13, "Dizziness", "Vertigo", new LinkedList<>(), "Balance exercises", null, false, 20, 80.0, "Completed");
+        Consultation c14 = new Consultation("C014", LocalDateTime.of(2023, 8, 14, 13, 0), p14, d14, "Fever", "Flu", new LinkedList<>(), "Rest and hydration", null, false, 15, 50.0, "Completed");
+        Consultation c15 = new Consultation("C015", LocalDateTime.of(2023, 8, 15, 10, 0), p15, d15, "Acne", "Mild acne", new LinkedList<>(), "Topical cream prescribed", null, false, 20, 60.0, "Completed");
+        Consultation c16 = new Consultation("C016", LocalDateTime.of(2023, 8, 16, 11, 30), p16, d16, "Blurred vision", "Myopia", new LinkedList<>(), "Prescription updated", null, false, 15, 50.0, "Completed");
+        Consultation c17 = new Consultation("C017", LocalDateTime.of(2023, 8, 17, 14, 0), p17, d17, "Shoulder pain", "Tendonitis", new LinkedList<>(), "Physiotherapy recommended", null, false, 25, 90.0, "Completed");
+        Consultation c18 = new Consultation("C018", LocalDateTime.of(2023, 8, 18, 9, 0), p18, d18, "Chest discomfort", "Mild angina", new LinkedList<>(), "Further tests needed", null, false, 30, 100.0, "Completed");
+        Consultation c19 = new Consultation("C019", LocalDateTime.of(2023, 8, 19, 13, 15), p19, d19, "Back stiffness", "Muscle strain", new LinkedList<>(), "Exercise recommended", null, false, 20, 70.0, "Completed");
+        Consultation c20 = new Consultation("C020", LocalDateTime.of(2023, 8, 20, 10, 0), p20, d20, "Allergy", "Dust allergy", new LinkedList<>(), "Antihistamines prescribed", null, false, 20, 60.0, "Completed");
+
         consultations.add(c1);
         consultations.add(c2);
+        consultations.add(c3);
+        consultations.add(c4);
+        consultations.add(c5);
+        consultations.add(c6);
+        consultations.add(c7);
+        consultations.add(c8);
+        consultations.add(c9);
+        consultations.add(c10);
+        consultations.add(c11);
+        consultations.add(c12);
+        consultations.add(c13);
+        consultations.add(c14);
+        consultations.add(c15);
+        consultations.add(c16);
+        consultations.add(c17);
+        consultations.add(c18);
+        consultations.add(c19);
+        consultations.add(c20);
+
         data.setConsultations(consultations);
 
-        // Link consultations to doctors
+// Link consultations to doctors
         d1.setConsultations(new LinkedList<>());
         d1.getConsultations().add(c1);
         d2.setConsultations(new LinkedList<>());
         d2.getConsultations().add(c2);
+        d3.setConsultations(new LinkedList<>());
+        d3.getConsultations().add(c3);
+        d4.setConsultations(new LinkedList<>());
+        d4.getConsultations().add(c4);
+        d5.setConsultations(new LinkedList<>());
+        d5.getConsultations().add(c5);
+        d6.setConsultations(new LinkedList<>());
+        d6.getConsultations().add(c6);
+        d7.setConsultations(new LinkedList<>());
+        d7.getConsultations().add(c7);
+        d8.setConsultations(new LinkedList<>());
+        d8.getConsultations().add(c8);
+        d9.setConsultations(new LinkedList<>());
+        d9.getConsultations().add(c9);
+        d10.setConsultations(new LinkedList<>());
+        d10.getConsultations().add(c10);
+        d11.setConsultations(new LinkedList<>());
+        d11.getConsultations().add(c11);
+        d12.setConsultations(new LinkedList<>());
+        d12.getConsultations().add(c12);
+        d13.setConsultations(new LinkedList<>());
+        d13.getConsultations().add(c13);
+        d14.setConsultations(new LinkedList<>());
+        d14.getConsultations().add(c14);
+        d15.setConsultations(new LinkedList<>());
+        d15.getConsultations().add(c15);
+        d16.setConsultations(new LinkedList<>());
+        d16.getConsultations().add(c16);
+        d17.setConsultations(new LinkedList<>());
+        d17.getConsultations().add(c17);
+        d18.setConsultations(new LinkedList<>());
+        d18.getConsultations().add(c18);
+        d19.setConsultations(new LinkedList<>());
+        d19.getConsultations().add(c19);
+        d20.setConsultations(new LinkedList<>());
+        d20.getConsultations().add(c20);
 
-        // ----- Treatments -----
+// ----- Treatments -----
         ListInterface<MedicalTreatment> treatments = new LinkedList<>();
-        MedicalTreatment t1 = new MedicalTreatment("Paracetamol", "500mg", "5 days",
-                "Take after meals", LocalDate.of(2023, 8, 1), p1, d1);
-        MedicalTreatment t2 = new MedicalTreatment("Antihistamine", "10mg", "7 days",
-                "Before sleep", LocalDate.of(2023, 8, 2), p2, d2);
+
+        MedicalTreatment t1 = new MedicalTreatment("Paracetamol", "500mg", "5 days", "Take after meals", LocalDate.of(2023, 8, 1), p1, d1);
+        MedicalTreatment t2 = new MedicalTreatment("Antihistamine", "10mg", "7 days", "Before sleep", LocalDate.of(2023, 8, 2), p2, d2);
+        MedicalTreatment t3 = new MedicalTreatment("Ibuprofen", "400mg", "3 days", "After meals", LocalDate.of(2023, 8, 3), p3, d3);
+        MedicalTreatment t4 = new MedicalTreatment("Paracetamol", "500mg", "3 days", "Take when needed", LocalDate.of(2023, 8, 4), p4, d4);
+        MedicalTreatment t5 = new MedicalTreatment("Diclofenac", "50mg", "7 days", "After meals", LocalDate.of(2023, 8, 5), p5, d5);
+        MedicalTreatment t6 = new MedicalTreatment("Sumatriptan", "25mg", "As needed", "During headache", LocalDate.of(2023, 8, 6), p6, d6);
+        MedicalTreatment t7 = new MedicalTreatment("Amoxicillin", "500mg", "7 days", "Before meals", LocalDate.of(2023, 8, 7), p7, d7);
+        MedicalTreatment t8 = new MedicalTreatment("Cetirizine", "10mg", "5 days", "Before sleep", LocalDate.of(2023, 8, 8), p8, d8);
+        MedicalTreatment t9 = new MedicalTreatment("Eye drops", "5ml", "7 days", "Twice daily", LocalDate.of(2023, 8, 9), p9, d9);
+        MedicalTreatment t10 = new MedicalTreatment("Antibiotic drops", "5ml", "5 days", "Twice daily", LocalDate.of(2023, 8, 10), p10, d10);
+        MedicalTreatment t11 = new MedicalTreatment("Bandage", "1 unit", "3 days", "Rest", LocalDate.of(2023, 8, 11), p11, d11);
+        MedicalTreatment t12 = new MedicalTreatment("Beta blockers", "50mg", "10 days", "Morning", LocalDate.of(2023, 8, 12), p12, d12);
+        MedicalTreatment t13 = new MedicalTreatment("Meclizine", "25mg", "5 days", "After meals", LocalDate.of(2023, 8, 13), p13, d13);
+        MedicalTreatment t14 = new MedicalTreatment("Paracetamol", "500mg", "3 days", "Take when needed", LocalDate.of(2023, 8, 14), p14, d14);
+        MedicalTreatment t15 = new MedicalTreatment("Benzoyl peroxide cream", "5%", "7 days", "Apply twice daily", LocalDate.of(2023, 8, 15), p15, d15);
+        MedicalTreatment t16 = new MedicalTreatment("Glasses", "Prescription", "N/A", "Wear daily", LocalDate.of(2023, 8, 16), p16, d16);
+        MedicalTreatment t17 = new MedicalTreatment("Physiotherapy", "1 session", "3 days", "As instructed", LocalDate.of(2023, 8, 17), p17, d17);
+        MedicalTreatment t18 = new MedicalTreatment("Nitroglycerin", "0.3mg", "As needed", "Sublingual", LocalDate.of(2023, 8, 18), p18, d18);
+        MedicalTreatment t19 = new MedicalTreatment("Exercise", "N/A", "14 days", "Daily", LocalDate.of(2023, 8, 19), p19, d19);
+        MedicalTreatment t20 = new MedicalTreatment("Antihistamine", "10mg", "7 days", "Before sleep", LocalDate.of(2023, 8, 20), p20, d20);
+
         treatments.add(t1);
         treatments.add(t2);
+        treatments.add(t3);
+        treatments.add(t4);
+        treatments.add(t5);
+        treatments.add(t6);
+        treatments.add(t7);
+        treatments.add(t8);
+        treatments.add(t9);
+        treatments.add(t10);
+        treatments.add(t11);
+        treatments.add(t12);
+        treatments.add(t13);
+        treatments.add(t14);
+        treatments.add(t15);
+        treatments.add(t16);
+        treatments.add(t17);
+        treatments.add(t18);
+        treatments.add(t19);
+        treatments.add(t20);
+
         data.setTreatments(treatments);
 
-        // Attach treatments to consultations
+// Attach treatments to consultations
         c1.getTreatments().add(t1);
         c2.getTreatments().add(t2);
+        c3.getTreatments().add(t3);
+        c4.getTreatments().add(t4);
+        c5.getTreatments().add(t5);
+        c6.getTreatments().add(t6);
+        c7.getTreatments().add(t7);
+        c8.getTreatments().add(t8);
+        c9.getTreatments().add(t9);
+        c10.getTreatments().add(t10);
+        c11.getTreatments().add(t11);
+        c12.getTreatments().add(t12);
+        c13.getTreatments().add(t13);
+        c14.getTreatments().add(t14);
+        c15.getTreatments().add(t15);
+        c16.getTreatments().add(t16);
+        c17.getTreatments().add(t17);
+        c18.getTreatments().add(t18);
+        c19.getTreatments().add(t19);
+        c20.getTreatments().add(t20);
 
         return data;
     }
