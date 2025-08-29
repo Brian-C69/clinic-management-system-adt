@@ -14,46 +14,45 @@ public class ClinicUI {
     private final MaintainDoctor doctorCtrl = new MaintainDoctor();
     private final MaintainPatient patientCtrl = new MaintainPatient();
     private final TreatmentManager treatCtrl = new TreatmentManager();
-    private final ConsultationManager consultMgr = new ConsultationManager();
 
     // UIs
     private final DoctorUI doctorUI = new DoctorUI(doctorCtrl);
     private final PatientUI patientUI = new PatientUI(patientCtrl);
-    private final ConsultationUI consultUI = new ConsultationUI(consultMgr, doctorCtrl, patientCtrl);
+    private final ConsultationUI consultUI = new ConsultationUI();
     private final MedicalTreatmentUI treatUI = new MedicalTreatmentUI();
-
     private final Scanner sc = new Scanner(System.in);
 
-    // ---------------- boot with seed data ----------------
-    public ClinicUI() {
-        seedData();
-    }
+    // ✅ ConsultationManager (now seeded with data)
+    private final ConsultationManager consultMgr;
 
-    private void seedData() {
+    public ClinicUI() {
         ClinicInitializer init = new ClinicInitializer();
         ClinicData data = init.initializeClinic();
 
         // Seed doctors
-        for (Doctor d : data.getDoctors()) {
-            doctorCtrl.addDoctor(d);
-        }
+        for (Doctor d : data.getDoctors()) doctorCtrl.addDoctor(d);
         // Seed patients
-        for (Patient p : data.getPatients()) {
-            patientCtrl.addPatient(p);
-        }
+        for (Patient p : data.getPatients()) patientCtrl.addPatient(p);
         // Seed treatments
-        for (MedicalTreatment t : data.getTreatments()) {
-            treatCtrl.addTreatment(t);
-        }
+        for (MedicalTreatment t : data.getTreatments()) treatCtrl.addTreatment(t);
 
-        System.out.println("✔ Sample data loaded: "
-                + data.getDoctors().size() + " doctors, "
-                + data.getPatients().size() + " patients, "
-                + data.getConsultations().size() + " consultations, "
-                + data.getTreatments().size() + " treatments.");
+        // ✅ Seed consultations with shared doctor/patient controllers
+        this.consultMgr = new ConsultationManager(
+            data.getConsultations(),
+            patientCtrl,
+            patientUI,
+            doctorCtrl,
+            doctorUI,
+            sc
+        );
+
+        System.out.println("✔ Sample data loaded: " 
+            + data.getDoctors().size() + " doctors, "
+            + data.getPatients().size() + " patients, "
+            + data.getConsultations().size() + " consultations, "
+            + data.getTreatments().size() + " treatments.");
     }
 
-    // ---------------- Main run ----------------
     public void run() {
         while (true) {
             System.out.println("\n===== Clinic Management System =====");
@@ -68,7 +67,7 @@ public class ClinicUI {
             switch (choice) {
                 case 1 -> doctorUI.runDoctorMaintenance();
                 case 2 -> patientUI.runPatientMaintenance();
-                case 3 -> consultUI.runConsultationMaintenance();
+                case 3 -> consultMgr.runConsultationMaintenance();
                 case 4 -> treatmentMenu();
                 case 0 -> {
                     System.out.println("Exiting Clinic System...");
@@ -79,7 +78,7 @@ public class ClinicUI {
         }
     }
 
-    // ---------------- Treatment Menu ----------------
+    // ---------- Treatment Menu ----------
     private void treatmentMenu() {
         int choice;
         do {
@@ -103,7 +102,6 @@ public class ClinicUI {
         } while (choice != 0);
     }
 
-    // ---------- Treatment flows ----------
     private void addTreatmentFlow() {
         if (patientCtrl.getSize() == 0 || doctorCtrl.getSize() == 0) {
             System.out.println("⚠ Need at least 1 patient and 1 doctor before adding treatment.");
@@ -154,7 +152,7 @@ public class ClinicUI {
         else System.out.println("❌ Deletion failed.");
     }
 
-    // ---------- Selection helpers ----------
+    // ---------- Selection Helpers ----------
     private Patient pickPatient() {
         System.out.println("\n--- Select Patient ---");
         for (int i = 0; i < patientCtrl.getSize(); i++) {
@@ -183,17 +181,13 @@ public class ClinicUI {
         return d;
     }
 
-    // ---------- Input helper ----------
     private int readIntSafe() {
         while (true) {
             String s = sc.nextLine().trim();
             try { return Integer.parseInt(s); }
-            catch (NumberFormatException e) { System.out.print("Enter a number: "); }
+            catch (NumberFormatException e) {
+                System.out.print("Enter a number: ");
+            }
         }
-    }
-
-    // ---------- Main ----------
-    public static void main(String[] args) {
-        new ClinicUI().run();
     }
 }
