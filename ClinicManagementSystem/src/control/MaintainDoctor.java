@@ -52,19 +52,35 @@ public class MaintainDoctor {
         if (nd.getGender() != null) {
             ex.setGender(nd.getGender());
         }
+
+        // Update duty schedule
         if (nd.getDutySchedule() != null && !nd.getDutySchedule().isEmpty()) {
-            // Replace or merge depending on business rule
-            ex.setDutySchedule(nd.getDutySchedule());
+            if (ex.getDutySchedule() == null) {
+                ex.setDutySchedule(nd.getDutySchedule());
+            } else {
+                // Merge new slots into existing schedule
+                for (Doctor.DutySlot slot : nd.getDutySchedule()) {
+                    ex.getDutySchedule().add(slot);
+                }
+            }
         }
+
+        // Update consultations if any
         if (nd.getConsultations() != null && !nd.getConsultations().isEmpty()) {
-            // Replace or merge depending on business rule
-            ex.setConsultations(nd.getConsultations());
+            if (ex.getConsultations() == null) {
+                ex.setConsultations(nd.getConsultations());
+            } else {
+                for (Consultation c : nd.getConsultations()) {
+                    ex.getConsultations().add(c);
+                }
+            }
         }
+
         if (nd.getStatus() != null) {
             ex.setStatus(nd.getStatus());
         }
 
-        // Always overwrite availability unless you want optional control
+        // Always update availability flag
         ex.setIsAvailable(nd.isAvailable());
 
         return true;

@@ -60,7 +60,7 @@ public class DoctorUI {
             for (int i = 0; i < doctorCtrl.getSize(); i++) {
                 Doctor displayDuty = doctorCtrl.getDoctor(i);
                 displayDuty.displayDoctorSchedule(displayDuty);
-                System.out.println((i + 1) + ": " + doctorCtrl.getDoctor(i));
+                System.out.println("Doctor Index : " + (i + 1) + doctorCtrl.getDoctor(i));
             }
         }
     }
@@ -126,21 +126,54 @@ public class DoctorUI {
 
         adt.LinkedList<Doctor.DutySlot> dutySchedule = new adt.LinkedList<>();
 
-        System.out.print("Enter number of duty slots: ");
-        int numSlots = Integer.parseInt(sc.nextLine().trim());
+        System.out.print("Enter number of duty slots (or press Enter to skip): ");
+        String numSlotsStr = sc.nextLine().trim();
+        int numSlots = 0;
+        if (!numSlotsStr.isEmpty()) {
+            try {
+                numSlots = Integer.parseInt(numSlotsStr);
+            } catch (NumberFormatException e) {
+                System.out.println("❌ Invalid number. Skipping duty slots.");
+            }
+        }
 
         for (int i = 0; i < numSlots; i++) {
             System.out.println("Duty Slot " + (i + 1) + ":");
 
-            System.out.print("  Enter start date-time (yyyy-MM-ddTHH:mm): ");
-            String startStr = sc.nextLine().trim();
-            LocalDateTime start = LocalDateTime.parse(startStr);
-
-            System.out.print("  Enter end date-time (yyyy-MM-ddTHH:mm): ");
-            String endStr = sc.nextLine().trim();
-            LocalDateTime end = LocalDateTime.parse(endStr);
+            LocalDateTime start = null;
+            while (start == null) {
+                System.out.print("  Enter start date-time (yyyy-MM-ddTHH:mm) or press Enter to skip: ");
+                String startStr = sc.nextLine().trim();
+                if (startStr.isEmpty()) {
+                    System.out.println("Skipping this duty slot.");
+                    break;
+                }
+                try {
+                    start = LocalDateTime.parse(startStr);
+                } catch (Exception e) {
+                    System.out.println("Invalid format. Try again.");
+                }
+            }
+            if (start == null) {
+                continue; // skip this slot
+            }
+            LocalDateTime end = null;
+            while (end == null) {
+                System.out.print("  Enter end date-time (yyyy-MM-ddTHH:mm): ");
+                String endStr = sc.nextLine().trim();
+                try {
+                    end = LocalDateTime.parse(endStr);
+                    if (end.isBefore(start)) {
+                        System.out.println("❌ End time cannot be before start time.");
+                        end = null;
+                    }
+                } catch (Exception e) {
+                    System.out.println("❌ Invalid format. Try again.");
+                }
+            }
 
             dutySchedule.add(new Doctor.DutySlot(start, end));
+            System.out.println("✅ Duty slot added.");
         }
 
         d.setDutySchedule(dutySchedule);
@@ -148,6 +181,7 @@ public class DoctorUI {
         d.setIsAvailable(true);
         d.setConsultations(new adt.LinkedList<Consultation>());
         d.setStatus("Active");
+
         d.displayDoctorSchedule(d);
 
         System.out.println("\nDoctor added successfully!");

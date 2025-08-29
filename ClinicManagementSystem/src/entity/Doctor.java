@@ -56,7 +56,7 @@ public class Doctor {
 
     // Inside Doctor.java
     public boolean isAvailableAt(LocalDateTime time) {
-        // 1. Check if within duty schedule
+        //Check if within duty schedule
         boolean inDuty = false;
         if (dutySchedule != null && !dutySchedule.isEmpty()) {
             for (int i = 0; i < dutySchedule.size(); i++) {
@@ -68,7 +68,7 @@ public class Doctor {
             }
         }
         if (!inDuty) {
-            return false; // Not in duty hours
+            return false;
         }
 
         // 2. Check consultations overlap
@@ -231,7 +231,29 @@ public class Doctor {
     public String toString() {
         int dutyCount = dutySchedule != null ? dutySchedule.size() : 0;
         int consCount = consultations != null ? consultations.size() : 0;
-        return String.format("Doctor[%s] %s | %s | MMC:%s | Email:%s | Available:%s | Duties:%d | Consultations:%d | Status:%s",
-                doctorId, name, specialization, mmcNumber, email, isAvailable, dutyCount, consCount, status);
+
+        return String.format(
+                "\n---------------- Doctor Information ----------------\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "| %-15s : %-30s |\n"
+                + "-----------------------------------------------------\n",
+                "Doctor ID", doctorId,
+                "Name", name,
+                "Specialization", specialization,
+                "MMC Number", mmcNumber,
+                "Email", email,
+                "Gender", gender,
+                "Available", isAvailable ? "Yes" : "No",
+                "Duty Slots", dutyCount,
+                "Consultations", consCount,
+                "Status", status
+        );
     }
 }
