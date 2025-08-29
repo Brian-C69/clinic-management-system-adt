@@ -56,7 +56,6 @@ public class Doctor {
 
     // Inside Doctor.java
     public boolean isAvailableAt(LocalDateTime time) {
-        //Check if within duty schedule
         boolean inDuty = false;
         if (dutySchedule != null && !dutySchedule.isEmpty()) {
             for (int i = 0; i < dutySchedule.size(); i++) {
@@ -83,7 +82,7 @@ public class Doctor {
             }
         }
 
-        return true; // In duty hours and not occupied
+        return true;
     }
 
     public void displayDoctorSchedule(Doctor doctor) {
@@ -126,8 +125,6 @@ public class Doctor {
         return false; // Did not fit in any duty slot
     }
 
-    // ----------------- END INNER CLASS -----------------
-    // --- Constructors ---
     public Doctor() {
     }
 

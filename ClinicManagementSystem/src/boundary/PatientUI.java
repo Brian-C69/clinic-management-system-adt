@@ -40,15 +40,20 @@ public class PatientUI {
             choice = getValidatedInteger("");
 
             switch (choice) {
-                case 1 -> displayAllPatients();
+                case 1 ->
+                    displayAllPatients();
                 case 2 -> {
                     Patient p = inputPatientDetails();
                     patientCtrl.addPatient(p);
                 }
-                case 3 -> updatePatient();
-                case 4 -> deletePatient();
-                case 5 -> searchPatient();
-                case 6 -> filterPatient();
+                case 3 ->
+                    updatePatient();
+                case 4 ->
+                    deletePatient();
+                case 5 ->
+                    searchPatient();
+                case 6 ->
+                    filterPatient();
                 case 7 -> {
                     Patient next = patientCtrl.nextPatient();
                     if (next != null) {
@@ -73,8 +78,10 @@ public class PatientUI {
                         System.out.println("No patients in queue.");
                     }
                 }
-                case 0 -> System.out.println("Exiting Patient Management...");
-                default -> System.out.println("Invalid choice.");
+                case 0 ->
+                    System.out.println("Exiting Patient Management...");
+                default ->
+                    System.out.println("Invalid choice.");
             }
         } while (choice != 0);
     }
@@ -137,7 +144,9 @@ public class PatientUI {
         System.out.print("Choose search option: ");
 
         int searchChoice = getValidatedInteger("");
-        if (searchChoice == 0) return;
+        if (searchChoice == 0) {
+            return;
+        }
 
         System.out.print("Enter search keyword: ");
         String keyword = sc.nextLine();
@@ -176,8 +185,10 @@ public class PatientUI {
                     System.out.println(results.get(i));
                 }
             }
-            case 0 -> System.out.println("Returning back to menu...");
-            default -> System.out.println("Invalid choice.");
+            case 0 ->
+                System.out.println("Returning back to menu...");
+            default ->
+                System.out.println("Invalid choice.");
         }
     }
 

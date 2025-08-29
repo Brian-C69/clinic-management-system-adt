@@ -1,9 +1,11 @@
 // File: boundary/DoctorUI.java
 package boundary;
 
+import adt.ListInterface;
 import control.MaintainDoctor;
 import entity.Consultation;
 import entity.Doctor;
+import entity.Patient;
 import java.time.LocalDateTime;
 
 import java.util.Scanner;
@@ -44,6 +46,10 @@ public class DoctorUI {
                     updateDoctor();
                 case 4 ->
                     deleteDoctor();
+                case 5 ->
+                    searchDoctor();
+                case 6 ->
+                    filterDoctor();
                 case 0 ->
                     System.out.println("Exiting Doctor Management...");
                 default ->
@@ -133,7 +139,7 @@ public class DoctorUI {
             try {
                 numSlots = Integer.parseInt(numSlotsStr);
             } catch (NumberFormatException e) {
-                System.out.println("❌ Invalid number. Skipping duty slots.");
+                System.out.println("Invalid number. Skipping duty slots.");
             }
         }
 
@@ -164,16 +170,16 @@ public class DoctorUI {
                 try {
                     end = LocalDateTime.parse(endStr);
                     if (end.isBefore(start)) {
-                        System.out.println("❌ End time cannot be before start time.");
+                        System.out.println("End time cannot be before start time.");
                         end = null;
                     }
                 } catch (Exception e) {
-                    System.out.println("❌ Invalid format. Try again.");
+                    System.out.println("Invalid format. Try again.");
                 }
             }
 
             dutySchedule.add(new Doctor.DutySlot(start, end));
-            System.out.println("✅ Duty slot added.");
+            System.out.println("Duty slot added.");
         }
 
         d.setDutySchedule(dutySchedule);
@@ -186,6 +192,63 @@ public class DoctorUI {
 
         System.out.println("\nDoctor added successfully!");
         return d;
+    }
+
+    private void searchDoctor() {
+        System.out.println("----------Search Options----------");
+        System.out.println("1. Doctor ID");
+        System.out.println("2. Doctor Name");
+        System.out.println("0. Back to Main Menu");
+        System.out.print("Choose search option: ");
+
+        int searchChoice = getValidatedInteger("");
+        if (searchChoice == 0) {
+            return;
+        }
+
+        System.out.print("Enter search keyword: ");
+        String keyword = sc.nextLine();
+
+        ListInterface<Doctor> foundPatients = doctorCtrl.linearSearch(searchChoice, keyword);
+        if (foundPatients.isEmpty()) {
+            System.out.println("No patients found.");
+        } else {
+            for (int i = 0; i < foundPatients.size(); i++) {
+                System.out.println(foundPatients.get(i));
+            }
+        }
+    }
+
+    private void filterDoctor() {
+        System.out.println("--- Filter Patients ---");
+        System.out.println("1. Filter by Doctor Gender");
+        System.out.println("2. Filter by Doctor Availablilty");
+        System.out.println("0. Back to Main Menu");
+        System.out.println("Please Choose The Following Filter Option :");
+
+        int filterChoice = getValidatedInteger("");
+        switch (filterChoice) {
+            case 1 -> {
+                System.out.print("Please enter gender (M | F): ");
+                String gender = sc.nextLine();
+                ListInterface<Doctor> results = doctorCtrl.filterByGender(gender);
+                for (int i = 0; i < results.size(); i++) {
+                    System.out.println(results.get(i));
+                }
+
+            }
+            case 2 -> {
+                boolean yes = getValidatedInteger("Filter active patients? (1 = Yes, 0 = No): ") == 1;
+                ListInterface<Doctor> results = doctorCtrl.filterByAvailability(yes);
+                for (int i = 0; i < results.size(); i++) {
+                    System.out.println(results.get(i));
+                }
+            }
+            case 0 ->
+                System.out.println("Returning back to menu...");
+            default ->
+                System.out.println("Invalid choice.");
+        }
     }
 
     // ========= Input Helpers =========

@@ -92,6 +92,50 @@ public class MaintainDoctor {
         }
         return doctorList.remove(index);
     }
+    
+     // filters/search
+    public ListInterface<Doctor> filterByGender(String gender) {
+        ListInterface<Doctor> r = new LinkedList<>();
+        for (int i = 0; i < doctorList.size(); i++) {
+            Doctor p = doctorList.get(i);
+            if (p.getGender()!= null && p.getGender().equalsIgnoreCase(gender)) {
+                r.add(p);
+            }
+        }
+        return r;
+    }
+
+    public ListInterface<Doctor> filterByAvailability(boolean active) {
+        ListInterface<Doctor> r = new LinkedList<>();
+        for (int i = 0; i < doctorList.size(); i++) {
+            Doctor p = doctorList.get(i);
+            if (p.isAvailable()== active) {
+                r.add(p);
+            }
+        }
+        return r;
+    }
+
+    public ListInterface<Doctor> linearSearch(int option, String keyword) {
+        ListInterface<Doctor> r = new LinkedList<>();
+        String key = keyword == null ? "" : keyword.toLowerCase();
+        for (int i = 0; i < doctorList.size(); i++) {
+            Doctor p = doctorList.get(i);
+            switch (option) {
+                case 1 -> {
+                    if (p.getDoctorId()!= null && p.getDoctorId().equalsIgnoreCase(keyword)) {
+                        r.add(p);
+                    }
+                }
+                case 2 -> {
+                    if (p.getName() != null && p.getName().toLowerCase().contains(key)) {
+                        r.add(p);
+                    }
+                }
+            }
+        }
+        return r;
+    }
 
     public Doctor getDoctor(int index) {
         return (index >= 0 && index < doctorList.size()) ? doctorList.get(index) : null;
