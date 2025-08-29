@@ -2,6 +2,7 @@ package control;
 
 import adt.ListInterface;
 import adt.LinkedList;
+import boundary.ClinicUI;
 import boundary.ConsultationUI;
 import boundary.PatientUI;
 import boundary.DoctorUI;
@@ -309,5 +310,9 @@ public class ConsultationManager {
 
         selected.getTreatments().add(treatment);
         System.out.println("✅ Treatment added to consultation " + selected.getConsultationId());
+    }
+    
+    public static void main(String[] args) {
+        new ClinicUI().run();
     }
 }

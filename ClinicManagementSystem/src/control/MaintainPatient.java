@@ -2,6 +2,7 @@ package control;
 
 import adt.LinkedList;
 import adt.ListInterface;
+import boundary.ClinicUI;
 import entity.Patient;
 
 public class MaintainPatient {
@@ -171,5 +172,9 @@ public class MaintainPatient {
             }
         }
         return r;
+    }
+    
+    public static void main(String[] args) {
+        new ClinicUI().run();
     }
 }

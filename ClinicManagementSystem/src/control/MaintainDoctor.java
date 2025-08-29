@@ -2,6 +2,7 @@ package control;
 
 import adt.LinkedList;
 import adt.ListInterface;
+import boundary.ClinicUI;
 import entity.Doctor;
 import entity.Consultation;
 
@@ -147,5 +148,9 @@ public class MaintainDoctor {
 
     public int getSize() {
         return doctorList.size();
+    }
+    
+    public static void main(String[] args) {
+        new ClinicUI().run();
     }
 }

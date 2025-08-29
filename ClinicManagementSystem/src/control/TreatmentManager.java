@@ -2,6 +2,7 @@ package control;
 
 import adt.LinkedList;
 import adt.ListInterface;
+import boundary.ClinicUI;
 import entity.MedicalTreatment;
 
 public class TreatmentManager {
@@ -43,5 +44,9 @@ public class TreatmentManager {
 
     public int getTreatmentCount() {
         return treatmentList.size();
+    }
+    
+    public static void main(String[] args) {
+        new ClinicUI().run();
     }
 }
