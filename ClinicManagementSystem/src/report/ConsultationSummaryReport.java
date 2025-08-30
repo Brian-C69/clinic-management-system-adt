@@ -1,86 +1,129 @@
-// File: report/ConsultationSummaryReport.java
 package report;
 
 import adt.ListInterface;
+import adt.LinkedList;
 import entity.Consultation;
-import entity.MedicalTreatment;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
 
 public class ConsultationSummaryReport {
 
-    public static void generate(ListInterface<Consultation> consultations) {
-        if (consultations == null || consultations.isEmpty()) {
-            System.out.println("No consultation data to summarize.");
+    private final ListInterface<Consultation> consultationList;
+
+    public ConsultationSummaryReport(ListInterface<Consultation> consultationList) {
+        this.consultationList = consultationList;
+    }
+
+    public void generateReport() {
+        if (consultationList.isEmpty()) {
+            System.out.println("No consultations available for report.");
             return;
         }
 
-        int totalConsultations = consultations.size();
-        int totalTreatments = 0;
-        double totalFees = 0;
-        int followUpCount = 0;
+        // === Frequency collections ===
+        ListInterface<String> doctorNames = new LinkedList<>();
+        ListInterface<Integer> doctorCounts = new LinkedList<>();
 
-        Map<String, Integer> statusMap = new HashMap<>();
-        Map<String, Integer> doctorMap = new HashMap<>();
-        Map<String, Integer> patientMap = new HashMap<>();
+        ListInterface<String> symptomNames = new LinkedList<>();
+        ListInterface<Integer> symptomCounts = new LinkedList<>();
 
-        for (int i = 0; i < consultations.size(); i++) {
-            Consultation c = consultations.get(i);
+        for (Consultation c : consultationList) {
+            String docName = c.getDoctor().getName();
+            String symptom = c.getSymptoms();
 
-            if (c.getTreatments() != null) {
-                totalTreatments += c.getTreatments().size();
+            // Count doctors
+            boolean doctorFound = false;
+            for (int i = 0; i < doctorNames.size(); i++) {
+                if (doctorNames.get(i).equalsIgnoreCase(docName)) {
+                    doctorCounts.replace(i, doctorCounts.get(i) + 1);
+                    doctorFound = true;
+                    break;
+                }
+            }
+            if (!doctorFound) {
+                doctorNames.add(docName);
+                doctorCounts.add(1);
             }
 
-            totalFees += c.getConsultationFee();
-            if (c.isFollowUp()) followUpCount++;
-
-            String status = c.getStatus();
-            statusMap.put(status, statusMap.getOrDefault(status, 0) + 1);
-
-            String doctorName = c.getDoctor().getName();
-            doctorMap.put(doctorName, doctorMap.getOrDefault(doctorName, 0) + 1);
-
-            String patientName = c.getPatient().getName();
-            patientMap.put(patientName, patientMap.getOrDefault(patientName, 0) + 1);
+            // Count symptoms
+            boolean symptomFound = false;
+            for (int i = 0; i < symptomNames.size(); i++) {
+                if (symptomNames.get(i).equalsIgnoreCase(symptom)) {
+                    symptomCounts.replace(i, symptomCounts.get(i) + 1);
+                    symptomFound = true;
+                    break;
+                }
+            }
+            if (!symptomFound) {
+                symptomNames.add(symptom);
+                symptomCounts.add(1);
+            }
         }
 
-        double avgFee = totalFees / totalConsultations;
-        double avgTreatmentPerConsult = (double) totalTreatments / totalConsultations;
+        // === Print Header ===
+        System.out.println("\n               TUNKU ABDUL RAHMAN UNIVERSITY OF MANAGEMENT AND TECHNOLOGY");
+        System.out.println("                          CONSULTATION MODULE SUBSYSTEM");
+        System.out.println("                        -----------------------------------");
+        System.out.println("                         SUMMARY OF CONSULTATION REPORT");
+        System.out.printf("Generated at: %s\n", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        System.out.println("\n===============================================================================");
+        System.out.println("                          CONFIDENTIAL MEDICAL REPORT");
+        System.out.println("===============================================================================\n");
 
-        System.out.println("======================================================================");
-        System.out.println(" TUNKU ABDUL RAHMAN UNIVERSITY OF MANAGEMENT AND TECHNOLOGY");
-        System.out.println("                CLINIC MODULE SUBSYSTEM");
-        System.out.println("              CONSULTATION SUMMARY REPORT");
-        System.out.println("======================================================================");
-        System.out.println("Generated at: " + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
-        System.out.println("----------------------------------------------------------------------");
+        // === Doctor Frequency Table ===
+        System.out.println("| Doctor Name           | Total Consultations |");
+        System.out.println("|-----------------------|---------------------|");
+        for (int i = 0; i < doctorNames.size(); i++) {
+            System.out.printf("| %-21s | %-19d |\n", doctorNames.get(i), doctorCounts.get(i));
+        }
 
-        System.out.printf("%-30s: %d\n", "Total Consultations", totalConsultations);
-        System.out.printf("%-30s: %d\n", "Total Treatments Given", totalTreatments);
-        System.out.printf("%-30s: %d\n", "Follow-up Consultations", followUpCount);
-        System.out.printf("%-30s: %.2f\n", "Total Fees Collected", totalFees);
-        System.out.printf("%-30s: %.2f\n", "Average Fee per Consultation", avgFee);
-        System.out.printf("%-30s: %.2f\n", "Average Treatments per Consultation", avgTreatmentPerConsult);
+        System.out.println();
 
-        System.out.println("\n--- Consultations by Status ---");
-        statusMap.forEach((k, v) -> System.out.printf("%-20s: %d\n", k, v));
+        // === Symptom Frequency Table ===
+        System.out.println("| Symptom               | Frequency           |");
+        System.out.println("|-----------------------|---------------------|");
+        for (int i = 0; i < symptomNames.size(); i++) {
+            System.out.printf("| %-21s | %-19d |\n", symptomNames.get(i), symptomCounts.get(i));
+        }
 
-        System.out.println("\n--- Top Doctors by Consultation Count ---");
-        doctorMap.entrySet().stream()
-            .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
-            .limit(5)
-            .forEach(entry -> System.out.printf("%-20s: %d\n", entry.getKey(), entry.getValue()));
+        System.out.println("\n===============================================================================");
+        System.out.println("\n                GRAPHICAL REPRESENTATION OF CONSULTATION MODULE\n");
 
-        System.out.println("\n--- Top Patients by Consultation Count ---");
-        patientMap.entrySet().stream()
-            .sorted((a, b) -> b.getValue().compareTo(a.getValue()))
-            .limit(5)
-            .forEach(entry -> System.out.printf("%-20s: %d\n", entry.getKey(), entry.getValue()));
+        // === Simple Text Graph for Top Doctor ===
+        System.out.println("Top Consultations per Doctor");
+        int max = 0;
+        for (int i = 0; i < doctorCounts.size(); i++) {
+            if (doctorCounts.get(i) > max) max = doctorCounts.get(i);
+        }
 
-        System.out.println("\n======================================================================");
-        System.out.println(" END OF CONSULTATION SUMMARY REPORT");
-        System.out.println("======================================================================");
+        for (int level = max; level > 0; level--) {
+            System.out.printf("%2d |", level);
+            for (int i = 0; i < doctorCounts.size(); i++) {
+                if (doctorCounts.get(i) >= level) {
+                    System.out.print("   █   ");
+                } else {
+                    System.out.print("       ");
+                }
+            }
+            System.out.println();
+        }
+
+        System.out.print(" 0 +");
+        for (int i = 0; i < doctorCounts.size(); i++) {
+            System.out.print("-------");
+        }
+        System.out.println("\n     ");
+
+        for (int i = 0; i < doctorNames.size(); i++) {
+            System.out.printf("%-7s", doctorNames.get(i).split(" ")[1]);
+        }
+        System.out.println("\nEND OF REPORT");
+        System.out.println("===============================================================================");
     }
+    
+    public static void print(ListInterface<Consultation> consultationList) {
+    ConsultationSummaryReport report = new ConsultationSummaryReport(consultationList);
+    report.generateReport();
+}
 }

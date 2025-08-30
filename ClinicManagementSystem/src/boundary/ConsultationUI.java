@@ -25,6 +25,7 @@ public class ConsultationUI {
         System.out.println("5. Add Treatment to Consultation");
         System.out.println("6. Search Consultation by Symptoms");
         System.out.println("7. Filter Consultation by Doctor ID");
+        System.out.println("8. Generate Consultation Summary Report");
         System.out.println("0. Exit");
         System.out.print("Enter choice: ");
         return readInt();

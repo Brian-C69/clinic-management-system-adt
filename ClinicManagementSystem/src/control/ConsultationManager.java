@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+import report.ConsultationSummaryReport;
 
 public class ConsultationManager {
 
@@ -61,6 +62,7 @@ public class ConsultationManager {
                 case 5 -> addTreatmentToConsultation();
                 case 6 -> searchBySymptoms();
                 case 7 -> filterByDoctorId();
+                case 8 -> ConsultationSummaryReport.print(consultationList);
                 default -> System.out.println("Invalid choice.");
             }
         } while (choice != 0);
