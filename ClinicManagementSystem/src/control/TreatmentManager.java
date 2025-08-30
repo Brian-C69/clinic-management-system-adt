@@ -95,6 +95,10 @@ public class TreatmentManager {
         }
         return results;
     }
+    
+    public ListInterface<MedicalTreatment> getAllTreatments() {
+        return treatmentList;
+    }
 
     // Entry point
     public static void main(String[] args) {

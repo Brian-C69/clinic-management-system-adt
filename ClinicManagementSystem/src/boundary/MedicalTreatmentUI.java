@@ -33,21 +33,27 @@ public class MedicalTreatmentUI {
             System.out.println("4. Delete treatment");
             System.out.println("5. Search treatment by medicine");
             System.out.println("6. Filter treatment by doctor ID");
+            System.out.println("7. Generate treatment summary report");
             System.out.println("0. Back");
             System.out.print("Enter choice: ");
             choice = readInt();
 
             switch (choice) {
-                case 1 -> treatCtrl.displayAllTreatments();
+                case 1 ->
+                    treatCtrl.displayAllTreatments();
                 case 2 -> {
                     if (patientCtrl.getSize() == 0 || doctorCtrl.getSize() == 0) {
                         System.out.println("⚠ Need at least 1 patient and 1 doctor before adding treatment.");
                         break;
                     }
                     Patient patient = selectPatient(patientCtrl);
-                    if (patient == null) break;
+                    if (patient == null) {
+                        break;
+                    }
                     Doctor doctor = selectDoctor(doctorCtrl);
-                    if (doctor == null) break;
+                    if (doctor == null) {
+                        break;
+                    }
                     MedicalTreatment t = createTreatment(patient, doctor);
                     treatCtrl.addTreatment(t);
                 }
@@ -80,8 +86,9 @@ public class MedicalTreatmentUI {
                 case 5 -> {
                     String keyword = readLine("Enter medicine keyword to search: ");
                     var results = treatCtrl.searchByMedicine(keyword);
-                    if (results.isEmpty()) System.out.println("No matching treatments found.");
-                    else {
+                    if (results.isEmpty()) {
+                        System.out.println("No matching treatments found.");
+                    } else {
                         System.out.println("\n--- Search Results ---");
                         for (int i = 0; i < results.size(); i++) {
                             System.out.println((i + 1) + ". " + results.get(i));
@@ -91,16 +98,26 @@ public class MedicalTreatmentUI {
                 case 6 -> {
                     String docId = readLine("Enter doctor ID to filter: ");
                     var results = treatCtrl.filterByDoctorId(docId);
-                    if (results.isEmpty()) System.out.println("No treatments found for Doctor ID: " + docId);
-                    else {
+                    if (results.isEmpty()) {
+                        System.out.println("No treatments found for Doctor ID: " + docId);
+                    } else {
                         System.out.println("\n--- Filtered Treatments ---");
                         for (int i = 0; i < results.size(); i++) {
                             System.out.println((i + 1) + ". " + results.get(i));
                         }
                     }
                 }
-                case 0 -> System.out.println("Returning to main menu...");
-                default -> System.out.println("❌ Invalid option.");
+                case 7 -> {
+                    if (treatCtrl.getTreatmentCount() == 0) {
+                        System.out.println("No treatments to report.");
+                        break;
+                    }
+                    report.TreatmentSummaryReport.generate(treatCtrl.getAllTreatments());
+                }
+                case 0 ->
+                    System.out.println("Returning to main menu...");
+                default ->
+                    System.out.println("❌ Invalid option.");
             }
         } while (choice != 0);
     }
@@ -143,9 +160,13 @@ public class MedicalTreatmentUI {
             System.out.printf("%d. %s (%s)%n", i + 1, p.getName(), p.getPatientID());
         }
         int ix = readInt("Enter patient index (1-n, 0 to cancel): ");
-        if (ix == 0) return null;
+        if (ix == 0) {
+            return null;
+        }
         Patient p = patientCtrl.getPatient(ix - 1);
-        if (p == null) System.out.println("❌ Invalid patient index.");
+        if (p == null) {
+            System.out.println("❌ Invalid patient index.");
+        }
         return p;
     }
 
@@ -156,9 +177,13 @@ public class MedicalTreatmentUI {
             System.out.printf("%d. %s (%s)%n", i + 1, d.getName(), d.getDoctorId());
         }
         int ix = readInt("Enter doctor index (1-n, 0 to cancel): ");
-        if (ix == 0) return null;
+        if (ix == 0) {
+            return null;
+        }
         Doctor d = doctorCtrl.getDoctor(ix - 1);
-        if (d == null) System.out.println("❌ Invalid doctor index.");
+        if (d == null) {
+            System.out.println("❌ Invalid doctor index.");
+        }
         return d;
     }
 
@@ -177,7 +202,9 @@ public class MedicalTreatmentUI {
 
     private int readInt(String prompt) {
         while (true) {
-            if (prompt != null) System.out.print(prompt);
+            if (prompt != null) {
+                System.out.print(prompt);
+            }
             try {
                 return Integer.parseInt(scanner.nextLine().trim());
             } catch (NumberFormatException e) {
@@ -201,8 +228,12 @@ public class MedicalTreatmentUI {
         while (true) {
             System.out.print(prompt);
             String input = scanner.nextLine().trim().toLowerCase();
-            if (input.matches("y|yes|true|1")) return true;
-            if (input.matches("n|no|false|0")) return false;
+            if (input.matches("y|yes|true|1")) {
+                return true;
+            }
+            if (input.matches("n|no|false|0")) {
+                return false;
+            }
             System.out.println("❌ Please enter y/n.");
         }
     }

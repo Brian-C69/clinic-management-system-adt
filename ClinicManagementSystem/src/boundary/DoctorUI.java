@@ -9,6 +9,7 @@ import entity.Patient;
 import java.time.LocalDateTime;
 
 import java.util.Scanner;
+import report.DoctorSummaryReport;
 
 public class DoctorUI {
 
@@ -34,6 +35,7 @@ public class DoctorUI {
             System.out.println("4. Delete Doctor");
             System.out.println("5. Search Doctor");
             System.out.println("6. Filter Doctor");
+            System.out.println("7. Doctor Summary Report");
             System.out.println("0. Return To Main Menu");
             System.out.print("Enter choice: ");
             choice = getValidatedInteger("");
@@ -51,6 +53,8 @@ public class DoctorUI {
                     searchDoctor();
                 case 6 ->
                     filterDoctor();
+                    case 7 -> 
+                        DoctorSummaryReport.generate(doctorCtrl.getAllDoctors());
                 case 0 ->
                     System.out.println("Exiting Doctor Management...");
                 default ->

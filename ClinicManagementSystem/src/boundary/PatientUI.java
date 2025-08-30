@@ -15,9 +15,10 @@ public class PatientUI {
     private MaintainPatient patientCtrl;
 
     public PatientUI(MaintainPatient patientCtrl, Scanner sc) {
-    this.patientCtrl = patientCtrl;
-    this.sc = sc;
-}
+        this.patientCtrl = patientCtrl;
+        this.sc = sc;
+    }
+
     public MaintainPatient getController() {
         return patientCtrl;
     }
@@ -35,6 +36,7 @@ public class PatientUI {
             System.out.println("7. Call Next Patient");
             System.out.println("8. Cancel Patient Queue");
             System.out.println("9. Peek Next Queue Patient");
+            System.out.println("10. Generate Patient Summary Report");
             System.out.println("0. Exit");
             System.out.print("Enter choice: ");
             choice = getValidatedInteger("");
@@ -76,6 +78,13 @@ public class PatientUI {
                         System.out.println("Next patient: " + next.getQueueNumber() + " | " + next.getName());
                     } else {
                         System.out.println("No patients in queue.");
+                    }
+                }
+                case 10 -> {
+                    if (patientCtrl.getSize() == 0) {
+                        System.out.println("No patients to report.");
+                    } else {
+                        report.PatientSummaryReport.generate(patientCtrl.getAllPatients());
                     }
                 }
                 case 0 ->

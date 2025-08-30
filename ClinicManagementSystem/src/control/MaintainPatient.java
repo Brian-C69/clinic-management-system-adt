@@ -173,7 +173,7 @@ public class MaintainPatient {
         }
         return r;
     }
-    
+
     public static void main(String[] args) {
         new ClinicUI().run();
     }
