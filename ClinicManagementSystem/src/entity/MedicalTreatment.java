@@ -113,8 +113,8 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
     public String toString() {
         String pn = patient != null ? patient.getName() : "-";
         String dn = doctor != null ? doctor.getName() : "-";
-        return String.format("Treatment[%s %s, Diagnosis=%s] start=%s | patient=%s | doctor=%s",
-                medicine, dosage, diagnosis, startDate, pn, dn);
+        return String.format("Treatment[%s %s, Diagnosis=%s] Instruction: %s | start=%s | patient=%s | doctor=%s",
+                medicine, dosage, diagnosis, instructions, startDate, pn, dn);
     }
 
 }
