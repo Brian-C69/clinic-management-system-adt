@@ -1,9 +1,9 @@
 package control;
+
 /**
  *
  * @author Bryan Kok Fong Wen
  */
-
 import adt.ListInterface;
 import adt.LinkedList;
 import boundary.*;
@@ -26,11 +26,11 @@ public class ConsultationManager {
     private final Scanner sc;
 
     public ConsultationManager(ListInterface<Consultation> consultStore,
-                               MaintainPatient patientCtrl,
-                               PatientUI patientUI,
-                               MaintainDoctor doctorCtrl,
-                               DoctorUI doctorUI,
-                               Scanner sc) {
+            MaintainPatient patientCtrl,
+            PatientUI patientUI,
+            MaintainDoctor doctorCtrl,
+            DoctorUI doctorUI,
+            Scanner sc) {
         this.consultationList = consultStore != null ? consultStore : new LinkedList<>();
         this.patientCtrl = patientCtrl;
         this.patientUI = patientUI;
@@ -58,26 +58,40 @@ public class ConsultationManager {
         do {
             choice = consultUI.getMenuChoice();
             switch (choice) {
-                case 0 -> System.out.println("Exiting Consultation Management...");
-                case 1 -> displayAllConsultations();
-                case 2 -> addConsultation();
-                case 3 -> updateConsultation();
-                case 4 -> deleteConsultation();
-                case 5 -> addTreatmentToConsultation();
-                case 6 -> searchBySymptoms();
-                case 7 -> filterByDoctorId();
-                case 8 -> ConsultationSummaryReport.print(consultationList);
-                default -> System.out.println("Invalid choice.");
+                case 0 ->
+                    System.out.println("Exiting Consultation Management...");
+                case 1 ->
+                    displayAllConsultations();
+                case 2 ->
+                    addConsultation();
+                case 3 ->
+                    updateConsultation();
+                case 4 ->
+                    deleteConsultation();
+                case 5 ->
+                    addTreatmentToConsultation();
+                case 6 ->
+                    searchBySymptoms();
+                case 7 ->
+                    filterByDoctorId();
+                case 8 ->
+                    ConsultationSummaryReport.print(consultationList);
+                default ->
+                    System.out.println("Invalid choice.");
             }
         } while (choice != 0);
     }
 
     public void addConsultation() {
         Patient patient = choosePatient();
-        if (patient == null) return;
+        if (patient == null) {
+            return;
+        }
 
         Doctor doctor = chooseDoctor();
-        if (doctor == null) return;
+        if (doctor == null) {
+            return;
+        }
 
         LocalDateTime start;
         int duration;
@@ -87,7 +101,9 @@ public class ConsultationManager {
             try {
                 start = LocalDateTime.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
                 duration = readInt("Enter consultation duration (minutes): ");
-                if (doctor.isAvailable(start, duration)) break;
+                if (doctor.isAvailable(start, duration)) {
+                    break;
+                }
                 System.out.println("❌ Doctor is not available at that time.");
             } catch (Exception e) {
                 System.out.println("❌ Invalid date/time format.");
@@ -98,7 +114,9 @@ public class ConsultationManager {
         while (true) {
             System.out.print("Enter Consultation ID (format: C001): ");
             consultationId = sc.nextLine().trim();
-            if (consultationId.matches("^C\\d{3}$") && findById(consultationId) == null) break;
+            if (consultationId.matches("^C\\d{3}$") && findById(consultationId) == null) {
+                break;
+            }
             System.out.println("❌ Invalid or duplicate ID.");
         }
 
@@ -123,12 +141,22 @@ public class ConsultationManager {
     public void displayAllConsultations() {
         if (consultationList.isEmpty()) {
             System.out.println("No consultations found.");
-        } else {
-            System.out.println("\n--- All Consultations ---");
-            for (int i = 0; i < consultationList.size(); i++) {
-                System.out.println((i + 1) + " -> " + consultationList.get(i));
-            }
+            return;
         }
+
+        String rowFormat = "| %-10s | %-16s | %-25s | %-25s | %-15s | %-20s | %-8s | %-10s | %-16s |";
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(String.format(
+                rowFormat,
+                "Cons ID", "Date & Time", "Patient", "Doctor", "Symptoms", "Notes", "Duration", "Status", "Next Appointment"
+        ));
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+        for (int i = 0; i < consultationList.size(); i++) {
+            System.out.println(consultationList.get(i).toString());
+        }
+
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public void updateConsultation() {
@@ -200,7 +228,9 @@ public class ConsultationManager {
                 found = true;
             }
         }
-        if (!found) System.out.println("No consultations matched your search.");
+        if (!found) {
+            System.out.println("No consultations matched your search.");
+        }
     }
 
     public void filterByDoctorId() {
@@ -214,12 +244,16 @@ public class ConsultationManager {
                 found = true;
             }
         }
-        if (!found) System.out.println("No consultations found for this doctor.");
+        if (!found) {
+            System.out.println("No consultations found for this doctor.");
+        }
     }
 
     private Consultation findById(String id) {
         for (int i = 0; i < consultationList.size(); i++) {
-            if (consultationList.get(i).getConsultationId().equalsIgnoreCase(id)) return consultationList.get(i);
+            if (consultationList.get(i).getConsultationId().equalsIgnoreCase(id)) {
+                return consultationList.get(i);
+            }
         }
         return null;
     }
@@ -256,7 +290,9 @@ public class ConsultationManager {
             try {
                 System.out.print(prompt);
                 index = Integer.parseInt(sc.nextLine().trim());
-                if ((allowZero && index == 0) || (index >= 1 && index <= maxSize)) return index;
+                if ((allowZero && index == 0) || (index >= 1 && index <= maxSize)) {
+                    return index;
+                }
                 System.out.println("❌ Enter 1.." + maxSize + (allowZero ? " or 0" : ""));
             } catch (NumberFormatException e) {
                 System.out.println("❌ Invalid number.");
@@ -268,7 +304,9 @@ public class ConsultationManager {
         while (true) {
             System.out.print(prompt);
             String s = sc.nextLine().trim();
-            if (!s.isEmpty()) return s;
+            if (!s.isEmpty()) {
+                return s;
+            }
             System.out.println("❌ Input cannot be empty!");
         }
     }
@@ -277,8 +315,12 @@ public class ConsultationManager {
         while (true) {
             System.out.print(prompt);
             String s = sc.nextLine().trim().toLowerCase();
-            if (s.matches("y|yes|1|true|t")) return true;
-            if (s.matches("n|no|0|false|f")) return false;
+            if (s.matches("y|yes|1|true|t")) {
+                return true;
+            }
+            if (s.matches("n|no|0|false|f")) {
+                return false;
+            }
             System.out.println("Please answer y/n.");
         }
     }
@@ -309,7 +351,9 @@ public class ConsultationManager {
         while (true) {
             System.out.print(prompt);
             String s = sc.nextLine().trim();
-            if (s.isEmpty()) return null;
+            if (s.isEmpty()) {
+                return null;
+            }
             try {
                 return LocalDate.parse(s);
             } catch (Exception e) {

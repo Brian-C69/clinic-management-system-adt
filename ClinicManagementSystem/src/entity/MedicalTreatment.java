@@ -1,5 +1,6 @@
 // File: entity/MedicalTreatment.java
 package entity;
+
 /**
  *
  * @author Choong Yun Xian Brian
@@ -114,10 +115,25 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
 
     @Override
     public String toString() {
-        String pn = patient != null ? patient.getName() : "-";
-        String dn = doctor != null ? doctor.getName() : "-";
-        return String.format("Treatment[%s %s, Diagnosis=%s] Instruction: %s | start=%s | patient=%s | doctor=%s",
-                medicine, dosage, diagnosis, instructions, startDate, pn, dn);
+        String patientStr = patient != null ? patient.getName() : "-";
+        String doctorStr = doctor != null ? doctor.getName() : "-";
+
+        // Truncate long strings to fit table neatly
+        String medStr = medicine != null && medicine.length() > 15 ? medicine.substring(0, 12) + "..." : medicine;
+        String dosageStr = dosage != null && dosage.length() > 10 ? dosage.substring(0, 7) + "..." : dosage;
+        String diagStr = diagnosis != null && diagnosis.length() > 20 ? diagnosis.substring(0, 17) + "..." : diagnosis;
+        String instrStr = instructions != null && instructions.length() > 25 ? instructions.substring(0, 22) + "..." : instructions;
+
+        return String.format(
+                "| %-15s | %-10s | %-20s | %-20s | %-20s | %-24s | %-17s |",
+                medStr,
+                dosageStr,
+                diagStr != null ? diagStr : "-",
+                instrStr != null ? instrStr : "-",
+                startDate != null ? startDate.toString() : "-",
+                patientStr,
+                doctorStr
+        );
     }
 
 }

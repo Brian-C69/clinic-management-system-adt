@@ -1,4 +1,5 @@
 package control;
+
 /**
  *
  * @author Choong Yun Xian Brian
@@ -43,9 +44,20 @@ public class TreatmentManager {
             System.out.println("No treatments found.");
             return;
         }
+
+        String rowFormat = "| %-15s | %-10s | %-20s | %-25s | %-15s | %-15s | %-20s |";
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(String.format(
+                rowFormat,
+                "Medicine", "Dosage", "Diagnosis", "Instructions", "Start Date", "Patient", "Doctor"
+        ));
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------");
+
         for (int i = 0; i < treatmentList.size(); i++) {
-            System.out.printf("%2d -> %s%n", i + 1, treatmentList.get(i));
+            System.out.println(treatmentList.get(i).toString());
         }
+
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
     // Get treatment by index
@@ -77,7 +89,7 @@ public class TreatmentManager {
         return treatmentList.size();
     }
 
-    public ListInterface <MedicalTreatment> searchByMedicine(String keyword) {
+    public ListInterface<MedicalTreatment> searchByMedicine(String keyword) {
         ListInterface<MedicalTreatment> results = new LinkedList<>();
         for (int i = 0; i < treatmentList.size(); i++) {
             MedicalTreatment t = treatmentList.get(i);
@@ -98,7 +110,7 @@ public class TreatmentManager {
         }
         return results;
     }
-    
+
     public ListInterface<MedicalTreatment> getAllTreatments() {
         return treatmentList;
     }

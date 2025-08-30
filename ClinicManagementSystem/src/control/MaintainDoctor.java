@@ -1,5 +1,11 @@
 package control;
 
+/**
+ *
+ * @author Christian Lau Zi Xian
+ */
+
+
 import adt.LinkedList;
 import adt.ListInterface;
 import boundary.ClinicUI;

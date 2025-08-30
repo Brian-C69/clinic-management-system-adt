@@ -314,7 +314,7 @@ public class ClinicInitializer {
         d19.setEmail("adrian.lee@clinic.com");
         d19.setGender("M");
         d19.setDutySchedule(new LinkedList<>());
-        d19.setIsAvailable(true);
+        d19.setIsAvailable(false);
         d19.setConsultations(new LinkedList<>());
         d19.setStatus("Active");
         d19.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 8, 0),
@@ -330,9 +330,9 @@ public class ClinicInitializer {
         d20.setEmail("vanessa.koh@clinic.com");
         d20.setGender("F");
         d20.setDutySchedule(new LinkedList<>());
-        d20.setIsAvailable(true);
+        d20.setIsAvailable(false);
         d20.setConsultations(new LinkedList<>());
-        d20.setStatus("Active");
+        d20.setStatus("Not Active");
         d20.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 9, 0),
                 LocalDateTime.of(2025, 8, 30, 12, 0)));
         d20.getDutySchedule().add(new Doctor.DutySlot(LocalDateTime.of(2025, 8, 30, 14, 0),
@@ -418,11 +418,11 @@ public class ClinicInitializer {
 
         Patient p19 = (new Patient(null, "Calvin Tan", "970101-01-4455",
                 LocalDate.of(1997, 1, 1), "M", "0145678901", "None",
-                LocalDate.of(2023, 1, 20), LocalDate.of(2023, 4, 10), true, null));
+                LocalDate.of(2023, 1, 20), LocalDate.of(2023, 4, 10), false, null));
 
         Patient p20 = (new Patient(null, "Amina Syed", "000202-02-6677",
                 LocalDate.of(2000, 2, 2), "F", "0166789012", "Dust",
-                LocalDate.of(2023, 2, 15), null, true, null));
+                LocalDate.of(2023, 2, 15), null, false, null));
 
         patients.add(p1);
         patients.add(p2);

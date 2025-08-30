@@ -1,4 +1,8 @@
 package control;
+/**
+ *
+ * @author Na Ting Choon
+ */
 
 import adt.LinkedList;
 import adt.ListInterface;
@@ -8,23 +12,23 @@ import entity.Patient;
 public class MaintainPatient {
 
     private ListInterface<Patient> patientList;
-    private ListInterface<Patient> patientQueue;
+    private ListInterface<Patient> patientQueueList;
     private int queueCounter = 1;
     private int patientIdCounter = 0;
 
     public MaintainPatient() {
         this.patientList = new LinkedList<>();
-        this.patientQueue = new LinkedList<>();
+        this.patientQueueList = new LinkedList<>();
     }
 
     public MaintainPatient(ListInterface<Patient> store) {
         this.patientList = store;
-        this.patientQueue = new LinkedList<>();
+        this.patientQueueList = new LinkedList<>();
     }
 
     public MaintainPatient(ListInterface<Patient> store, ListInterface<Patient> queueStore) {
         this.patientList = store;
-        this.patientQueue = queueStore;
+        this.patientQueueList = queueStore;
     }
 
     private String nextPatientId() {
@@ -47,7 +51,7 @@ public class MaintainPatient {
             p.setQueueNumber(nextQueueNo());
         }
         patientList.add(p);
-        patientQueue.add(p);
+        patientQueueList.add(p);
     }
 
     public boolean updateExistingPatient(int index, Patient nd) {
@@ -89,9 +93,9 @@ public class MaintainPatient {
         }
         Patient removed = patientList.remove(index);
         // also remove from queue if present
-        for (int i = 0; i < patientQueue.size(); i++) {
-            if (patientQueue.get(i) == removed) {
-                patientQueue.remove(i);
+        for (int i = 0; i < patientQueueList.size(); i++) {
+            if (patientQueueList.get(i) == removed) {
+                patientQueueList.remove(i);
                 break;
             }
         }
@@ -112,18 +116,18 @@ public class MaintainPatient {
 
     // queue ops
     public Patient nextPatient() {
-        return patientQueue.isEmpty() ? null : patientQueue.remove(0);
+        return patientQueueList.isEmpty() ? null : patientQueueList.remove(0);
     }
 
     public Patient peekNextPatient() {
-        return patientQueue.isEmpty() ? null : patientQueue.get(0);
+        return patientQueueList.isEmpty() ? null : patientQueueList.get(0);
     }
 
     public boolean cancelPatient(String queueNumber) {
-        for (int i = 0; i < patientQueue.size(); i++) {
-            Patient p = patientQueue.get(i);
+        for (int i = 0; i < patientQueueList.size(); i++) {
+            Patient p = patientQueueList.get(i);
             if (p.getQueueNumber() != null && p.getQueueNumber().equals(queueNumber)) {
-                patientQueue.remove(i);
+                patientQueueList.remove(i);
                 return true;
             }
         }

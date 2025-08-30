@@ -111,23 +111,22 @@ public class DoctorUI {
         displayAllDoctors();
         if (doctorCtrl.getSize() == 0) {
             System.out.println("No doctor available. Please add doctor !");
-        } else {
+            return;
+        }
 
-            int index = getValidatedIndex("Enter doctor index to delete (starting from 1): ", doctorCtrl.getSize()) - 1;
-            Doctor beforeDeleteDoctor = doctorCtrl.getDoctor(index);
+        int index = getValidatedIndex("Enter doctor index to delete (starting from 1): ", doctorCtrl.getSize()) - 1;
+        Doctor doctorToDelete = doctorCtrl.getDoctor(index);
+
+        System.out.println("You are about to delete doctor " + doctorToDelete.getName());
+        System.out.println("Are you sure you want to delete ? (0 = NO | 1 = YES)");
+
+        int deleteDoctorChoice = Integer.parseInt(sc.nextLine());
+
+        if (deleteDoctorChoice == 1) {
             Doctor removed = doctorCtrl.deleteDoctor(index);
-
-            System.out.println("You are about to delete doctor " + beforeDeleteDoctor.getName());
-            System.out.println("Are you sure you want to delete ? (0 = NO | 1 = YES)");
-
-            int deleteDoctorChoice = Integer.parseInt(sc.nextLine());
-
-            if (deleteDoctorChoice == 1) {
-                doctorCtrl.deleteDoctor(index);
-                System.out.println("Doctor " + removed.getName() + "Is Deleted !");
-            } else {
-                System.out.println("Abort Delete Doctor Operation !");
-            }
+            System.out.println("Doctor " + removed.getName() + " is deleted!");
+        } else {
+            System.out.println("Abort Delete Doctor Operation!");
         }
     }
 
@@ -228,13 +227,29 @@ public class DoctorUI {
         System.out.print("Enter search keyword: ");
         String keyword = sc.nextLine();
 
-        ListInterface<Doctor> foundPatients = doctorCtrl.linearSearch(searchChoice, keyword);
-        if (foundPatients.isEmpty()) {
-            System.out.println("No patients found.");
+        ListInterface<Doctor> foundDoctors = doctorCtrl.linearSearch(searchChoice, keyword);
+
+        if (foundDoctors.isEmpty()) {
+            System.out.println("No doctors found.");
         } else {
-            for (int i = 0; i < foundPatients.size(); i++) {
-                System.out.println(foundPatients.get(i));
+            // Define consistent row format
+            String rowFormat = "| %-10s | %-20s | %-20s | %-12s | %-25s | %-6s | %-10s | %-12s | %-13s |";
+
+            // Print header once
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(String.format(
+                    rowFormat,
+                    "Doctor ID", "Name", "Specialization", "MMC Number", "Email", "Gender", "Available", "Duty Slots", "Consultations"
+            ));
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+            // Print each found doctor in the table
+            for (int i = 0; i < foundDoctors.size(); i++) {
+                System.out.println(foundDoctors.get(i));
             }
+
+            // Closing line
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
@@ -251,17 +266,45 @@ public class DoctorUI {
                 System.out.print("Please enter gender (M | F): ");
                 String gender = sc.nextLine();
                 ListInterface<Doctor> results = doctorCtrl.filterByGender(gender);
+                // Define consistent row format
+                String rowFormat = "| %-10s | %-20s | %-20s | %-12s | %-25s | %-6s | %-10s | %-12s | %-13s |";
+
+                // Print header
+                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println(String.format(
+                        rowFormat,
+                        "Doctor ID", "Name", "Specialization", "MMC Number", "Email", "Gender", "Available", "Duty Slots", "Consultations"
+                ));
+                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 for (int i = 0; i < results.size(); i++) {
+
                     System.out.println(results.get(i));
+
                 }
+
+                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
             }
             case 2 -> {
                 boolean yes = getValidatedInteger("Filter active patients? (1 = Yes, 0 = No): ") == 1;
                 ListInterface<Doctor> results = doctorCtrl.filterByAvailability(yes);
+                // Define consistent row format
+                String rowFormat = "| %-10s | %-20s | %-20s | %-12s | %-25s | %-6s | %-10s | %-12s | %-13s |";
+                // Print header
+                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println(String.format(
+                        rowFormat,
+                        "Doctor ID", "Name", "Specialization", "MMC Number", "Email", "Gender", "Available", "Duty Slots", "Consultations"
+                ));
+
+                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 for (int i = 0; i < results.size(); i++) {
+
                     System.out.println(results.get(i));
+
                 }
+
+                System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
             }
             case 0 ->
                 System.out.println("Returning back to menu...");

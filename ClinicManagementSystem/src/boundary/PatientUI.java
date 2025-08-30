@@ -96,32 +96,31 @@ public class PatientUI {
     }
 
     public void displayAllPatients() {
-    ListInterface<Patient> patients = patientCtrl.getAllPatients();
-    if (patients.isEmpty()) {
-        System.out.println("No patient currently in the list. Please add patient.");
-    } else {
-        // Define one consistent format string
-        String rowFormat = "| %-10s | %-20s | %-15s | %-12s | %-6s | %-15s | %-15s | %-12s | %-12s | %-6s | %-8s |";
+        ListInterface<Patient> patients = patientCtrl.getAllPatients();
+        if (patients.isEmpty()) {
+            System.out.println("No patient currently in the list. Please add patient.");
+        } else {
+            // Define one consistent format string
+            String rowFormat = "| %-10s | %-20s | %-15s | %-12s | %-6s | %-15s | %-15s | %-12s | %-12s | %-6s | %-8s |";
 
-        // Print header
-        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.println(String.format(
-                rowFormat,
-                "Patient ID", "Name", "IC Number", "DOB", "Gender", "Contact No",
-                "Allergy", "Reg Date", "Last Visit", "Active", "Queue No"
-        ));
-        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            // Print header
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(String.format(
+                    rowFormat,
+                    "Patient ID", "Name", "IC Number", "DOB", "Gender", "Contact No",
+                    "Allergy", "Reg Date", "Last Visit", "Active", "Queue No"
+            ));
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
-        // Print patient rows
-        for (int i = 0; i < patients.size(); i++) {
-            System.out.println(patients.get(i).toString());
+            // Print patient rows
+            for (int i = 0; i < patients.size(); i++) {
+                System.out.println(patients.get(i).toString());
+            }
+
+            // Closing line
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
-
-        // Closing line
-        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
     }
-}
-
 
     private void updatePatient() {
         if (patientCtrl.getSize() == 0) {
@@ -133,7 +132,7 @@ public class PatientUI {
         int index = getValidatedIndex("Enter patient index to update (starting from 1): ", patientCtrl.getSize()) - 1;
         Patient newData = inputPatientDetails();
         boolean success = patientCtrl.updateExistingPatient(index, newData);
- 
+
         if (success) {
             System.out.println("Patient updated successfully.");
         } else {
@@ -181,9 +180,22 @@ public class PatientUI {
         if (foundPatients.isEmpty()) {
             System.out.println("No patients found.");
         } else {
+            String rowFormat = "| %-10s | %-20s | %-15s | %-12s | %-6s | %-15s | %-15s | %-12s | %-12s | %-6s | %-8s |";
+
+            // Print header
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(String.format(
+                    rowFormat,
+                    "Patient ID", "Name", "IC Number", "DOB", "Gender", "Contact No",
+                    "Allergy", "Reg Date", "Last Visit", "Active", "Queue No"
+            ));
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
             for (int i = 0; i < foundPatients.size(); i++) {
                 System.out.println(foundPatients.get(i));
             }
+
+            System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
@@ -200,16 +212,40 @@ public class PatientUI {
                 System.out.print("Please enter gender (M | F): ");
                 String gender = sc.nextLine();
                 ListInterface<Patient> results = patientCtrl.filterByGender(gender);
+                String rowFormat = "| %-10s | %-20s | %-15s | %-12s | %-6s | %-15s | %-15s | %-12s | %-12s | %-6s | %-8s |";
+
+                // Print header
+                System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println(String.format(
+                        rowFormat,
+                        "Patient ID", "Name", "IC Number", "DOB", "Gender", "Contact No",
+                        "Allergy", "Reg Date", "Last Visit", "Active", "Queue No"
+                ));
+                System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 for (int i = 0; i < results.size(); i++) {
                     System.out.println(results.get(i));
                 }
+
+                System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             }
             case 2 -> {
                 boolean active = getValidatedInteger("Filter active patients? (1 = Yes, 0 = No): ") == 1;
                 ListInterface<Patient> results = patientCtrl.filterByStatus(active);
+                String rowFormat = "| %-10s | %-20s | %-15s | %-12s | %-6s | %-15s | %-15s | %-12s | %-12s | %-6s | %-8s |";
+
+                // Print header
+                System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                System.out.println(String.format(
+                        rowFormat,
+                        "Patient ID", "Name", "IC Number", "DOB", "Gender", "Contact No",
+                        "Allergy", "Reg Date", "Last Visit", "Active", "Queue No"
+                ));
+                System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
                 for (int i = 0; i < results.size(); i++) {
                     System.out.println(results.get(i));
                 }
+
+                System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             }
             case 0 ->
                 System.out.println("Returning back to menu...");
@@ -236,12 +272,23 @@ public class PatientUI {
 
         System.out.print("Enter allergy history: ");
         p.setAllergyHistory(sc.nextLine());
+        
+        System.out.println("Enter Patient Status (0 =NOT ACTIVE | 1 =ACTIVE) : ");
+        int statusChoice = Integer.parseInt(sc.nextLine());
+        
+        if(statusChoice == 1){
+            p.setIsActive(true);
+        }else if (statusChoice == 0){
+            p.setIsActive(false);
+        }else{
+            System.out.println("Invalid choice !");
+        }
 
         p.setDateOfBirth(getValidatedDate("Enter Date of Birth (yyyy-MM-dd): "));
         p.setDateOfRegistration(LocalDate.now());
         p.setLastVisitDate(null);
-        p.setIsActive(true);
-
+        
+        System.out.println("Patient " + p.getName() + " added !");
         return p;
     }
 

@@ -10,12 +10,13 @@ import java.time.LocalDateTime;
 import adt.*;
 
 public class Consultation {
+
     private String consultationId;
     private LocalDateTime consultationDateTime;
     private Patient patient;
     private Doctor doctor;
     private String symptoms;
-    
+
     private ListInterface<MedicalTreatment> treatments;
     private String notes;
     private LocalDate nextAppointment;
@@ -123,14 +124,14 @@ public class Consultation {
     }
 
     public boolean isFollowUp() {
-    return isFollowUp;
-}
+        return isFollowUp;
+    }
 
     public void setIsFollowUp(boolean isFollowUp) {
         this.isFollowUp = isFollowUp;
     }
 
-public int getDurationMinutes() {
+    public int getDurationMinutes() {
         return durationMinutes;
     }
 
@@ -156,11 +157,32 @@ public int getDurationMinutes() {
 
     @Override
     public String toString() {
-        String pid = patient != null ? patient.getPatientID() + " - " + patient.getName() : "-";
-        String did = doctor != null ? doctor.getDoctorId() + " - " + doctor.getName() : "-";
-        String when = consultationDateTime != null ? consultationDateTime.toString() : "-";
-        String next = nextAppointment != null ? nextAppointment.toString() : "-";
-        return String.format("Consultation[%s] @ %s | Patient: %s | Doctor: %s | Symptoms: %s | Notes: %s | Duration(min): %s | Status: %s | Fee: %.2f | Next Appointment: %s",
-                consultationId, when, pid, did, symptoms, notes, durationMinutes, status, consultationFee, next);
+        String patientStr = patient != null ? patient.getPatientID() + " - " + patient.getName() : "-";
+        String doctorStr = doctor != null ? doctor.getDoctorId() + " - " + doctor.getName() : "-";
+        String consDate = consultationDateTime != null ? consultationDateTime.toString() : "-";
+        String nextApp = nextAppointment != null ? nextAppointment.toString() : "-";
+
+        // Shorten long strings to prevent misalignment
+        if (patientStr.length() > 25) {
+            patientStr = patientStr.substring(0, 22) + "...";
+        }
+        if (doctorStr.length() > 25) {
+            doctorStr = doctorStr.substring(0, 22) + "...";
+        }
+        String symptomsStr = symptoms != null && symptoms.length() > 15 ? symptoms.substring(0, 12) + "..." : symptoms;
+        String notesStr = notes != null && notes.length() > 20 ? notes.substring(0, 17) + "..." : notes;
+
+        return String.format(
+                "| %-10s | %-16s | %-25s | %-25s | %-15s | %-20s | %-8s | %-10s | %-16s |",
+                consultationId,
+                consDate,
+                patientStr,
+                doctorStr,
+                symptomsStr != null ? symptomsStr : "-",
+                notesStr != null ? notesStr : "-",
+                durationMinutes,
+                status != null ? status : "-",
+                nextApp
+        );
     }
 }
