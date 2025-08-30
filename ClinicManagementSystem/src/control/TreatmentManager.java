@@ -1,5 +1,8 @@
 package control;
-
+/**
+ *
+ * @author Choong Yun Xian Brian
+ */
 import adt.LinkedList;
 import adt.ListInterface;
 import boundary.ClinicUI;

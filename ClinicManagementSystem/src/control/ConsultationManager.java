@@ -1,4 +1,8 @@
 package control;
+/**
+ *
+ * @author Bryan Kok Fong Wen
+ */
 
 import adt.ListInterface;
 import adt.LinkedList;

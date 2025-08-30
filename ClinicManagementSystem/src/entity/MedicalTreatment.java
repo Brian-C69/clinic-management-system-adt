@@ -1,6 +1,9 @@
 // File: entity/MedicalTreatment.java
 package entity;
-
+/**
+ *
+ * @author Choong Yun Xian Brian
+ */
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import adt.*;

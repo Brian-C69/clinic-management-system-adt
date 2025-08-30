@@ -1,4 +1,8 @@
 // File: entity/Consultation.java
+/**
+ *
+ * @author Bryan Kok Fong Wen
+ */
 package entity;
 
 import java.time.LocalDate;
