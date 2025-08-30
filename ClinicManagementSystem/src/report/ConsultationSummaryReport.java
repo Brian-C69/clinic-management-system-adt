@@ -21,7 +21,6 @@ public class ConsultationSummaryReport {
             return;
         }
 
-        // === Frequency collections ===
         ListInterface<String> doctorNames = new LinkedList<>();
         ListInterface<Integer> doctorCounts = new LinkedList<>();
 
@@ -32,69 +31,51 @@ public class ConsultationSummaryReport {
             String docName = c.getDoctor().getName();
             String symptom = c.getSymptoms();
 
-            // Count doctors
-            boolean doctorFound = false;
-            for (int i = 0; i < doctorNames.size(); i++) {
-                if (doctorNames.get(i).equalsIgnoreCase(docName)) {
-                    doctorCounts.replace(i, doctorCounts.get(i) + 1);
-                    doctorFound = true;
-                    break;
-                }
-            }
-            if (!doctorFound) {
-                doctorNames.add(docName);
-                doctorCounts.add(1);
-            }
-
-            // Count symptoms
-            boolean symptomFound = false;
-            for (int i = 0; i < symptomNames.size(); i++) {
-                if (symptomNames.get(i).equalsIgnoreCase(symptom)) {
-                    symptomCounts.replace(i, symptomCounts.get(i) + 1);
-                    symptomFound = true;
-                    break;
-                }
-            }
-            if (!symptomFound) {
-                symptomNames.add(symptom);
-                symptomCounts.add(1);
-            }
+            updateFrequency(docName, doctorNames, doctorCounts);
+            updateFrequency(symptom, symptomNames, symptomCounts);
         }
 
-        // === Print Header ===
+        // === Header ===
         System.out.println("\n               TUNKU ABDUL RAHMAN UNIVERSITY OF MANAGEMENT AND TECHNOLOGY");
         System.out.println("                          CONSULTATION MODULE SUBSYSTEM");
         System.out.println("                        -----------------------------------");
         System.out.println("                         SUMMARY OF CONSULTATION REPORT");
         System.out.printf("Generated at: %s\n", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
         System.out.println("\n===============================================================================");
+
+        // === Confidential Notice ===
         System.out.println("                          CONFIDENTIAL MEDICAL REPORT");
         System.out.println("===============================================================================\n");
 
-        // === Doctor Frequency Table ===
-        System.out.println("| Doctor Name           | Total Consultations |");
-        System.out.println("|-----------------------|---------------------|");
-        for (int i = 0; i < doctorNames.size(); i++) {
-            System.out.printf("| %-21s | %-19d |\n", doctorNames.get(i), doctorCounts.get(i));
-        }
+        // === Combined Table: Doctor + Symptom Frequency ===
+        int rows = Math.max(doctorNames.size(), symptomNames.size());
+        System.out.printf("| %-23s | %-21s || %-23s | %-10s |\n",
+                "Doctor Name", "Total Consultations", "Symptom", "Frequency");
+        System.out.println("|-------------------------|-----------------------||-------------------------|------------|");
 
-        System.out.println();
+        for (int i = 0; i < rows; i++) {
+            String doc = i < doctorNames.size() ? doctorNames.get(i) : "";
+            String docCount = i < doctorCounts.size() ? String.valueOf(doctorCounts.get(i)) : "";
 
-        // === Symptom Frequency Table ===
-        System.out.println("| Symptom               | Frequency           |");
-        System.out.println("|-----------------------|---------------------|");
-        for (int i = 0; i < symptomNames.size(); i++) {
-            System.out.printf("| %-21s | %-19d |\n", symptomNames.get(i), symptomCounts.get(i));
+            String symp = i < symptomNames.size() ? symptomNames.get(i) : "";
+            String sympCount = i < symptomCounts.size() ? String.valueOf(symptomCounts.get(i)) : "";
+
+            System.out.printf("| %-23s | %-21s || %-23s | %-10s |\n",
+                    doc, docCount, symp, sympCount);
         }
 
         System.out.println("\n===============================================================================");
+
+        // === Graphical View ===
         System.out.println("\n                GRAPHICAL REPRESENTATION OF CONSULTATION MODULE\n");
 
-        // === Simple Text Graph for Top Doctor ===
         System.out.println("Top Consultations per Doctor");
+
         int max = 0;
         for (int i = 0; i < doctorCounts.size(); i++) {
-            if (doctorCounts.get(i) > max) max = doctorCounts.get(i);
+            if (doctorCounts.get(i) > max) {
+                max = doctorCounts.get(i);
+            }
         }
 
         for (int level = max; level > 0; level--) {
@@ -113,17 +94,40 @@ public class ConsultationSummaryReport {
         for (int i = 0; i < doctorCounts.size(); i++) {
             System.out.print("-------");
         }
-        System.out.println("\n     ");
+        System.out.println();
 
+// Print aligned labels under each bar
+        System.out.print("     ");
         for (int i = 0; i < doctorNames.size(); i++) {
-            System.out.printf("%-7s", doctorNames.get(i).split(" ")[1]);
+            String[] parts = doctorNames.get(i).split(" ");
+            String label = parts.length > 1 ? parts[1] : parts[0]; // Prefer last name
+            label = label.length() > 5 ? label.substring(0, 5) : label; // Truncate if too long
+
+            int padding = (7 - label.length()) / 2; // Center within 7 spaces
+            String leftPad = " ".repeat(padding);
+            String rightPad = " ".repeat(7 - label.length() - padding);
+
+            System.out.print(leftPad + label + rightPad);
         }
-        System.out.println("\nEND OF REPORT");
-        System.out.println("===============================================================================");
+
+        System.out.println("\n\nNOTE:");
+        System.out.println("- Includes both follow-up and initial consultations.");
+        System.out.println("- Count includes active and completed sessions.");
+        System.out.println("===============================================================================\nEND OF REPORT");
     }
-    
+
+    private void updateFrequency(String value, ListInterface<String> keys, ListInterface<Integer> counts) {
+        for (int i = 0; i < keys.size(); i++) {
+            if (keys.get(i).equalsIgnoreCase(value)) {
+                counts.replace(i, counts.get(i) + 1);
+                return;
+            }
+        }
+        keys.add(value);
+        counts.add(1);
+    }
+
     public static void print(ListInterface<Consultation> consultationList) {
-    ConsultationSummaryReport report = new ConsultationSummaryReport(consultationList);
-    report.generateReport();
-}
+        new ConsultationSummaryReport(consultationList).generateReport();
+    }
 }

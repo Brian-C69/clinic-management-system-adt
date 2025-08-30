@@ -1,11 +1,10 @@
-// File: report/TreatmentSummaryReport.java
 package report;
 
 import adt.ListInterface;
+import adt.LinkedList;
 import entity.MedicalTreatment;
 
 import java.time.format.DateTimeFormatter;
-import java.util.*;
 
 public class TreatmentSummaryReport {
 
@@ -40,13 +39,20 @@ public class TreatmentSummaryReport {
     }
 
     private static void printTreatmentStatistics(ListInterface<MedicalTreatment> treatments) {
-        Set<String> uniqueDoctors = new HashSet<>();
-        Set<String> uniquePatients = new HashSet<>();
+        ListInterface<String> uniqueDoctors = new LinkedList<>();
+        ListInterface<String> uniquePatients = new LinkedList<>();
 
         for (int i = 0; i < treatments.size(); i++) {
             MedicalTreatment t = treatments.get(i);
-            uniqueDoctors.add(t.getDoctor().getDoctorId());
-            uniquePatients.add(t.getPatient().getPatientID());
+            String doctorId = t.getDoctor().getDoctorId();
+            String patientId = t.getPatient().getPatientID();
+
+            if (!uniqueDoctors.contains(doctorId)) {
+                uniqueDoctors.add(doctorId);
+            }
+            if (!uniquePatients.contains(patientId)) {
+                uniquePatients.add(patientId);
+            }
         }
 
         System.out.println("Total Treatments       : " + treatments.size());
@@ -56,20 +62,51 @@ public class TreatmentSummaryReport {
 
     private static void printAsciiGraphs(ListInterface<MedicalTreatment> treatments) {
         System.out.println("\nTop 5 Most Common Medicines:");
-        Map<String, Integer> freq = new HashMap<>();
+
+        // Count frequency
+        ListInterface<String> medicineNames = new LinkedList<>();
+        ListInterface<Integer> medicineCounts = new LinkedList<>();
+
         for (int i = 0; i < treatments.size(); i++) {
             String name = treatments.get(i).getMedicine();
-            freq.put(name, freq.getOrDefault(name, 0) + 1);
+            boolean found = false;
+
+            for (int j = 0; j < medicineNames.size(); j++) {
+                if (medicineNames.get(j).equalsIgnoreCase(name)) {
+                    medicineCounts.replace(j, medicineCounts.get(j) + 1);
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                medicineNames.add(name);
+                medicineCounts.add(1);
+            }
         }
 
-        freq.entrySet().stream()
-            .sorted(Map.Entry.<String, Integer>comparingByValue().reversed())
-            .limit(5)
-            .forEach(entry -> {
-                System.out.printf("%-15s | %s (%d)\n",
-                        entry.getKey(),
-                        "#".repeat(entry.getValue()),
-                        entry.getValue());
-            });
+        // Manual sort descending by count (simple bubble sort)
+        for (int i = 0; i < medicineCounts.size() - 1; i++) {
+            for (int j = 0; j < medicineCounts.size() - i - 1; j++) {
+                if (medicineCounts.get(j) < medicineCounts.get(j + 1)) {
+                    // Swap counts
+                    int tempCount = medicineCounts.get(j);
+                    medicineCounts.replace(j, medicineCounts.get(j + 1));
+                    medicineCounts.replace(j + 1, tempCount);
+
+                    // Swap names
+                    String tempName = medicineNames.get(j);
+                    medicineNames.replace(j, medicineNames.get(j + 1));
+                    medicineNames.replace(j + 1, tempName);
+                }
+            }
+        }
+
+        int limit = Math.min(5, medicineNames.size());
+        for (int i = 0; i < limit; i++) {
+            String med = medicineNames.get(i);
+            int count = medicineCounts.get(i);
+            System.out.printf("%-15s | %s (%d)\n", med, "#".repeat(count), count);
+        }
     }
 }
