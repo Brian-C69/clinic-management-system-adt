@@ -14,7 +14,6 @@ import entity.Patient;
 public class ConsultationUI {
 
     private final Scanner sc = new Scanner(System.in);
-    
 
     // ---------- Menu ----------
     public int getMenuChoice() {
@@ -24,6 +23,8 @@ public class ConsultationUI {
         System.out.println("3. Update Consultation");
         System.out.println("4. Delete Consultation");
         System.out.println("5. Add Treatment to Consultation");
+        System.out.println("6. Search Consultation by Symptoms");
+        System.out.println("7. Filter Consultation by Doctor ID");
         System.out.println("0. Exit");
         System.out.print("Enter choice: ");
         return readInt();
@@ -33,8 +34,6 @@ public class ConsultationUI {
         System.out.print("Enter consultation index: ");
         return readInt();
     }
-    
-    
 
     // ---------- Manual Creation ----------
     public Consultation inputConsultationDetails(Patient patient, Doctor doctor) {
@@ -112,4 +111,4 @@ public class ConsultationUI {
             System.out.println("❌ Please enter true/false or yes/no.");
         }
     }
-}
+} 

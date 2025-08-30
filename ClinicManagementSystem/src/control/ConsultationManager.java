@@ -59,6 +59,8 @@ public class ConsultationManager {
                 case 3 -> updateConsultation();
                 case 4 -> deleteConsultation();
                 case 5 -> addTreatmentToConsultation();
+                case 6 -> searchBySymptoms();
+                case 7 -> filterByDoctorId();
                 default -> System.out.println("Invalid choice.");
             }
         } while (choice != 0);
@@ -80,9 +82,9 @@ public class ConsultationManager {
                 start = LocalDateTime.parse(input, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"));
                 duration = readInt("Enter consultation duration (minutes): ");
                 if (doctor.isAvailable(start, duration)) break;
-                System.out.println("\u274C Doctor is not available at that time.");
+                System.out.println("❌ Doctor is not available at that time.");
             } catch (Exception e) {
-                System.out.println("\u274C Invalid date/time format.");
+                System.out.println("❌ Invalid date/time format.");
             }
         }
 
@@ -91,7 +93,7 @@ public class ConsultationManager {
             System.out.print("Enter Consultation ID (format: C001): ");
             consultationId = sc.nextLine().trim();
             if (consultationId.matches("^C\\d{3}$") && findById(consultationId) == null) break;
-            System.out.println("\u274C Invalid or duplicate ID.");
+            System.out.println("❌ Invalid or duplicate ID.");
         }
 
         String symptoms = getNonEmpty("Enter symptoms: ");
@@ -109,7 +111,7 @@ public class ConsultationManager {
 
         doctor.getConsultations().add(consult);
         consultationList.add(consult);
-        System.out.println("\u2705 Consultation added.");
+        System.out.println("✅ Consultation added.");
     }
 
     public void displayAllConsultations() {
@@ -141,7 +143,7 @@ public class ConsultationManager {
         c.setDurationMinutes(readInt("Enter new duration (minutes): "));
         c.setConsultationFee(readDouble("Enter new consultation fee: "));
         c.setStatus(getNonEmpty("Enter new status: "));
-        System.out.println("\u2705 Consultation updated.");
+        System.out.println("✅ Consultation updated.");
     }
 
     public void deleteConsultation() {
@@ -157,7 +159,7 @@ public class ConsultationManager {
         }
 
         Consultation removed = consultationList.remove(idx);
-        System.out.println("\u2705 Deleted consultation: " + removed.getConsultationId());
+        System.out.println("✅ Deleted consultation: " + removed.getConsultationId());
     }
 
     public void addTreatmentToConsultation() {
@@ -170,7 +172,7 @@ public class ConsultationManager {
         int index = readInt("Enter consultation index to add treatment: ") - 1;
 
         if (index < 0 || index >= consultationList.size()) {
-            System.out.println("\u274C Invalid index.");
+            System.out.println("❌ Invalid index.");
             return;
         }
 
@@ -178,7 +180,35 @@ public class ConsultationManager {
         MedicalTreatmentUI treatmentUI = new MedicalTreatmentUI(sc);
         MedicalTreatment t = treatmentUI.createTreatment(c.getPatient(), c.getDoctor());
         c.getTreatments().add(t);
-        System.out.println("\u2705 Treatment added to consultation " + c.getConsultationId());
+        System.out.println("✅ Treatment added to consultation " + c.getConsultationId());
+    }
+
+    public void searchBySymptoms() {
+        System.out.print("Enter keyword to search in symptoms: ");
+        String keyword = sc.nextLine().trim().toLowerCase();
+        boolean found = false;
+        for (int i = 0; i < consultationList.size(); i++) {
+            Consultation c = consultationList.get(i);
+            if (c.getSymptoms().toLowerCase().contains(keyword)) {
+                System.out.println((i + 1) + " -> " + c);
+                found = true;
+            }
+        }
+        if (!found) System.out.println("No consultations matched your search.");
+    }
+
+    public void filterByDoctorId() {
+        System.out.print("Enter Doctor ID to filter consultations: ");
+        String doctorId = sc.nextLine().trim();
+        boolean found = false;
+        for (int i = 0; i < consultationList.size(); i++) {
+            Consultation c = consultationList.get(i);
+            if (c.getDoctor() != null && c.getDoctor().getDoctorId().equalsIgnoreCase(doctorId)) {
+                System.out.println((i + 1) + " -> " + c);
+                found = true;
+            }
+        }
+        if (!found) System.out.println("No consultations found for this doctor.");
     }
 
     private Consultation findById(String id) {
@@ -221,9 +251,9 @@ public class ConsultationManager {
                 System.out.print(prompt);
                 index = Integer.parseInt(sc.nextLine().trim());
                 if ((allowZero && index == 0) || (index >= 1 && index <= maxSize)) return index;
-                System.out.println("\u274C Enter 1.." + maxSize + (allowZero ? " or 0" : ""));
+                System.out.println("❌ Enter 1.." + maxSize + (allowZero ? " or 0" : ""));
             } catch (NumberFormatException e) {
-                System.out.println("\u274C Invalid number.");
+                System.out.println("❌ Invalid number.");
             }
         }
     }
@@ -233,7 +263,7 @@ public class ConsultationManager {
             System.out.print(prompt);
             String s = sc.nextLine().trim();
             if (!s.isEmpty()) return s;
-            System.out.println("\u274C Input cannot be empty!");
+            System.out.println("❌ Input cannot be empty!");
         }
     }
 
@@ -253,7 +283,7 @@ public class ConsultationManager {
             try {
                 return Integer.parseInt(sc.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("\u274C Enter an integer.");
+                System.out.println("❌ Enter an integer.");
             }
         }
     }
@@ -264,7 +294,7 @@ public class ConsultationManager {
             try {
                 return Double.parseDouble(sc.nextLine().trim());
             } catch (NumberFormatException e) {
-                System.out.println("\u274C Enter a number.");
+                System.out.println("❌ Enter a number.");
             }
         }
     }
@@ -277,7 +307,7 @@ public class ConsultationManager {
             try {
                 return LocalDate.parse(s);
             } catch (Exception e) {
-                System.out.println("\u274C Invalid date (yyyy-mm-dd).");
+                System.out.println("❌ Invalid date (yyyy-mm-dd).");
             }
         }
     }

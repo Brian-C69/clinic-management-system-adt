@@ -6,6 +6,7 @@ import boundary.ClinicUI;
 import entity.MedicalTreatment;
 
 public class TreatmentManager {
+
     private final ListInterface<MedicalTreatment> treatmentList;
 
     // Constructors
@@ -23,7 +24,9 @@ public class TreatmentManager {
     }
 
     public void addTreatment(MedicalTreatment treatment, boolean silent) {
-        if (treatment == null) return;
+        if (treatment == null) {
+            return;
+        }
         treatmentList.add(treatment);
         if (!silent) {
             System.out.println("✅ Treatment added.");
@@ -69,6 +72,28 @@ public class TreatmentManager {
     // Get total count
     public int getTreatmentCount() {
         return treatmentList.size();
+    }
+
+    public ListInterface <MedicalTreatment> searchByMedicine(String keyword) {
+        ListInterface<MedicalTreatment> results = new LinkedList<>();
+        for (int i = 0; i < treatmentList.size(); i++) {
+            MedicalTreatment t = treatmentList.get(i);
+            if (t.getMedicine().toLowerCase().contains(keyword.toLowerCase())) {
+                results.add(t);
+            }
+        }
+        return results;
+    }
+
+    public ListInterface<MedicalTreatment> filterByDoctorId(String doctorId) {
+        ListInterface<MedicalTreatment> results = new LinkedList<>();
+        for (int i = 0; i < treatmentList.size(); i++) {
+            MedicalTreatment t = treatmentList.get(i);
+            if (t.getDoctor() != null && t.getDoctor().getDoctorId().equalsIgnoreCase(doctorId)) {
+                results.add(t);
+            }
+        }
+        return results;
     }
 
     // Entry point
