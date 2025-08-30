@@ -96,15 +96,32 @@ public class PatientUI {
     }
 
     public void displayAllPatients() {
-        ListInterface<Patient> patients = patientCtrl.getAllPatients();
-        if (patients.isEmpty()) {
-            System.out.println("No patient currently in the list. Please add patient.");
-        } else {
-            for (int i = 0; i < patients.size(); i++) {
-                System.out.println(patients.get(i));
-            }
+    ListInterface<Patient> patients = patientCtrl.getAllPatients();
+    if (patients.isEmpty()) {
+        System.out.println("No patient currently in the list. Please add patient.");
+    } else {
+        // Define one consistent format string
+        String rowFormat = "| %-10s | %-20s | %-15s | %-12s | %-6s | %-15s | %-15s | %-12s | %-12s | %-6s | %-8s |";
+
+        // Print header
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.println(String.format(
+                rowFormat,
+                "Patient ID", "Name", "IC Number", "DOB", "Gender", "Contact No",
+                "Allergy", "Reg Date", "Last Visit", "Active", "Queue No"
+        ));
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+        // Print patient rows
+        for (int i = 0; i < patients.size(); i++) {
+            System.out.println(patients.get(i).toString());
         }
+
+        // Closing line
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------------------------");
     }
+}
+
 
     private void updatePatient() {
         if (patientCtrl.getSize() == 0) {
@@ -116,7 +133,7 @@ public class PatientUI {
         int index = getValidatedIndex("Enter patient index to update (starting from 1): ", patientCtrl.getSize()) - 1;
         Patient newData = inputPatientDetails();
         boolean success = patientCtrl.updateExistingPatient(index, newData);
-
+ 
         if (success) {
             System.out.println("Patient updated successfully.");
         } else {

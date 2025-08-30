@@ -230,27 +230,17 @@ public class Doctor {
         int consCount = consultations != null ? consultations.size() : 0;
 
         return String.format(
-                "\n---------------- Doctor Information ----------------\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "-----------------------------------------------------\n",
-                "Doctor ID", doctorId,
-                "Name", name,
-                "Specialization", specialization,
-                "MMC Number", mmcNumber,
-                "Email", email,
-                "Gender", gender,
-                "Available", isAvailable ? "Yes" : "No",
-                "Duty Slots", dutyCount,
-                "Consultations", consCount,
-                "Status", status
+                "| %-10s | %-20s | %-20s | %-12s | %-25s | %-6s | %-10s | %-12s | %-13s |",
+                doctorId,
+                name,
+                specialization,
+                mmcNumber,
+                email,
+                gender,
+                (isAvailable ? "Yes" : "No"),
+                dutyCount,
+                consCount,
+                status
         );
     }
 }

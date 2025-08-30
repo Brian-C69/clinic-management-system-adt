@@ -17,9 +17,9 @@ public class DoctorUI {
     private MaintainDoctor doctorCtrl;
 
     public DoctorUI(MaintainDoctor doctorCtrl, Scanner sc) {
-    this.doctorCtrl = doctorCtrl;
-    this.sc = sc;
-}
+        this.doctorCtrl = doctorCtrl;
+        this.sc = sc;
+    }
 
     public MaintainDoctor getController() {
         return doctorCtrl;
@@ -53,8 +53,8 @@ public class DoctorUI {
                     searchDoctor();
                 case 6 ->
                     filterDoctor();
-                    case 7 -> 
-                        DoctorSummaryReport.generate(doctorCtrl.getAllDoctors());
+                case 7 ->
+                    DoctorSummaryReport.generate(doctorCtrl.getAllDoctors());
                 case 0 ->
                     System.out.println("Exiting Doctor Management...");
                 default ->
@@ -66,13 +66,27 @@ public class DoctorUI {
     // ========= UI Methods =========
     public void displayAllDoctors() {
         if (doctorCtrl.getSize() == 0) {
-            System.out.println("No doctor available. Please add doctor !");
+            System.out.println("No doctor available. Please add doctor!");
         } else {
+            // Define consistent row format
+            String rowFormat = "| %-10s | %-20s | %-20s | %-12s | %-25s | %-6s | %-10s | %-12s | %-13s |";
+
+            // Print header
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println(String.format(
+                    rowFormat,
+                    "Doctor ID", "Name", "Specialization", "MMC Number", "Email", "Gender", "Available", "Duty Slots", "Consultations"
+            ));
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+            // Print each doctor in a neat row
             for (int i = 0; i < doctorCtrl.getSize(); i++) {
-                Doctor displayDuty = doctorCtrl.getDoctor(i);
-                displayDuty.displayDoctorSchedule(displayDuty);
-                System.out.println("Doctor Index : " + (i + 1) + doctorCtrl.getDoctor(i));
+                Doctor d = doctorCtrl.getDoctor(i);
+                System.out.println(d.toString());
             }
+
+            // Closing line
+            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 

@@ -344,85 +344,85 @@ public class ClinicInitializer {
         // ----- Patients -----
         ListInterface<Patient> patients = new LinkedList<>();
 
-        Patient p1 = (new Patient("P001", "John Tan", "990101-14-1234",
+        Patient p1 = (new Patient(null, "John Tan", "990101-14-1234",
                 LocalDate.of(1999, 1, 1), "M", "0123456789", "None",
-                LocalDate.of(2023, 1, 5), LocalDate.of(2023, 6, 10), true, "PQ001"));
+                LocalDate.of(2023, 1, 5), LocalDate.of(2023, 6, 10), true, null));
 
-        Patient p2 = (new Patient("P002", "Mary Lee", "000202-08-5678",
+        Patient p2 = (new Patient(null, "Mary Lee", "000202-08-5678",
                 LocalDate.of(2000, 2, 2), "F", "0198765432", "Peanut",
-                LocalDate.of(2023, 2, 15), null, true, "PQ002"));
+                LocalDate.of(2023, 2, 15), null, true, null));
 
-        Patient p3 = (new Patient("P003", "David Lim", "880303-10-1122",
+        Patient p3 = (new Patient(null, "David Lim", "880303-10-1122",
                 LocalDate.of(1988, 3, 3), "M", "0123987654", "None",
-                LocalDate.of(2023, 3, 10), LocalDate.of(2023, 7, 5), true, "PQ003"));
+                LocalDate.of(2023, 3, 10), LocalDate.of(2023, 7, 5), true, null));
 
-        Patient p4 = (new Patient("P004", "Siti Rahman", "950404-07-3344",
+        Patient p4 = (new Patient(null, "Siti Rahman", "950404-07-3344",
                 LocalDate.of(1995, 4, 4), "F", "0132456789", "Dust",
-                LocalDate.of(2023, 4, 12), LocalDate.of(2023, 7, 20), true, "PQ004"));
+                LocalDate.of(2023, 4, 12), LocalDate.of(2023, 7, 20), true, null));
 
-        Patient p5 = (new Patient("P005", "Alex Wong", "970505-08-5566",
+        Patient p5 = (new Patient(null, "Alex Wong", "970505-08-5566",
                 LocalDate.of(1997, 5, 5), "M", "0145678901", "None",
-                LocalDate.of(2023, 5, 1), null, true, "PQ005"));
+                LocalDate.of(2023, 5, 1), null, true, null));
 
-        Patient p6 = (new Patient("P006", "Nurul Huda", "010606-12-7788",
+        Patient p6 = (new Patient(null, "Nurul Huda", "010606-12-7788",
                 LocalDate.of(2001, 6, 6), "F", "0162345678", "Gluten",
-                LocalDate.of(2023, 6, 18), null, true, "PQ006"));
+                LocalDate.of(2023, 6, 18), null, true, null));
 
-        Patient p7 = (new Patient("P007", "Michael Tan", "920707-14-9900",
+        Patient p7 = (new Patient(null, "Michael Tan", "920707-14-9900",
                 LocalDate.of(1992, 7, 7), "M", "0173456789", "None",
-                LocalDate.of(2023, 7, 5), LocalDate.of(2023, 8, 1), true, "PQ007"));
+                LocalDate.of(2023, 7, 5), LocalDate.of(2023, 8, 1), true, null));
 
-        Patient p8 = (new Patient("P008", "Aishah Binti Ali", "030808-08-2233",
+        Patient p8 = (new Patient(null, "Aishah Binti Ali", "030808-08-2233",
                 LocalDate.of(2003, 8, 8), "F", "0184567890", "Peanut",
-                LocalDate.of(2023, 8, 10), null, true, "PQ008"));
+                LocalDate.of(2023, 8, 10), null, true, null));
 
-        Patient p9 = (new Patient("P009", "Kevin Lee", "990909-10-4455",
+        Patient p9 = (new Patient(null, "Kevin Lee", "990909-10-4455",
                 LocalDate.of(1999, 9, 9), "M", "0195678901", "None",
-                LocalDate.of(2023, 9, 1), LocalDate.of(2023, 10, 5), true, "PQ009"));
+                LocalDate.of(2023, 9, 1), LocalDate.of(2023, 10, 5), true, null));
 
-        Patient p10 = (new Patient("P010", "Farah Zainal", "020101-12-6677",
+        Patient p10 = (new Patient(null, "Farah Zainal", "020101-12-6677",
                 LocalDate.of(2002, 1, 1), "F", "0126789012", "Seafood",
-                LocalDate.of(2023, 1, 20), null, true, "PQ010"));
+                LocalDate.of(2023, 1, 20), null, true, null));
 
-        Patient p11 = (new Patient("P011", "Daniel Ong", "950202-09-8899",
+        Patient p11 = (new Patient(null, "Daniel Ong", "950202-09-8899",
                 LocalDate.of(1995, 2, 2), "M", "0137890123", "None",
-                LocalDate.of(2023, 2, 15), LocalDate.of(2023, 6, 25), true, "PQ011"));
+                LocalDate.of(2023, 2, 15), LocalDate.of(2023, 6, 25), true, null));
 
-        Patient p12 = (new Patient("P012", "Lina Teoh", "000303-11-0011",
+        Patient p12 = (new Patient(null, "Lina Teoh", "000303-11-0011",
                 LocalDate.of(2000, 3, 3), "F", "0148901234", "Dust",
-                LocalDate.of(2023, 3, 10), null, true, "PQ012"));
+                LocalDate.of(2023, 3, 10), null, true, null));
 
-        Patient p13 = (new Patient("P013", "Aaron Lim", "980404-07-2233",
+        Patient p13 = (new Patient(null, "Aaron Lim", "980404-07-2233",
                 LocalDate.of(1998, 4, 4), "M", "0169012345", "None",
-                LocalDate.of(2023, 4, 12), LocalDate.of(2023, 7, 18), true, "PQ013"));
+                LocalDate.of(2023, 4, 12), LocalDate.of(2023, 7, 18), true, null));
 
-        Patient p14 = (new Patient("P014", "Sabrina Tan", "010505-05-4455",
+        Patient p14 = (new Patient(null, "Sabrina Tan", "010505-05-4455",
                 LocalDate.of(2001, 5, 5), "F", "0170123456", "Gluten",
-                LocalDate.of(2023, 5, 1), null, true, "PQ014"));
+                LocalDate.of(2023, 5, 1), null, true, null));
 
-        Patient p15 = (new Patient("P015", "Ethan Goh", "920606-06-6677",
+        Patient p15 = (new Patient(null, "Ethan Goh", "920606-06-6677",
                 LocalDate.of(1992, 6, 6), "M", "0181234567", "None",
-                LocalDate.of(2023, 6, 18), LocalDate.of(2023, 8, 5), true, "PQ015"));
+                LocalDate.of(2023, 6, 18), LocalDate.of(2023, 8, 5), true, null));
 
-        Patient p16 = (new Patient("P016", "Hafizah Ahmad", "030707-07-8899",
+        Patient p16 = (new Patient(null, "Hafizah Ahmad", "030707-07-8899",
                 LocalDate.of(2003, 7, 7), "F", "0192345678", "Peanut",
-                LocalDate.of(2023, 7, 5), null, true, "PQ016"));
+                LocalDate.of(2023, 7, 5), null, true, null));
 
-        Patient p17 = (new Patient("P017", "Joshua Wong", "990808-08-0011",
+        Patient p17 = (new Patient(null, "Joshua Wong", "990808-08-0011",
                 LocalDate.of(1999, 8, 8), "M", "0123456789", "None",
-                LocalDate.of(2023, 8, 10), LocalDate.of(2023, 9, 12), true, "PQ017"));
+                LocalDate.of(2023, 8, 10), LocalDate.of(2023, 9, 12), true, null));
 
-        Patient p18 = (new Patient("P018", "Nurul Izzah", "020909-09-2233",
+        Patient p18 = (new Patient(null, "Nurul Izzah", "020909-09-2233",
                 LocalDate.of(2002, 9, 9), "F", "0134567890", "Seafood",
-                LocalDate.of(2023, 9, 1), null, true, "PQ018"));
+                LocalDate.of(2023, 9, 1), null, true, null));
 
-        Patient p19 = (new Patient("P019", "Calvin Tan", "970101-01-4455",
+        Patient p19 = (new Patient(null, "Calvin Tan", "970101-01-4455",
                 LocalDate.of(1997, 1, 1), "M", "0145678901", "None",
-                LocalDate.of(2023, 1, 20), LocalDate.of(2023, 4, 10), true, "PQ019"));
+                LocalDate.of(2023, 1, 20), LocalDate.of(2023, 4, 10), true, null));
 
-        Patient p20 = (new Patient("P020", "Amina Syed", "000202-02-6677",
+        Patient p20 = (new Patient(null, "Amina Syed", "000202-02-6677",
                 LocalDate.of(2000, 2, 2), "F", "0166789012", "Dust",
-                LocalDate.of(2023, 2, 15), null, true, "PQ020"));
+                LocalDate.of(2023, 2, 15), null, true, null));
 
         patients.add(p1);
         patients.add(p2);

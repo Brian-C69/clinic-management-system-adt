@@ -127,30 +127,18 @@ public class Patient {
     @Override
     public String toString() {
         return String.format(
-                "\n---------------- Patient Information ----------------\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "| %-15s : %-30s |\n"
-                + "-----------------------------------------------------\n",
-                "Patient ID", patientID,
-                "Name", name,
-                "IC Number", icNumber,
-                "Date of Birth", (dateOfBirth != null ? dateOfBirth : "-"),
-                "Sex", sex,
-                "Contact No.", contactNumber,
-                "Allergies", allergyHistory,
-                "Registered", (dateOfRegistration != null ? dateOfRegistration : "-"),
-                "Last Visit", (lastVisitDate != null ? lastVisitDate : "-"),
-                "Active", isActive,
-                "Queue No.", queueNumber
+                "| %-10s | %-20s | %-15s | %-12s | %-6s | %-15s | %-15s | %-12s | %-12s | %-6s | %-8s |",
+                patientID,
+                name,
+                icNumber,
+                (dateOfBirth != null ? dateOfBirth : "null"),
+                sex,
+                contactNumber,
+                allergyHistory,
+                (dateOfRegistration != null ? dateOfRegistration : "null"),
+                (lastVisitDate != null ? lastVisitDate : "null"),
+                isActive,
+                queueNumber
         );
     }
 

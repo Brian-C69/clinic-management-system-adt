@@ -7,7 +7,7 @@ import adt.*;
 
 public class Consultation {
     private String consultationId;
-    private LocalDateTime consultationDateTime; // Start time
+    private LocalDateTime consultationDateTime;
     private Patient patient;
     private Doctor doctor;
     private String symptoms;
@@ -16,7 +16,7 @@ public class Consultation {
     private String notes;
     private LocalDate nextAppointment;
     private boolean isFollowUp;
-    private int durationMinutes; // in minutes
+    private int durationMinutes;
     private double consultationFee;
     private String status;
 
