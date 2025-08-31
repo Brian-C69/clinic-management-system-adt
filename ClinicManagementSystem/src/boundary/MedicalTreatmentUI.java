@@ -90,6 +90,7 @@ public class MedicalTreatmentUI {
                         System.out.println("No matching treatments found.");
                     } else {
                         System.out.println("\n--- Search Results ---");
+                        printTreatmentHeader();
                         for (int i = 0; i < results.size(); i++) {
                             System.out.println((i + 1) + ". " + results.get(i));
                         }
@@ -102,6 +103,7 @@ public class MedicalTreatmentUI {
                         System.out.println("No treatments found for Doctor ID: " + docId);
                     } else {
                         System.out.println("\n--- Filtered Treatments ---");
+                        printTreatmentHeader(); 
                         for (int i = 0; i < results.size(); i++) {
                             System.out.println((i + 1) + ". " + results.get(i));
                         }
@@ -237,4 +239,14 @@ public class MedicalTreatmentUI {
             System.out.println("❌ Please enter y/n.");
         }
     }
+    
+    private void printTreatmentHeader() {
+    String rowFormat = "%-3s| %-15s | %-10s | %-20s | %-25s | %-12s | %-20s | %-20s |";
+    System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------");
+    System.out.println(String.format(
+            rowFormat,
+            "No.", "Medicine", "Dosage", "Diagnosis", "Instructions", "Start Date", "Patient", "Doctor"
+    ));
+    System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------");
+}
 }
