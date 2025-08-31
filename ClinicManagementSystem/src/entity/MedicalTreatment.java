@@ -125,7 +125,7 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
         String instrStr = instructions != null && instructions.length() > 25 ? instructions.substring(0, 22) + "..." : instructions;
 
         return String.format(
-                "| %-15s | %-10s | %-20s | %-20s | %-20s | %-24s | %-17s |",
+                "| %-15s | %-10s | %-20s | %-25s | %-12s | %-20s | %-20s |",
                 medStr,
                 dosageStr,
                 diagStr != null ? diagStr : "-",
