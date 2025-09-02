@@ -38,6 +38,7 @@ public class ConsultationSummaryReport {
         // === Header ===
         System.out.println("\n               TUNKU ABDUL RAHMAN UNIVERSITY OF MANAGEMENT AND TECHNOLOGY");
         System.out.println("                          CONSULTATION MODULE SUBSYSTEM");
+        System.out.println("                                  KLINIK BAHAGIA");
         System.out.println("                        -----------------------------------");
         System.out.println("                         SUMMARY OF CONSULTATION REPORT");
         System.out.printf("Generated at: %s\n", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
