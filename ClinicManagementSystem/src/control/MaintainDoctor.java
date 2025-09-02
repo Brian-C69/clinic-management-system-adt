@@ -14,9 +14,7 @@ import entity.Consultation;
 
 public class MaintainDoctor {
 
-    private ListInterface<Doctor> doctorList;
-    private LinkedList<int[]> dutyScheduler;
-    private LinkedList<Consultation> consultation;
+    private final ListInterface<Doctor> doctorList;
     private int doctorIdCounter = 0;
 
     public MaintainDoctor() {

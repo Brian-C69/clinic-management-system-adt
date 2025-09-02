@@ -1,4 +1,5 @@
 package control;
+
 /**
  *
  * @author Na Ting Choon
@@ -11,8 +12,8 @@ import entity.Patient;
 
 public class MaintainPatient {
 
-    private ListInterface<Patient> patientList;
-    private ListInterface<Patient> patientQueueList;
+    private final ListInterface<Patient> patientList;
+    private final ListInterface<Patient> patientQueueList;
     private int queueCounter = 1;
     private int patientIdCounter = 0;
 

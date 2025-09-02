@@ -123,6 +123,7 @@ public class PatientUI {
     }
 
     private void updatePatient() {
+        
         if (patientCtrl.getSize() == 0) {
             System.out.println("No patient currently in the list. Please add patient");
             return;
@@ -130,14 +131,25 @@ public class PatientUI {
 
         displayAllPatients();
         int index = getValidatedIndex("Enter patient index to update (starting from 1): ", patientCtrl.getSize()) - 1;
-        Patient newData = inputPatientDetails();
-        boolean success = patientCtrl.updateExistingPatient(index, newData);
+        Patient foundPatient = patientCtrl.getPatient(index);
 
-        if (success) {
-            System.out.println("Patient updated successfully.");
+        System.out.println("You are about to edit " + foundPatient.getName() + " information. Proceed ? (0= NO | 1= YES) : ");
+        int editPatientchoice = Integer.parseInt(sc.nextLine());
+
+        if (editPatientchoice == 1) {
+
+            Patient newData = inputPatientDetails();
+            boolean success = patientCtrl.updateExistingPatient(index, newData);
+
+            if (success) {
+                System.out.println("Patient updated successfully.");
+            } else {
+                System.out.println("Update failed.");
+            }
         } else {
-            System.out.println("Update failed.");
+            System.out.println("Abort Edit Operation !");
         }
+
     }
 
     private void deletePatient() {
@@ -258,37 +270,94 @@ public class PatientUI {
     public Patient inputPatientDetails() {
         Patient p = new Patient();
 
-        System.out.print("Enter patient name: ");
-        p.setName(sc.nextLine());
+        // --- Name Validation ---
+        String setPatientName;
+        while (true) {
+            System.out.print("Enter patient name: ");
+            setPatientName = sc.nextLine().trim();
+            if (setPatientName.isEmpty()) {
+                System.out.println("❌ Name cannot be empty!");
+            } else if (!setPatientName.matches("^[a-zA-Z ]+$")) {
+                System.out.println("❌ Name should only contain letters and spaces!");
+            } else {
+                break;
+            }
+        }
+        p.setName(setPatientName);
 
-        System.out.print("Enter IC number: ");
-        p.setIcNumber(sc.nextLine());
+        // --- IC Number Validation ---
+        String ic;
+        while (true) {
+            System.out.print("Enter IC number: ");
+            ic = sc.nextLine().trim();
+            if (ic.isEmpty()) {
+                System.out.println("IC cannot be empty!");
+            } else if (!ic.matches("\\d{6,12}")) {
+                System.out.println("IC must be digits only (6–12 digits).");
+            } else {
+                break;
+            }
+        }
+        p.setIcNumber(ic);
 
-        System.out.print("Enter contact number: ");
-        p.setContactNumber(sc.nextLine());
+        // --- Contact Number Validation ---
+        String contact;
+        while (true) {
+            System.out.print("Enter contact number: ");
+            contact = sc.nextLine().trim();
+            if (!contact.matches("\\d{10,12}")) {
+                System.out.println("Contact number must be 10–12 digits.");
+            } else {
+                break;
+            }
+        }
+        p.setContactNumber(contact);
 
-        System.out.print("Enter sex (M/F): ");
-        p.setSex(sc.nextLine());
+        // --- Sex Validation ---
+        String sex;
+        while (true) {
+            System.out.print("Enter sex (M/F): ");
+            sex = sc.nextLine().trim().toUpperCase();
+            if (!sex.equals("M") && !sex.equals("F")) {
+                System.out.println("Invalid input! Please enter M or F.");
+            } else {
+                break;
+            }
+        }
+        p.setSex(sex);
 
-        System.out.print("Enter allergy history: ");
-        p.setAllergyHistory(sc.nextLine());
-        
-        System.out.println("Enter Patient Status (0 =NOT ACTIVE | 1 =ACTIVE) : ");
-        int statusChoice = Integer.parseInt(sc.nextLine());
-        
-        if(statusChoice == 1){
-            p.setIsActive(true);
-        }else if (statusChoice == 0){
-            p.setIsActive(false);
-        }else{
-            System.out.println("Invalid choice !");
+        // --- Allergy History (optional) ---
+        System.out.print("Enter allergy history (leave blank if none): ");
+        p.setAllergyHistory(sc.nextLine().trim());
+
+        // --- Patient Status Validation ---
+        int statusChoice;
+        while (true) {
+            System.out.print("Enter Patient Status (0 = NOT ACTIVE | 1 = ACTIVE): ");
+            try {
+                statusChoice = Integer.parseInt(sc.nextLine());
+                if (statusChoice == 0) {
+                    p.setIsActive(false);
+                    break;
+                } else if (statusChoice == 1) {
+                    p.setIsActive(true);
+                    break;
+                } else {
+                    System.out.println("Invalid choice! Only 0 or 1 allowed.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please enter a valid number (0 or 1).");
+            }
         }
 
+        // --- Date of Birth (your existing validation method) ---
         p.setDateOfBirth(getValidatedDate("Enter Date of Birth (yyyy-MM-dd): "));
+
+        // --- Auto-generated fields ---
         p.setDateOfRegistration(LocalDate.now());
         p.setLastVisitDate(null);
-        
-        System.out.println("Patient " + p.getName() + " added !");
+
+        System.out.println("Patient " + p.getName() + " added successfully!");
         return p;
     }
 

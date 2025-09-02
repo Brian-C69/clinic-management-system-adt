@@ -96,14 +96,24 @@ public class DoctorUI {
             System.out.println("No doctor available. Please add doctor !");
         } else {
             int index = getValidatedIndex("Enter doctor index to update (starting from 1): ", doctorCtrl.getSize()) - 1;
-            Doctor newData = inputDoctorDetails();
-
-            boolean updated = doctorCtrl.updateExistingDoctor(index, newData);
-            if (updated) {
-                System.out.println("Doctor updated successfully.");
-            } else {
-                System.out.println("Doctor Update failed.");
+            
+            Doctor foundDoctor = doctorCtrl.getDoctor(index);
+            System.out.println("You are about to edit " + foundDoctor.getName() + " information. Proceed ? (0=NO | 1= YES) : ");
+            int editDoctorChoice = Integer.parseInt(sc.nextLine());
+            
+            if(editDoctorChoice == 1){
+                Doctor doctorNewData = inputDoctorDetails();
+                boolean success = doctorCtrl.updateExistingDoctor(index, doctorNewData);
+                
+                if(success){
+                    System.out.println("Successfully updated " + doctorNewData.getName() + " information !");
+                }else{
+                    System.out.println("Error occured !");
+                }
+            }else{
+                System.out.println("Abort Edit Operation !");
             }
+            
         }
     }
 
@@ -133,23 +143,43 @@ public class DoctorUI {
     public Doctor inputDoctorDetails() {
         Doctor d = new Doctor();
 
-        System.out.print("Enter Doctor Name: ");
-        d.setName(sc.nextLine().trim());
+        // Doctor name: only letters and spaces, at least 2 characters
+        d.setName(getValidatedInput(
+                "Enter Doctor Name: ",
+                "^[A-Za-z ]{2,}$",
+                "Name must contain only letters and spaces (min 2 characters)."
+        ));
 
-        System.out.print("Enter MMC Number: ");
-        d.setMmcNumber(sc.nextLine().trim());
+        // MMC Number: digits only, at least 4–6 (you can adjust)
+        d.setMmcNumber(getValidatedInput(
+                "Enter MMC Number: ",
+                "^\\d{4,6}$",
+                "MMC Number must be 4–6 digits."
+        ));
 
-        System.out.print("Enter Specialization: ");
-        d.setSpecialization(sc.nextLine().trim());
+        // Specialization: allow letters, spaces, and hyphens
+        d.setSpecialization(getValidatedInput(
+                "Enter Specialization: ",
+                "^[A-Za-z\\- ]{3,}$",
+                "Specialization must contain only letters/spaces (min 3 characters)."
+        ));
 
-        System.out.print("Enter Email: ");
-        d.setEmail(sc.nextLine().trim());
+        // Email validation (basic regex, not too strict)
+        d.setEmail(getValidatedInput(
+                "Enter Email: ",
+                "^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,6}$",
+                "Invalid email format. Example: doctor@example.com"
+        ));
 
-        System.out.print("Enter Gender (Male/Female): ");
-        d.setGender(sc.nextLine().trim());
+        // Gender validation (force Male/Female only)
+        d.setGender(getValidatedInput(
+                "Enter Gender (Male/Female): ",
+                "^(?i)(Male|Female)$", // (?i) makes it case-insensitive
+                "Please enter either 'Male' or 'Female'."
+        ));
 
+        // Duty schedule (keep your original logic, already validated)
         adt.LinkedList<Doctor.DutySlot> dutySchedule = new adt.LinkedList<>();
-
         System.out.print("Enter number of duty slots (or press Enter to skip): ");
         String numSlotsStr = sc.nextLine().trim();
         int numSlots = 0;
@@ -175,12 +205,13 @@ public class DoctorUI {
                 try {
                     start = LocalDateTime.parse(startStr);
                 } catch (Exception e) {
-                    System.out.println("Invalid format. Try again.");
+                    System.out.println("Invalid format. Example: 2025-09-02T14:30");
                 }
             }
             if (start == null) {
-                continue; // skip this slot
+                continue;
             }
+
             LocalDateTime end = null;
             while (end == null) {
                 System.out.print("  Enter end date-time (yyyy-MM-ddTHH:mm): ");
@@ -192,7 +223,7 @@ public class DoctorUI {
                         end = null;
                     }
                 } catch (Exception e) {
-                    System.out.println("Invalid format. Try again.");
+                    System.out.println("Invalid format. Example: 2025-09-02T16:00");
                 }
             }
 
@@ -201,7 +232,6 @@ public class DoctorUI {
         }
 
         d.setDutySchedule(dutySchedule);
-
         d.setIsAvailable(true);
         d.setConsultations(new adt.LinkedList<Consultation>());
         d.setStatus("Active");
@@ -340,6 +370,18 @@ public class DoctorUI {
             } catch (NumberFormatException e) {
                 System.out.println("Please enter a valid number.");
             }
+        }
+    }
+
+    private String getValidatedInput(String prompt, String regex, String errorMsg) {
+        String input;
+        while (true) {
+            System.out.print(prompt);
+            input = sc.nextLine().trim();
+            if (regex == null || input.matches(regex)) {
+                return input;
+            }
+            System.out.println(errorMsg);
         }
     }
 }
