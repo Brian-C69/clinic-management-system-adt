@@ -123,7 +123,7 @@ public class MedicalTreatment implements Comparable<MedicalTreatment> {
         String dosageStr = dosage != null && dosage.length() > 10 ? dosage.substring(0, 7) + "..." : dosage;
         String diagStr = diagnosis != null && diagnosis.length() > 20 ? diagnosis.substring(0, 17) + "..." : diagnosis;
         String instrStr = instructions != null && instructions.length() > 25 ? instructions.substring(0, 22) + "..." : instructions;
-
+        
         return String.format(
                 "| %-15s | %-10s | %-20s | %-25s | %-12s | %-20s | %-20s |",
                 medStr,

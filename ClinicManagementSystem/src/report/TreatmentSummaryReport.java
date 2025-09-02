@@ -3,13 +3,20 @@ package report;
 import adt.ListInterface;
 import adt.LinkedList;
 import entity.MedicalTreatment;
+import java.time.LocalDateTime;
 
 import java.time.format.DateTimeFormatter;
 
 public class TreatmentSummaryReport {
 
     public static void generate(ListInterface<MedicalTreatment> treatments) {
-        System.out.println("\n======================== TREATMENT SUMMARY REPORT ========================\n");
+        System.out.println("\n                                  TUNKU ABDUL RAHMAN UNIVERSITY OF MANAGEMENT AND TECHNOLOGY");
+        System.out.println("                                                MEDICAL TREATMENT MODULE SUBSYSTEM");
+        System.out.println("                                                        KLINIK BAHAGIA");
+        System.out.println("                                             -----------------------------------");
+        System.out.println("                                                 SUMMARY OF TREATMENT REPORT");
+        System.out.printf("Generated at: %s\n", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        
 
         printTreatmentTable(treatments);
         printTreatmentStatistics(treatments);
@@ -20,18 +27,20 @@ public class TreatmentSummaryReport {
     }
 
     private static void printTreatmentTable(ListInterface<MedicalTreatment> treatments) {
-        System.out.printf("%-4s | %-15s | %-6s | %-8s | %-8s | %-8s | %-12s\n",
-                "No.", "Medicine", "Dosage", "Duration", "Doctor", "Patient", "Start Date");
-        System.out.println("--------------------------------------------------------------------------------");
+        System.out.printf("%-4s | %-25s | %-12s | %-12s | %-10s | %-20s | %-10s | %-20s | %-12s\n",
+                "No.", "Medicine", "Dosage", "Duration", "Doctor ID","Doctor Name", "Patient ID","Patient Name", "Start Date");
+        System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------");
         for (int i = 0; i < treatments.size(); i++) {
             MedicalTreatment t = treatments.get(i);
-            System.out.printf("%4d | %-15s | %-6s | %-8s | %-8s | %-8s | %-12s\n",
+            System.out.printf("%4d | %-25s | %-12s | %-12s | %-10s | %-20s | %-10s | %-20s | %-12s\n",
                     i + 1,
                     t.getMedicine(),
                     t.getDosage(),
                     t.getDuration(),
                     t.getDoctor().getDoctorId(),
+                    t.getDoctor().getName(),
                     t.getPatient().getPatientID(),
+                    t.getPatient().getName(),
                     t.getStartDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
             );
         }
