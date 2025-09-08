@@ -96,24 +96,24 @@ public class DoctorUI {
             System.out.println("No doctor available. Please add doctor !");
         } else {
             int index = getValidatedIndex("Enter doctor index to update (starting from 1): ", doctorCtrl.getSize()) - 1;
-            
+
             Doctor foundDoctor = doctorCtrl.getDoctor(index);
             System.out.println("You are about to edit " + foundDoctor.getName() + " information. Proceed ? (0=NO | 1= YES) : ");
             int editDoctorChoice = Integer.parseInt(sc.nextLine());
-            
-            if(editDoctorChoice == 1){
+
+            if (editDoctorChoice == 1) {
                 Doctor doctorNewData = inputDoctorDetails();
                 boolean success = doctorCtrl.updateExistingDoctor(index, doctorNewData);
-                
-                if(success){
+
+                if (success) {
                     System.out.println("Successfully updated " + doctorNewData.getName() + " information !");
-                }else{
+                } else {
                     System.out.println("Error occured !");
                 }
-            }else{
+            } else {
                 System.out.println("Abort Edit Operation !");
             }
-            
+
         }
     }
 
@@ -143,18 +143,18 @@ public class DoctorUI {
     public Doctor inputDoctorDetails() {
         Doctor d = new Doctor();
 
-        // Doctor name: only letters and spaces, at least 2 characters
+        // Doctor name: allow letters, spaces, dots, and other symbols
         d.setName(getValidatedInput(
                 "Enter Doctor Name: ",
-                "^[A-Za-z ]{2,}$",
-                "Name must contain only letters and spaces (min 2 characters)."
+                "^[A-Za-z .,'-]{2,}$",
+                "Name must contain at least 2 characters (letters, spaces, '.', ',', '-', allowed)."
         ));
 
-        // MMC Number: digits only, at least 4–6 (you can adjust)
+        // MMC Number: must start with "MMC" followed by exactly 4 digits
         d.setMmcNumber(getValidatedInput(
-                "Enter MMC Number: ",
-                "^\\d{4,6}$",
-                "MMC Number must be 4–6 digits."
+                "Enter MMC Number (Format: MMC1234): ",
+                "^MMC\\d{4}$",
+                "MMC Number must start with 'MMC' followed by 4 digits. Example: MMC1234"
         ));
 
         // Specialization: allow letters, spaces, and hyphens
@@ -164,21 +164,21 @@ public class DoctorUI {
                 "Specialization must contain only letters/spaces (min 3 characters)."
         ));
 
-        // Email validation (basic regex, not too strict)
+        // Email validation
         d.setEmail(getValidatedInput(
                 "Enter Email: ",
                 "^[\\w.-]+@[\\w.-]+\\.[A-Za-z]{2,6}$",
                 "Invalid email format. Example: doctor@example.com"
         ));
 
-        // Gender validation (force Male/Female only)
+        // Gender: only "M" or "F"
         d.setGender(getValidatedInput(
-                "Enter Gender (Male/Female): ",
-                "^(?i)(Male|Female)$", // (?i) makes it case-insensitive
-                "Please enter either 'Male' or 'Female'."
+                "Enter Gender (M/F): ",
+                "^(?i)(M|F)$",
+                "Please enter 'M' or 'F' only."
         ));
 
-        // Duty schedule (keep your original logic, already validated)
+        // Duty schedule (unchanged logic with validation)
         adt.LinkedList<Doctor.DutySlot> dutySchedule = new adt.LinkedList<>();
         System.out.print("Enter number of duty slots (or press Enter to skip): ");
         String numSlotsStr = sc.nextLine().trim();
