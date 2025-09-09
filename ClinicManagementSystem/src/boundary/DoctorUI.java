@@ -7,6 +7,7 @@ import entity.Consultation;
 import entity.Doctor;
 import entity.Patient;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import java.util.Scanner;
 import report.DoctorSummaryReport;
@@ -68,25 +69,58 @@ public class DoctorUI {
         if (doctorCtrl.getSize() == 0) {
             System.out.println("No doctor available. Please add doctor!");
         } else {
-            // Define consistent row format
-            String rowFormat = "| %-10s | %-20s | %-20s | %-12s | %-25s | %-6s | %-10s | %-12s | %-13s |";
+            // Adjusted column widths (Duty Slots widened to 55 chars)
+            String rowFormat = "| %-10s | %-20s | %-20s | %-12s | %-25s | %-6s | %-10s | %-55s | %-13s |";
 
             // Print header
-            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println(String.format(
                     rowFormat,
                     "Doctor ID", "Name", "Specialization", "MMC Number", "Email", "Gender", "Available", "Duty Slots", "Consultations"
             ));
-            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+
+            DateTimeFormatter dateTimeFmt = DateTimeFormatter.ofPattern("dd/MM HH:mm");
 
             // Print each doctor in a neat row
             for (int i = 0; i < doctorCtrl.getSize(); i++) {
                 Doctor d = doctorCtrl.getDoctor(i);
-                System.out.println(d.toString());
+
+                // Build duty slots string
+                StringBuilder slotsStr = new StringBuilder();
+                if (d.getDutySchedule() != null && !d.getDutySchedule().isEmpty()) {
+                    for (int j = 0; j < d.getDutySchedule().size(); j++) {
+                        Doctor.DutySlot slot = d.getDutySchedule().get(j);
+                        slotsStr.append("[")
+                                .append(slot.getStartTime().format(dateTimeFmt))
+                                .append(" - ")
+                                .append(slot.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+                                .append("]");
+                        if (j < d.getDutySchedule().size() - 1) {
+                            slotsStr.append(", ");
+                        }
+                    }
+                } else {
+                    slotsStr.append("None");
+                }
+
+                // Print row with formatted duty slots
+                System.out.println(String.format(
+                        rowFormat,
+                        d.getDoctorId(),
+                        d.getName(),
+                        d.getSpecialization(),
+                        d.getMmcNumber(),
+                        d.getEmail(),
+                        d.getGender(),
+                        d.getStatus(),
+                        slotsStr.toString(),
+                        (d.getConsultations() != null ? d.getConsultations().size() : 0)
+                ));
             }
 
             // Closing line
-            System.out.println("------------------------------------------------------------------------------------------------------------------------------------------------------------");
+                        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
