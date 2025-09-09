@@ -123,7 +123,6 @@ public class PatientUI {
     }
 
     private void updatePatient() {
-        
         if (patientCtrl.getSize() == 0) {
             System.out.println("No patient currently in the list. Please add patient");
             return;
@@ -133,11 +132,26 @@ public class PatientUI {
         int index = getValidatedIndex("Enter patient index to update (starting from 1): ", patientCtrl.getSize()) - 1;
         Patient foundPatient = patientCtrl.getPatient(index);
 
-        System.out.println("You are about to edit " + foundPatient.getName() + " information. Proceed ? (0= NO | 1= YES) : ");
-        int editPatientchoice = Integer.parseInt(sc.nextLine());
+        System.out.println("You are about to edit " + foundPatient.getName() + " information.");
 
-        if (editPatientchoice == 1) {
+        int editPatientChoice = -1;
+        while (true) {
+            System.out.print("Proceed ? (0 = NO | 1 = YES): ");
+            if (sc.hasNextInt()) {
+                editPatientChoice = sc.nextInt();
+                sc.nextLine();
+                if (editPatientChoice == 0 || editPatientChoice == 1) {
+                    break;
+                } else {
+                    System.out.println("Invalid input! Please enter 0 for NO or 1 for YES.");
+                }
+            } else {
+                System.out.println("Invalid input! Please enter a number (0 or 1).");
+                sc.next();
+            }
+        }
 
+        if (editPatientChoice == 1) {
             Patient newData = inputPatientDetails();
             boolean success = patientCtrl.updateExistingPatient(index, newData);
 
@@ -147,9 +161,8 @@ public class PatientUI {
                 System.out.println("Update failed.");
             }
         } else {
-            System.out.println("Abort Edit Operation !");
+            System.out.println("Abort Edit Operation!");
         }
-
     }
 
     private void deletePatient() {
@@ -162,12 +175,28 @@ public class PatientUI {
         int index = getValidatedIndex("Enter patient index to delete (starting from 1): ", patientCtrl.getSize()) - 1;
         Patient beforeDeletePatient = patientCtrl.getPatient(index);
 
-        System.out.println("Are you sure you want to delete " + beforeDeletePatient.getName() + " ? (0 = NO | 1 = YES)");
-        int confirmDeletePatient = getValidatedInteger("");
+        System.out.println("Are you sure you want to delete " + beforeDeletePatient.getName() + "?");
+
+        int confirmDeletePatient = -1;
+        while (true) {
+            System.out.print("(0 = NO | 1 = YES): ");
+            if (sc.hasNextInt()) {
+                confirmDeletePatient = sc.nextInt();
+                sc.nextLine();
+                if (confirmDeletePatient == 0 || confirmDeletePatient == 1) {
+                    break;
+                } else {
+                    System.out.println("Invalid input! Please enter 0 for NO or 1 for YES.");
+                }
+            } else {
+                System.out.println("Invalid input! Please enter a number (0 or 1).");
+                sc.next();
+            }
+        }
 
         if (confirmDeletePatient == 1) {
             Patient removed = patientCtrl.deletePatient(index);
-            System.out.println("Patient deleted : " + removed.getName());
+            System.out.println("Patient deleted: " + removed.getName());
         } else {
             System.out.println("Aborted Delete Operation");
         }

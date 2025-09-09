@@ -69,24 +69,25 @@ public class DoctorUI {
         if (doctorCtrl.getSize() == 0) {
             System.out.println("No doctor available. Please add doctor!");
         } else {
-            // Adjusted column widths (Duty Slots widened to 55 chars)
-            String rowFormat = "| %-10s | %-20s | %-20s | %-12s | %-25s | %-6s | %-10s | %-55s | %-13s |";
+            // Adjusted column widths (Duty Slots widened to 65 chars for year display)
+            String rowFormat = "| %-10s | %-20s | %-20s | %-12s | %-25s | %-6s | %-10s | %-65s | %-13s |";
 
             // Print header
-            System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
             System.out.println(String.format(
                     rowFormat,
                     "Doctor ID", "Name", "Specialization", "MMC Number", "Email", "Gender", "Available", "Duty Slots", "Consultations"
             ));
-            System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
-            DateTimeFormatter dateTimeFmt = DateTimeFormatter.ofPattern("dd/MM HH:mm");
+            // Format with year included
+            DateTimeFormatter dateTimeFmt = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
-            // Print each doctor in a neat row
+            // Print each doctor row
             for (int i = 0; i < doctorCtrl.getSize(); i++) {
                 Doctor d = doctorCtrl.getDoctor(i);
 
-                // Build duty slots string
+                // Format duty slots
                 StringBuilder slotsStr = new StringBuilder();
                 if (d.getDutySchedule() != null && !d.getDutySchedule().isEmpty()) {
                     for (int j = 0; j < d.getDutySchedule().size(); j++) {
@@ -94,7 +95,7 @@ public class DoctorUI {
                         slotsStr.append("[")
                                 .append(slot.getStartTime().format(dateTimeFmt))
                                 .append(" - ")
-                                .append(slot.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")))
+                                .append(slot.getEndTime().format(dateTimeFmt))
                                 .append("]");
                         if (j < d.getDutySchedule().size() - 1) {
                             slotsStr.append(", ");
@@ -104,7 +105,7 @@ public class DoctorUI {
                     slotsStr.append("None");
                 }
 
-                // Print row with formatted duty slots
+                // Print row
                 System.out.println(String.format(
                         rowFormat,
                         d.getDoctorId(),
@@ -120,10 +121,11 @@ public class DoctorUI {
             }
 
             // Closing line
-                        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+            System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         }
     }
 
+//    System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
     private void updateDoctor() {
         displayAllDoctors();
         if (doctorCtrl.getSize() == 0) {
@@ -132,8 +134,24 @@ public class DoctorUI {
             int index = getValidatedIndex("Enter doctor index to update (starting from 1): ", doctorCtrl.getSize()) - 1;
 
             Doctor foundDoctor = doctorCtrl.getDoctor(index);
-            System.out.println("You are about to edit " + foundDoctor.getName() + " information. Proceed ? (0=NO | 1= YES) : ");
-            int editDoctorChoice = Integer.parseInt(sc.nextLine());
+
+            // validation loop for 0/1 only
+            int editDoctorChoice = -1;
+            while (true) {
+                System.out.print("You are about to edit " + foundDoctor.getName() + " information. Proceed ? (0=NO | 1=YES) : ");
+                if (sc.hasNextInt()) {
+                    editDoctorChoice = sc.nextInt();
+                    sc.nextLine();
+                    if (editDoctorChoice == 0 || editDoctorChoice == 1) {
+                        break;
+                    } else {
+                        System.out.println("Invalid input! Please enter 0 for NO or 1 for YES.");
+                    }
+                } else {
+                    System.out.println("Invalid input! Please enter a number (0 or 1).");
+                    sc.next();
+                }
+            }
 
             if (editDoctorChoice == 1) {
                 Doctor doctorNewData = inputDoctorDetails();
@@ -142,12 +160,11 @@ public class DoctorUI {
                 if (success) {
                     System.out.println("Successfully updated " + doctorNewData.getName() + " information !");
                 } else {
-                    System.out.println("Error occured !");
+                    System.out.println("Error occurred !");
                 }
             } else {
                 System.out.println("Abort Edit Operation !");
             }
-
         }
     }
 
@@ -162,9 +179,23 @@ public class DoctorUI {
         Doctor doctorToDelete = doctorCtrl.getDoctor(index);
 
         System.out.println("You are about to delete doctor " + doctorToDelete.getName());
-        System.out.println("Are you sure you want to delete ? (0 = NO | 1 = YES)");
 
-        int deleteDoctorChoice = Integer.parseInt(sc.nextLine());
+        int deleteDoctorChoice = -1;
+        while (true) {
+            System.out.print("Are you sure you want to delete ? (0 = NO | 1 = YES): ");
+            if (sc.hasNextInt()) {
+                deleteDoctorChoice = sc.nextInt();
+                sc.nextLine();
+                if (deleteDoctorChoice == 0 || deleteDoctorChoice == 1) {
+                    break;
+                } else {
+                    System.out.println("Invalid input! Please enter 0 for NO or 1 for YES.");
+                }
+            } else {
+                System.out.println("Invalid input! Please enter a number (0 or 1).");
+                sc.next();
+            }
+        }
 
         if (deleteDoctorChoice == 1) {
             Doctor removed = doctorCtrl.deleteDoctor(index);
